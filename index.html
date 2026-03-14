@@ -7,27 +7,50 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        .ramal-card { transition: all 0.3s; }
-        .ramal-card:hover { transform: scale(1.03); box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1); }
+        .ramal-card { 
+            transition: all 0.3s; 
+            font-size: 0.95rem;          /* texto um pouco menor */
+        }
+        .ramal-card:hover { 
+            transform: scale(1.02); 
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1); 
+        }
         details summary { cursor: pointer; }
+        .logo-container img {
+            max-height: 90px;            /* controla o tamanho da logo */
+            width: auto;
+        }
     </style>
 </head>
 <body class="bg-gray-50 font-sans">
-    <div class="max-w-7xl mx-auto p-6">
-        <div class="flex justify-between items-center mb-8">
-            <div>
-                <h1 class="text-4xl font-bold text-blue-600 flex items-center gap-3">
-                    <i class="fa-solid fa-phone"></i> Ramais MedRadius
-                </h1>
-                <p class="text-gray-600">Diretório dinâmico • Hospital • Clínica • Consultórios</p>
+    <div class="max-w-7xl mx-auto p-6 md:p-8">
+
+        <!-- Cabeçalho com logo e texto centralizados -->
+        <div class="text-center mb-8">
+            <div class="flex justify-between items-center mb-8">
+            <img
+                    src="https://i.ibb.co/676kPzWy/logo-G.png" 
+                    alt="Logo MedRadius" 
+                    class="mx-auto"
+                >
             </div>
+            <p class="text-gray-700 font-medium text-base md:text-lg">
+                Diretório dinâmico • Hospital • Clínica • Consultórios
+            </p>
         </div>
 
         <!-- Busca e filtro -->
-        <div class="flex gap-4 mb-8">
-            <input id="search" type="text" placeholder="🔎 Buscar ramal, setor ou Workstation..." 
-                   class="flex-1 border border-gray-300 rounded-2xl px-6 py-4 text-lg focus:outline-none focus:border-blue-500">
-            <select id="localFilter" class="border border-gray-300 rounded-2xl px-6 py-4 focus:outline-none focus:border-blue-500">
+        <div class="flex flex-col sm:flex-row gap-3 mb-8 max-w-3xl mx-auto">
+            <input 
+                id="search" 
+                type="text" 
+                placeholder="🔎 Buscar ramal, setor ou Workstation..." 
+                class="flex-1 border border-gray-300 rounded-xl px-4 py-3 text-base focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+            >
+            <select 
+                id="localFilter" 
+                class="border border-gray-300 rounded-xl px-4 py-3 bg-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 sm:w-64"
+            >
                 <option value="">Todos os locais</option>
                 <option value="MEDRADIUS HOSPITAL">🏥 MEDRADIUS HOSPITAL</option>
                 <option value="MEDRADIUS CLINICA">🏥 MEDRADIUS CLINICA</option>
@@ -36,33 +59,36 @@
             </select>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            <!-- Árvore Hierárquica (Mapa Mental) -->
-            <div class="lg:col-span-4 bg-white rounded-3xl shadow p-6 h-fit">
-                <h2 class="font-bold text-xl mb-4 flex items-center gap-2"><i class="fa-solid fa-brain text-blue-600"></i> Mapa Mental</h2>
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <!-- Mapa Mental – mais estreito -->
+            <div class="lg:col-span-3 bg-white rounded-2xl shadow p-5 h-fit">
+                <h2 class="font-bold text-lg mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-brain text-blue-600"></i> Mapa Mental
+                </h2>
                 <div id="treeView" class="space-y-2 text-sm"></div>
             </div>
 
-            <!-- Cards -->
-            <div class="lg:col-span-8">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="cardsContainer"></div>
+            <!-- Cards – menores -->
+            <div class="lg:col-span-9">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="cardsContainer"></div>
             </div>
         </div>
 
-        <!-- Tabela (opcional) -->
-        <button onclick="toggleTable()" class="mt-12 px-8 py-3 bg-blue-600 text-white rounded-2xl font-medium flex items-center gap-2 hover:bg-blue-700">
+        <!-- Botão tabela (mantido igual) -->
+        <button onclick="toggleTable()" class="mt-10 px-6 py-3 bg-blue-600 text-white rounded-xl font-medium flex items-center gap-2 mx-auto hover:bg-blue-700">
             <i class="fa-solid fa-table"></i> Ver em Tabela Completa
         </button>
-        <div id="tableView" class="hidden mt-6 overflow-x-auto">
+
+        <div id="tableView" class="hidden mt-8 overflow-x-auto">
             <table class="w-full text-sm border-collapse">
                 <thead class="bg-gray-100">
                     <tr>
-                        <th class="p-4 text-left">Local</th>
-                        <th class="p-4 text-left">Setor</th>
-                        <th class="p-4 text-left">Subsetor</th>
-                        <th class="p-4 text-left">Ramal</th>
-                        <th class="p-4 text-left">Workstation</th>
-						<th class="p-4 text-left">Colaboradores</th>
+                        <th class="p-3 text-left">Local</th>
+                        <th class="p-3 text-left">Setor</th>
+                        <th class="p-3 text-left">Subsetor</th>
+                        <th class="p-3 text-left">Ramal</th>
+                        <th class="p-3 text-left">Workstation</th>
+                        <th class="p-3 text-left">Colaborador</th>
                     </tr>
                 </thead>
                 <tbody id="tableBody" class="bg-white"></tbody>
@@ -87,7 +113,6 @@
 			  {"local":"MEDRADIUS CLINICA","setor":"COMPRAS","subsetor":"2","ramal":"169","Workstation":"172.18.2.62","colaborador":""},
 			  {"local":"MEDRADIUS CLINICA","setor":"CONTROLADORIA","subsetor":"CONTROLADORIA","ramal":"173","Workstation":"172.18.3.97","colaborador":""},
 			  {"local":"MEDRADIUS CLINICA","setor":"COORDENAÇÃO","subsetor":"FATURAMENTO","ramal":"140","Workstation":"172.18.0.59","colaborador":""},
-			  {"local":"MEDRADIUS CLINICA","setor":"COORDENAÇÃO","subsetor":"TI","ramal":"150","Workstation":"172.18.2.157","colaborador":""},
 			  {"local":"MEDRADIUS CLINICA","setor":"COORDENAÇÃO","subsetor":"COMPRAS","ramal":"170","Workstation":"172.18.3.150","colaborador":""},
 			  {"local":"MEDRADIUS CLINICA","setor":"COORDENAÇÃO","subsetor":"FINANCEIRO","ramal":"172","Workstation":"172.18.2.172","colaborador":""},
 			  {"local":"MEDRADIUS CLINICA","setor":"COORDENAÇÃO","subsetor":"RH","ramal":"174","Workstation":"172.18.3.5","colaborador":""},
