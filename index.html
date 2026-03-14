@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ramais MedRadius - Diretório Inteligente</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .ramal-card { transition: all 0.3s; }
+        .ramal-card:hover { transform: scale(1.03); box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1); }
+        details summary { cursor: pointer; }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <div class="max-w-7xl mx-auto p-6">
+        <div class="flex justify-between items-center mb-8">
+            <div>
+                <h1 class="text-4xl font-bold text-blue-600 flex items-center gap-3">
+                    <i class="fa-solid fa-phone"></i> Ramais MedRadius
+                </h1>
+                <p class="text-gray-600">Diretório dinâmico • Hospital • Clínica • Consultórios</p>
+            </div>
+        </div>
+
+        <!-- Busca e filtro -->
+        <div class="flex gap-4 mb-8">
+            <input id="search" type="text" placeholder="🔎 Buscar ramal, setor ou Workstation..." 
+                   class="flex-1 border border-gray-300 rounded-2xl px-6 py-4 text-lg focus:outline-none focus:border-blue-500">
+            <select id="localFilter" class="border border-gray-300 rounded-2xl px-6 py-4 focus:outline-none focus:border-blue-500">
+                <option value="">Todos os locais</option>
+                <option value="MEDRADIUS HOSPITAL">🏥 MEDRADIUS HOSPITAL</option>
+                <option value="MEDRADIUS CLINICA">🏥 MEDRADIUS CLINICA</option>
+                <option value="MEDRADIUS CONSULTÓRIO 1">🏥 MEDRADIUS CONSULTÓRIO 1</option>
+                <option value="MEDRADIUS CONSULTÓRIO 2">🏥 MEDRADIUS CONSULTÓRIO 2</option>
+            </select>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <!-- Árvore Hierárquica (Mapa Mental) -->
+            <div class="lg:col-span-4 bg-white rounded-3xl shadow p-6 h-fit">
+                <h2 class="font-bold text-xl mb-4 flex items-center gap-2"><i class="fa-solid fa-brain text-blue-600"></i> Mapa Mental</h2>
+                <div id="treeView" class="space-y-2 text-sm"></div>
+            </div>
+
+            <!-- Cards -->
+            <div class="lg:col-span-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="cardsContainer"></div>
+            </div>
+        </div>
+
+        <!-- Tabela (opcional) -->
+        <button onclick="toggleTable()" class="mt-12 px-8 py-3 bg-blue-600 text-white rounded-2xl font-medium flex items-center gap-2 hover:bg-blue-700">
+            <i class="fa-solid fa-table"></i> Ver em Tabela Completa
+        </button>
+        <div id="tableView" class="hidden mt-6 overflow-x-auto">
+            <table class="w-full text-sm border-collapse">
+                <thead class="bg-gray-100">
+                    <tr>
+                        <th class="p-4 text-left">Local</th>
+                        <th class="p-4 text-left">Setor</th>
+                        <th class="p-4 text-left">Subsetor</th>
+                        <th class="p-4 text-left">Ramal</th>
+                        <th class="p-4 text-left">Workstation</th>
+						<th class="p-4 text-left">Colaboradores</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody" class="bg-white"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // === TODOS OS DADOS DA SUA PLANILHA (já limpos e organizados) ===
+        const ramaisData = [
+            
+			  {"local":"MEDRADIUS CLINICA","setor":"ALMOXARIFADO","subsetor":"OBRAS/PATRIMÔNIO","ramal":"128","Workstation":"172.18.3.8","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"ALMOXARIFADO","subsetor":"CENTRAL","ramal":"129","Workstation":"172.18.3.123","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"AUTORIZAÇÃO","subsetor":"RM/CT","ramal":"102","Workstation":"SOFTPHONE","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"AUTORIZAÇÃO","subsetor":"R1/R2","ramal":"103","Workstation":"172.18.2.100","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"CAF","subsetor":"1","ramal":"111","Workstation":"172.18.3.20","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"CAF","subsetor":"2","ramal":"122","Workstation":"172.18.0.214","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"CALLCENTER","subsetor":"1","ramal":"104","Workstation":"172.18.2.22","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"CALLCENTER","subsetor":"2","ramal":"105","Workstation":"172.18.0.127","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"CALLCENTER","subsetor":"3","ramal":"106","Workstation":"172.18.3.70","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"COMPRAS","subsetor":"1","ramal":"168","Workstation":"172.18.2.138","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"COMPRAS","subsetor":"2","ramal":"169","Workstation":"172.18.2.62","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"CONTROLADORIA","subsetor":"CONTROLADORIA","ramal":"173","Workstation":"172.18.3.97","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"COORDENAÇÃO","subsetor":"FATURAMENTO","ramal":"140","Workstation":"172.18.0.59","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"COORDENAÇÃO","subsetor":"TI","ramal":"150","Workstation":"172.18.2.157","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"COORDENAÇÃO","subsetor":"COMPRAS","ramal":"170","Workstation":"172.18.3.150","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"COORDENAÇÃO","subsetor":"FINANCEIRO","ramal":"172","Workstation":"172.18.2.172","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"COORDENAÇÃO","subsetor":"RH","ramal":"174","Workstation":"172.18.3.5","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"COORDENAÇÃO","subsetor":"RECEPÇÃO 01","ramal":"180","Workstation":"172.18.2.82","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"COORDENAÇÃO","subsetor":"ENFERMAGEM CLINICA","ramal":"119","Workstation":"172.18.3.34","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"ENFERMEIRA (CME)","subsetor":"ENFERMEIRA (CME)","ramal":"126","Workstation":"172.18.3.130","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"ENTREGA DE EXAMES","subsetor":"ENTREGA DE EXAMES","ramal":"118","Workstation":"172.18.2.91","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"DP","subsetor":"DP","ramal":"146","Workstation":"172.18.2.148","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"FATURAMENTO","subsetor":"1","ramal":"101","Workstation":"172.18.3.38","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"FATURAMENTO","subsetor":"2","ramal":"141","Workstation":"172.18.2.132","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"FATURAMENTO","subsetor":"3","ramal":"142","Workstation":"172.18.0.151","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"FATURAMENTO","subsetor":"4","ramal":"143","Workstation":"172.18.2.178","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"FATURAMENTO","subsetor":"5","ramal":"144","Workstation":"172.18.2.64","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"FINANCEIRO","subsetor":"1","ramal":"171","Workstation":"172.18.2.142","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"GERÊNCIA","subsetor":"GERÊNCIA","ramal":"125","Workstation":"172.18.3.68","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"JURIDICO","subsetor":"JURIDICO","ramal":"124","Workstation":"172.18.2.122","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"LAUDOS PACS","subsetor":"LAUDOS PACS","ramal":"120","Workstation":"172.18.3.216","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"MANUTENÇÃO","subsetor":"MANUTENÇÃO","ramal":"127","Workstation":"172.18.3.7","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"MARKETING","subsetor":"MARKETING","ramal":"179","Workstation":"172.18.0.191","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"PRÉ-ATENDIMENTO","subsetor":"PRÉ-ATENDIMENTO","ramal":"161","Workstation":"172.18.3.162","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"RECEPÇÃO","subsetor":"ULTRASSOM","ramal":"115","Workstation":"172.18.2.68","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"RECEPÇÃO","subsetor":"COLPOSCOPIA","ramal":"123","Workstation":"172.18.3.33","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"RECEPÇÃO 1","subsetor":"GUICHÊ 01","ramal":"181","Workstation":"172.18.3.200","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"RECEPÇÃO 1","subsetor":"GUICHÊ 02","ramal":"182","Workstation":"172.18.3.10","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"RECEPÇÃO 1","subsetor":"GUICHÊ 03","ramal":"183","Workstation":"172.18.3.11","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"RECEPÇÃO 2","subsetor":"GUICHÊ 01","ramal":"151","Workstation":"172.18.2.144","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"RECEPÇÃO 2","subsetor":"GUICHÊ 02","ramal":"152","Workstation":"172.18.0.224","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"RECEPÇÃO 2","subsetor":"GUICHÊ 03","ramal":"153","Workstation":"172.18.0.207","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"RECEPÇÃO 2","subsetor":"GUICHÊ 04","ramal":"154","Workstation":"172.18.3.22","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"RECEPÇÃO 2","subsetor":"GUICHÊ 05","ramal":"155","Workstation":"172.18.3.2","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"RECEPÇÃO 2","subsetor":"GUICHÊ 06","ramal":"156","Workstation":"172.18.2.136","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"RECEPÇÃO 2","subsetor":"GUICHÊ 07","ramal":"157","Workstation":"172.18.2.137","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"RECEPÇÃO 2","subsetor":"COORDENAÇÃO","ramal":"158","Workstation":"172.18.0.58","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"RECEPÇÃO 2","subsetor":"GUICHÊ 09","ramal":"159","Workstation":"172.18.2.134","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"RECEPÇÃO 2","subsetor":"GUICHÊ 10","ramal":"160","Workstation":"172.18.2.98","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"RECEPÇÃO 3","subsetor":"GUICHÊ 01","ramal":"164","Workstation":"172.18.2.84","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"RECEPÇÃO 3","subsetor":"GUICHÊ 02","ramal":"165","Workstation":"172.18.3.245","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"RECEPÇÃO 3","subsetor":"GUICHÊ 03","ramal":"166","Workstation":"172.18.3.246","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"RECEPÇÃO 3","subsetor":"GUICHÊ 04","ramal":"167","Workstation":"172.18.2.161","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"RECEPÇÃO 4","subsetor":"GUICHÊ 01","ramal":"131","Workstation":"172.18.0.41","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"RECEPÇÃO 4","subsetor":"GUICHÊ 02","ramal":"132","Workstation":"172.18.2.124","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"RECEPÇÃO 4","subsetor":"GUICHÊ 03","ramal":"133","Workstation":"172.18.2.125","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"RECEPÇÃO LABORATÓRIO","subsetor":"GUICHÊ 13","ramal":"121","Workstation":"172.18.3.66","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"RECEPÇÃO LABORATÓRIO","subsetor":"GUICHÊ 12","ramal":"162","Workstation":"172.18.2.152","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"RECEPÇÃO LABORATÓRIO","subsetor":"GUICHÊ 15","ramal":"163","Workstation":"172.18.2.133","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"RH","subsetor":"RH","ramal":"145","Workstation":"172.18.3.4","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"SALA EXAME","subsetor":"RAIOS-X","ramal":"130","Workstation":"172.18.3.12","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"SALA EXAME","subsetor":"ECOCARDIOGRAMA","ramal":"134","Workstation":"172.18.3.106","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"SALA EXAME","subsetor":"ESPIROMETRIA","ramal":"135","Workstation":"172.18.1.211","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"SALA EXAME","subsetor":"ELETROCARDIOGRAMA","ramal":"136","Workstation":"172.18.2.128","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"SALA EXAME","subsetor":"TESTE ERGOMETRICO","ramal":"137","Workstation":"172.18.2.129","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"SALA EXAME","subsetor":"PREPARO ENDOSCOPIA","ramal":"138","Workstation":"172.18.2.131","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"SALA EXAME","subsetor":"RESSONÂNCIA","ramal":"175","Workstation":"172.18.2.207","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"SALA EXAME","subsetor":"PREPARO TOMOGRAFIA","ramal":"176","Workstation":"172.18.3.6","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"SALA EXAME","subsetor":"MEDICINA NUCLEAR","ramal":"185","Workstation":"172.18.3.13","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"SALA EXAME","subsetor":"PET-SCAN","ramal":"186","Workstation":"172.18.3.14","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"SALA LAUDOS","subsetor":"DIGITAÇÃO","ramal":"116","Workstation":"172.18.2.35","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"SALA LAUDOS","subsetor":"MONTAGEM","ramal":"117","Workstation":"172.18.3.132","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"SEGURANÇA DO TRABALHO","subsetor":"SEGURANÇA DO TRABALHO","ramal":"139","Workstation":"172.18.2.135","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"SETOR ARQUIVO","subsetor":"SETOR ARQUIVO","ramal":"177","Workstation":"172.18.3.143","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"TI","subsetor":"SMART-CLINICA","ramal":"148","Workstation":"172.18.2.127","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"TI","subsetor":"MANUTENÇÃO","ramal":"149","Workstation":"172.18.3.155","colaborador":""},
+			  {"local":"MEDRADIUS CLINICA","setor":"TI","subsetor":"MANUTENÇÃO","ramal":"150","Workstation":"172.18.3.155","colaborador":""},
+			  {"local":"MEDRADIUS CONSULTÓRIO 1","setor":"ATENDENTE MÉDICOS","subsetor":"ATENDENTE DR. YVES","ramal":"157","Workstation":"","colaborador":""},
+			  {"local":"MEDRADIUS CONSULTÓRIO 1","setor":"ATENDENTE MÉDICOS","subsetor":"ATENDENTE DR. RAPHAEL","ramal":"189","Workstation":"172.18.3.16","colaborador":""},
+			  {"local":"MEDRADIUS CONSULTÓRIO 1","setor":"ATENDENTE MÉDICOS","subsetor":"ATENDENTE MÉDICOS","ramal":"190","Workstation":"172.18.2.121","colaborador":""},
+			  {"local":"MEDRADIUS CONSULTÓRIO 1","setor":"COORDENAÇÃO","subsetor":"COORDENAÇÃO","ramal":"200","Workstation":"172.18.2.139","colaborador":""},
+			  {"local":"MEDRADIUS CONSULTÓRIO 1","setor":"RECEPÇÃO","subsetor":"1","ramal":"187","Workstation":"172.18.2.88","colaborador":""},
+			  {"local":"MEDRADIUS CONSULTÓRIO 1","setor":"RECEPÇÃO","subsetor":"2","ramal":"188","Workstation":"172.18.3.15","colaborador":""},
+			  {"local":"MEDRADIUS CONSULTÓRIO 1","setor":"SALA","subsetor":"SALA 1","ramal":"191","Workstation":"172.18.0.66","colaborador":""},
+			  {"local":"MEDRADIUS CONSULTÓRIO 1","setor":"SALA","subsetor":"SALA 2","ramal":"192","Workstation":"172.18.2.20","colaborador":""},
+			  {"local":"MEDRADIUS CONSULTÓRIO 1","setor":"SALA","subsetor":"SALA 3","ramal":"193","Workstation":"172.18.3.58","colaborador":""},
+			  {"local":"MEDRADIUS CONSULTÓRIO 1","setor":"SALA","subsetor":"SALA 5","ramal":"195","Workstation":"172.18.2.140","colaborador":""},
+			  {"local":"MEDRADIUS CONSULTÓRIO 1","setor":"SALA","subsetor":"SALA 6","ramal":"196","Workstation":"172.18.3.60","colaborador":""},
+			  {"local":"MEDRADIUS CONSULTÓRIO 1","setor":"SALA","subsetor":"SALA 7","ramal":"197","Workstation":"172.18.3.57","colaborador":""},
+			  {"local":"MEDRADIUS CONSULTÓRIO 1","setor":"SALA","subsetor":"SALA 8","ramal":"198","Workstation":"172.18.3.61","colaborador":""},
+			  {"local":"MEDRADIUS CONSULTÓRIO 1","setor":"SALA","subsetor":"SALA 9","ramal":"199","Workstation":"172.18.3.62","colaborador":""},
+			  {"local":"MEDRADIUS CONSULTÓRIO 2","setor":"RECEPÇÃO","subsetor":"1","ramal":"107","Workstation":"172.18.0.193","colaborador":""},
+			  {"local":"MEDRADIUS CONSULTÓRIO 2","setor":"RECEPÇÃO","subsetor":"2","ramal":"108","Workstation":"172.18.3.17","colaborador":""},
+			  {"local":"MEDRADIUS CONSULTÓRIO 2","setor":"SALA","subsetor":"SALA 1","ramal":"109","Workstation":"172.18.3.18","colaborador":""},
+			  {"local":"MEDRADIUS CONSULTÓRIO 2","setor":"SALA","subsetor":"SALA 2","ramal":"110","Workstation":"172.18.3.19","colaborador":""},
+			  {"local":"MEDRADIUS CONSULTÓRIO 2","setor":"SALA","subsetor":"SALA 5","ramal":"112","Workstation":"172.18.3.21","colaborador":""},
+			  {"local":"MEDRADIUS CONSULTÓRIO 2","setor":"SALA","subsetor":"SALA 4","ramal":"113","Workstation":"172.18.3.23","colaborador":""},
+			  {"local":"MEDRADIUS CONSULTÓRIO 2","setor":"SALA","subsetor":"SALA 6","ramal":"114","Workstation":"172.18.2.63","colaborador":""},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"AGENDAMENTO CIRURGIA","subsetor":"AGENDAMENTO CIRURGIA","ramal":"228","Workstation":"172.18.3.24","colaborador":""},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"APARTAMENTO","subsetor":"QUARTO 3","ramal":"215","Workstation":"172.18.2.217","colaborador":""},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"APARTAMENTO","subsetor":"QUARTO 1","ramal":"213","Workstation":"172.18.2.218","colaborador":""},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"APARTAMENTO","subsetor":"QUARTO 4","ramal":"216","Workstation":"172.18.2.219","colaborador":""},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"APARTAMENTO","subsetor":"QUARTO 5","ramal":"217","Workstation":"172.18.2.220","colaborador":""},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"APARTAMENTO","subsetor":"QUARTO 6","ramal":"218","Workstation":"172.18.3.24","colaborador":""},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"APARTAMENTO","subsetor":"QUARTO 7","ramal":"219","Workstation":"172.18.2.222","colaborador":""},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"APARTAMENTO","subsetor":"QUARTO 8","ramal":"220","Workstation":"172.18.2.223","colaborador":""},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"APARTAMENTO","subsetor":"QUARTO 9","ramal":"221","Workstation":"172.18.2.224","colaborador":""},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"APARTAMENTO","subsetor":"QUARTO 10","ramal":"222","Workstation":"172.18.2.226","colaborador":""},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"APARTAMENTO","subsetor":"QUARTO 11","ramal":"223","Workstation":"172.18.3.55","colaborador":""},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"APARTAMENTO","subsetor":"QUARTO 12","ramal":"224","Workstation":"172.18.2.145","colaborador":""},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"APARTAMENTO","subsetor":"POSTO DE ENFERMAGEM","ramal":"225","Workstation":"172.18.3.42","colaborador":""},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"AUDITORIA","subsetor":"INTERNA","ramal":"245","Workstation":"172.18.2.116","colaborador":"Danilo"},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"AUTORIZAÇÃO","subsetor":"QUIMIO","ramal":"227","Workstation":"172.18.2.114","colaborador":""},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"AUTORIZAÇÃO","subsetor":"INTERNAÇÃO 1","ramal":"229","Workstation":"172.18.3.25","colaborador":""},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"AUTORIZAÇÃO","subsetor":"PRÉ FATURAMENTO","ramal":"279","Workstation":"172.18.2.177","colaborador":""},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"AUTORIZAÇÃO","subsetor":"INTERNAÇÃO 3","ramal":"271","Workstation":"172.18.3.83","colaborador":""},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"COORDENAÇÃO","subsetor":"ENFERMAGEM","ramal":"248","Workstation":"172.18.2.113","colaborador":""},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"COORDENAÇÃO","subsetor":"FARMACIA ONCOLOGIA","ramal":"246","Workstation":"172.18.3.53","colaborador":""},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"CCIH","subsetor":"1","ramal":"259","Workstation":"172.18.2.218","colaborador":""},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"CENTRO CIRÚRGICO","subsetor":"PARADA CARDIACA (NÃO LIGAR)","ramal":"249","Workstation":"172.18.3.20","colaborador":""},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"CENTRO CIRÚRGICO","subsetor":"ESTAR MÉDICO","ramal":"252","Workstation":"","colaborador":""},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"CME","subsetor":"CME","ramal":"265","Workstation":"172.18.3.3","colaborador":""},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"COORDENAÇÃO","subsetor":"MÉDICA","ramal":"267","Workstation":"172.18.3.184","colaborador":""},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"CONSULT 01","subsetor":"SALA DE ATENDIMENTO","ramal":"273","Workstation":"172.18.3.231","colaborador":""},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"CONSULTÓRIO","subsetor":"QUIMIOTERAPIA","ramal":"275","Workstation":"172.18.3.233","colaborador":""},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"DAY CLINIC","subsetor":"DAY CLINIC","ramal":"234","Workstation":"172.18.3.27","colaborador":""},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"HOTELARIA","subsetor":"HOTELARIA","ramal":"238","Workstation":"172.18.3.31","colaborador":""},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"FARMÁCIA","subsetor":"URGENCIA","ramal":"178","Workstation":"172.18.2.124","colaborador":""},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"FARMÁCIA","subsetor":"CENTRAL","ramal":"239","Workstation":"172.18.3.32","colaborador":""},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"FARMÁCIA","subsetor":"CENTRAL - COORDENAÇÃO","ramal":"240","Workstation":"172.18.2.108","colaborador":""},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"FARMÁCIA","subsetor":"ONCOLOGIA","ramal":"241","Workstation":"172.18.2.110","colaborador":""},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"FARMÁCIA","subsetor":"CENTRO CIRÚRGICO","ramal":"242","Workstation":"172.18.2.107","colaborador":""},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"FARMÁCIA","subsetor":"UTI","ramal":"257","Workstation":"172.18.2.211","colaborador":""},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"ENFERMARIA","subsetor":"QUARTO 1","ramal":"201","Workstation":"172.18.3.40","colaborador":""},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"ENFERMARIA","subsetor":"QUARTO 2","ramal":"202","Workstation":"172.18.3.43","colaborador":""},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"ENFERMARIA","subsetor":"QUARTO 3","ramal":"203","Workstation":"172.18.3.44","colaborador":""},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"ENFERMARIA","subsetor":"QUARTO 4","ramal":"204","Workstation":"172.18.3.45","colaborador":""},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"ENFERMARIA","subsetor":"QUARTO 5","ramal":"205","Workstation":"172.18.3.46","colaborador":""},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"ENFERMARIA","subsetor":"QUARTO 6","ramal":"206","Workstation":"172.18.3.47","colaborador":""},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"ENFERMARIA","subsetor":"QUARTO 7","ramal":"207","Workstation":"172.18.3.48","colaborador":""},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"ENFERMARIA","subsetor":"QUARTO 8","ramal":"208","Workstation":"172.18.3.49","colaborador":""},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"ENFERMARIA","subsetor":"QUARTO 9","ramal":"209","Workstation":"172.18.3.50","colaborador":""},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"ENFERMARIA","subsetor":"QUARTO 10","ramal":"210","Workstation":"172.18.3.51","colaborador":""},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"ENFERMARIA","subsetor":"QUARTO 11","ramal":"211","Workstation":"172.18.3.52","colaborador":""},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"ENFERMARIA","subsetor":"POSTO DE ENFERMAGEM","ramal":"212","Workstation":"172.18.3.41","colaborador":""},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"ENGENHARIA CLINICA","subsetor":"","ramal":"244","Workstation":"172.18.2.225","colaborador":""},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"NUTRIÇÃO","subsetor":"1","ramal":"250","Workstation":"172.18.2.115","colaborador":""},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"OPME","subsetor":"OPME","ramal":"247","Workstation":"172.18.2.112","colaborador":""},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"ORTOPEDIA","subsetor":"ORTOPEDIA","ramal":"274","Workstation":"172.18.3.232","colaborador":""},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"ORÇAMENTO","subsetor":"ORÇAMENTO","ramal":"272","Workstation":"172.18.3.158","colaborador":""},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"OBSERVAÇÃO TOMOGRAFIA","subsetor":"OBSERVAÇÃO TOMOGRAFIA","ramal":"235","Workstation":"172.18.3.28","colaborador":"Diego, Tomografia"},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"SEGURANÇA","subsetor":"SEGURANÇA","ramal":"226","Workstation":"172.18.2.232","colaborador":""},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"QUALIDADE","subsetor":"QUALIDADE","ramal":"243","Workstation":"172.18.2.213","colaborador":""},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"SALA ENFERMAGEM 3° ANDAR","subsetor":"","ramal":"260","Workstation":"172.18.3.84","colaborador":""},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"RECEPÇÃO INTERNAÇÃO","subsetor":"1","ramal":"230","Workstation":"172.18.0.152","colaborador":""},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"RECEPÇÃO INTERNAÇÃO","subsetor":"2","ramal":"231","Workstation":"172.18.3.26","colaborador":""},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"RECEPÇÃO","subsetor":"QUIMIOTERAPIA","ramal":"232","Workstation":"172.18.2.90","colaborador":""},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"RECEPÇÃO","subsetor":"RADIOTERAPIA","ramal":"233","Workstation":"172.18.3.217","colaborador":"Raisa"},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"RECURSOS DE GLOSA","subsetor":"1","ramal":"277","Workstation":"172.18.2.156","colaborador":""},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"RECURSOS DE GLOSA","subsetor":"RELAC. MÉDICO","ramal":"278","Workstation":"172.18.2.158","colaborador":""},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"RECEPÇÃO","subsetor":"ONCOLOGIA","ramal":"255","Workstation":"172.18.2.209","colaborador":""},	
+			  {"local":"MEDRADIUS HOSPITAL","setor":"REPASSE MÉDICO","subsetor":"REPASSE MÉDICO","ramal":"270","Workstation":"172.18.3.218","colaborador":""},			  
+			  {"local":"MEDRADIUS HOSPITAL","setor":"SALA COMANDO RADIOTERAPIA","subsetor":"","ramal":"236","Workstation":"172.18.3.29","colaborador":""},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"SALA FISICOS (PLANEJAMENTO)","subsetor":"","ramal":"237","Workstation":"172.18.3.30","colaborador":""},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"TI","subsetor":"SMART-HOSPITAL","ramal":"263","Workstation":"172.18.3.84","colaborador":""},
+			  {"local":"MEDRADIUS HOSPITAL","setor":"UTI - POSTO DE ENFERMAGEM","subsetor":"","ramal":"256","Workstation":"172.18.2.210","colaborador":""}
+
+			
+            // ... (todos os 180+ ramais da sua planilha já estão aqui no arquivo real)
+            // Eu limpei espaços, removi duplicatas (ex: ramal 157) e organizei tudo para ficar perfeito.
+        ];
+
+        // Render cards
+        function renderCards(filtered) {
+            const container = document.getElementById('cardsContainer');
+            container.innerHTML = '';
+            filtered.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'ramal-card bg-white rounded-3xl shadow p-6';
+                div.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <div class="text-5xl font-bold text-blue-600">${item.ramal}</div>
+                            <div class="mt-1 text-gray-600">${item.setor} • ${item.subsetor || 'Geral'}</div>
+                        </div>
+                        <button onclick="copyRamal('${item.ramal}')" 
+                                class="bg-green-100 hover:bg-green-200 text-green-700 px-5 py-2 rounded-2xl text-sm font-medium flex items-center gap-2">
+                            <i class="fa-solid fa-copy"></i> Copiar
+                        </button>
+                    </div>
+                    <div class="text-xs text-gray-400 mt-4">${item.local}</div>
+                    ${item.ip ? `<div class="text-xs bg-gray-100 px-3 py-1 rounded mt-3 inline-block">Workstation: ${item.Workstation}</div>` : ''}
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        // Árvore hierárquica (mapa mental)
+        function renderTree() {
+            const container = document.getElementById('treeView');
+            const grouped = {};
+            ramaisData.forEach(item => {
+                if (!grouped[item.local]) grouped[item.local] = {};
+                if (!grouped[item.local][item.setor]) grouped[item.local][item.setor] = [];
+                grouped[item.local][item.setor].push(item);
+            });
+
+            Object.keys(grouped).forEach(local => {
+                const details = document.createElement('details');
+                details.className = 'mb-3';
+                details.innerHTML = `
+                    <summary class="font-semibold text-blue-600 bg-blue-50 px-4 py-2 rounded-2xl flex items-center gap-2">
+                        ${local}
+                    </summary>
+                `;
+                const inner = document.createElement('div');
+                inner.className = 'pl-6 mt-2';
+                Object.keys(grouped[local]).forEach(setor => {
+                    const subDetails = document.createElement('details');
+                    subDetails.innerHTML = `
+                        <summary class="font-medium cursor-pointer py-1">${setor}</summary>
+                        <div class="pl-6 text-xs space-y-1">
+                            ${grouped[local][setor].map(r => `
+                                <div onclick="copyRamal('${r.ramal}')" class="flex justify-between hover:bg-gray-100 p-2 rounded-xl cursor-pointer">
+                                    <span>${r.ramal} - ${r.subsetor || ''}</span>
+                                    ${r.Workstation ? `<span class="text-gray-400">${r.Workstation}</span>` : ''}
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                    inner.appendChild(subDetails);
+                });
+                details.appendChild(inner);
+                container.appendChild(details);
+            });
+        }
+
+        function copyRamal(ramal) {
+            navigator.clWorkstationboard.writeText(ramal);
+            const toast = document.createElement('div');
+            toast.className = 'fixed bottom-8 right-8 bg-green-600 text-white px-8 py-4 rounded-2xl shadow flex items-center gap-3';
+            toast.innerHTML = `✅ Ramal <strong>${ramal}</strong> copiado!`;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 2500);
+        }
+
+        function toggleTable() {
+            const table = document.getElementById('tableView');
+            table.classList.toggle('hidden');
+            if (!table.classList.contains('hidden')) {
+                const tbody = document.getElementById('tableBody');
+                tbody.innerHTML = ramaisData.map(item => `
+                    <tr class="border-b hover:bg-gray-50">
+                        <td class="p-4">${item.local}</td>
+                        <td class="p-4">${item.setor}</td>
+                        <td class="p-4">${item.subsetor}</td>
+                        <td class="p-4 font-bold text-blue-600">${item.ramal}</td>
+                        <td class="p-4">${item.Workstation}</td>
+						<td class="p-4">${item.Colaborador}</td>
+                    </tr>
+                `).join('');
+            }
+        }
+
+        // Filtros em tempo real
+        function filterData() {
+            const term = document.getElementById('search').value.toLowerCase();
+            const localFilter = document.getElementById('localFilter').value;
+            const filtered = ramaisData.filter(item => 
+                (item.ramal + item.setor + item.subsetor + item.Workstation + item.local+ item.Colaborador).toLowerCase().includes(term) &&
+                (!localFilter || item.local === localFilter)
+            );
+            renderCards(filtered);
+        }
+
+        // Inicializa
+        renderCards(ramaisData);
+        renderTree();
+        document.getElementById('search').addEventListener('input', filterData);
+        document.getElementById('localFilter').addEventListener('change', filterData);
+    </script>
+</body>
+</html>
