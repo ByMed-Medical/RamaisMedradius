@@ -1,10 +1,11 @@
 backend:
   name: github
-  repo: ByMed-Medical/RamaisMedradius   # ← MUDE ESSA LINHA
-  branch: main
+  repo: byronmedeiros/diretorio-ramais          # ← MUDE PARA O SEU: usuario/repositorio
+  branch: main                                  # ou master, se for o seu branch
+  squash_merges: true                           # commits mais limpos
 
-media_folder: "static/images"
-public_folder: "/images"
+media_folder: static/images                     # opcional, para se quiser subir fotos depois
+public_folder: /images
 
 collections:
   - name: "ramais"
@@ -12,16 +13,18 @@ collections:
     files:
       - label: "Lista de Ramais"
         name: "ramais"
-        file: "ramais.json"
+        file: "ramais.json"                     # nome exato do seu arquivo JSON
         format: "json"
+        identifier_field: ramal
         fields:
-          - label: "Entradas"
+          - label: "Entradas de Ramais"
             name: "ramais"
             widget: "list"
+            summary: "{{fields.ramal}} - {{fields.setor}}"
             fields:
-              - {label: "Ramal", name: "ramal", widget: "string"}
+              - {label: "Ramal", name: "ramal", widget: "string", required: true}
               - {label: "Local", name: "local", widget: "string"}
               - {label: "Setor", name: "setor", widget: "string"}
               - {label: "Subsetor", name: "subsetor", widget: "string"}
               - {label: "Workstation", name: "Workstation", widget: "string"}
-              - {label: "Colaborador", name: "colaborador", widget: "string"}
+              - {label: "Colaborador(es)", name: "colaborador", widget: "string", hint: "Separe com / se tiver mais de um"}
