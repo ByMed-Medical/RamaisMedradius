@@ -1,6 +1,6 @@
 backend:
   name: github
-  repo: bymed-medical/RamaisMedradius          # ← MUDE PARA O SEU: usuario/repositorio
+  repo: ByMed-Medical/RamaisMedradius          # ← MUDE PARA O SEU: usuario/repositorio
   branch: main                                  # ou master, se for o seu branch
   squash_merges: true                           # commits mais limpos
 
