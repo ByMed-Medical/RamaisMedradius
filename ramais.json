@@ -1,4 +1,5 @@
-{"local":"MEDRADIUS CLINICA","setor":"ALMOXARIFADO","subsetor":"CENTRAL","ramal":"129","Workstation":"172.18.3.123","colaborador":""},
+[
+  {"local":"MEDRADIUS CLINICA","setor":"ALMOXARIFADO","subsetor":"CENTRAL","ramal":"129","Workstation":"172.18.3.123","colaborador":""},
   {"local":"MEDRADIUS CLINICA","setor":"ALMOXARIFADO","subsetor":"OBRAS/PATRIMÔNIO","ramal":"128","Workstation":"172.18.3.8","colaborador":""},
   {"local":"MEDRADIUS CLINICA","setor":"AUTORIZAÇÃO","subsetor":"R1/R2","ramal":"103","Workstation":"172.18.2.100","colaborador":""},
   {"local":"MEDRADIUS CLINICA","setor":"AUTORIZAÇÃO","subsetor":"RM/CT","ramal":"102","Workstation":"SOFTPHONE","colaborador":""},
@@ -225,3 +226,4 @@
   {"local":"MEDRADIUS MANGABEIRAS","setor":"TESTE ERGOMÉTRICO","subsetor":"","ramal":"649","Workstation":"","colaborador":""},
   {"local":"MEDRADIUS MANGABEIRAS","setor":"TOMOGRAFIA","subsetor":"","ramal":"608","Workstation":"","colaborador":""},
   {"local":"MEDRADIUS MANGABEIRAS","setor":"ULTRASSOM","subsetor":"","ramal":"606","Workstation":"","colaborador":""}
+];
