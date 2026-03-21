@@ -4,3 +4,26 @@ backend:
   branch: main
   base_url: https://api.netlify.com
   auth_endpoint: auth
+
+media_folder: "static/images"
+public_folder: "/images"
+
+collections:
+  - name: "ramais"
+    label: "Ramais"
+    files:
+      - label: "Lista de Ramais"
+        name: "ramais"
+        file: "ramais.json"
+        format: "json"
+        fields:
+          - label: "Ramais"
+            name: "ramais"
+            widget: "list"
+            fields:
+              - { label: "Ramal", name: "ramal", widget: "string" }
+              - { label: "Local", name: "local", widget: "string" }
+              - { label: "Setor", name: "setor", widget: "string" }
+              - { label: "Subsetor", name: "subsetor", widget: "string" }
+              - { label: "Workstation", name: "Workstation", widget: "string" }
+              - { label: "Colaborador", name: "colaborador", widget: "string" }
