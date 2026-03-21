@@ -20,25 +20,11 @@ collections:
           - label: "Entradas de Ramais"
             name: "ramais"
             widget: "list"
-            summary: "{{fields.ramal}} - {{fields.setor}}"
+            summary: "{{fields.ramal}} – {{fields.setor}}"
             fields:
-              - label: "Ramal"
-                name: "ramal"
-                widget: "string"
-                required: true
-              - label: "Local"
-                name: "local"
-                widget: "string"
-              - label: "Setor"
-                name: "setor"
-                widget: "string"
-              - label: "Subsetor"
-                name: "subsetor"
-                widget: "string"
-              - label: "Workstation"
-                name: "Workstation"
-                widget: "string"
-              - label: "Colaborador(es)"
-                name: "colaborador"
-                widget: "string"
-                hint: "Separe com / se tiver mais de um"
+              - {label: "Ramal", name: "ramal", widget: "string", required: true}
+              - {label: "Local", name: "local", widget: "string"}
+              - {label: "Setor", name: "setor", widget: "string"}
+              - {label: "Subsetor", name: "subsetor", widget: "string"}
+              - {label: "Workstation", name: "Workstation", widget: "string"}
+              - {label: "Colaborador(es)", name: "colaborador", widget: "string", hint: "Separe com / ou ,"}
