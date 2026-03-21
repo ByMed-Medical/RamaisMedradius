@@ -4,17 +4,30 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Editar Ramais - MedRadius</title>
-  
-  <!-- CSS do Decap CMS (deixa bonito) -->
+
+  <!-- CSS oficial do Decap CMS (melhora muito o visual) -->
   <link rel="stylesheet" href="https://unpkg.com/decap-cms@3.3.3/dist/decap-cms.css" />
-  
+
   <!-- Script do Decap CMS -->
   <script src="https://unpkg.com/decap-cms@3.3.3/dist/decap-cms.js"></script>
+
+  <!-- Espera o DOM carregar antes de iniciar o CMS -->
+  <script>
+    window.addEventListener('load', function () {
+      // Cria o elemento root se não existir
+      if (!document.getElementById('nc-root')) {
+        const root = document.createElement('div');
+        root.id = 'nc-root';
+        document.body.appendChild(root);
+      }
+      // Inicia o CMS manualmente
+      window.CMS_MANUAL_INIT = true;
+      window.CMS.init();
+    });
+  </script>
 </head>
 <body>
-  <!-- 
-    Área onde o Decap CMS vai colocar toda a interface automaticamente.
-    Não coloque nada aqui dentro.
-  -->
+  <!-- Área onde o CMS será injetado -->
+  <div id="nc-root"></div>
 </body>
 </html>
