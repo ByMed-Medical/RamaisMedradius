@@ -1,10 +1,15 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+	
+	
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ramais MedRadius - Diretório Inteligente</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+	
+    <!-- A partir daqui inicia a modificação para correção do .js-->
+	<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+	
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         .ramal-card { 
@@ -277,7 +282,6 @@
   {"local":"MEDRADIUS HOSPITAL","setor":"OPME","subsetor":"OPME","ramal":"247","Workstation":"172.18.2.112","colaborador":""},
   {"local":"MEDRADIUS HOSPITAL","setor":"ORÇAMENTO","subsetor":"ORÇAMENTO","ramal":"272","Workstation":"172.18.3.158","colaborador":""},
   {"local":"MEDRADIUS HOSPITAL","setor":"ORTOPEDIA","subsetor":"ORTOPEDIA","ramal":"274","Workstation":"172.18.3.232","colaborador":""},
-  
   {"local":"MEDRADIUS HOSPITAL","setor":"RECEPÇÃO","subsetor":"ONCOLOGIA","ramal":"255","Workstation":"172.18.2.209","colaborador":""},
   {"local":"MEDRADIUS HOSPITAL","setor":"RECEPÇÃO","subsetor":"QUIMIOTERAPIA","ramal":"232","Workstation":"172.18.2.90","colaborador":""},
   {"local":"MEDRADIUS HOSPITAL","setor":"RECEPÇÃO","subsetor":"RADIOTERAPIA","ramal":"233","Workstation":"172.18.3.217","colaborador":"Raisa"},
@@ -791,6 +795,18 @@ document.getElementById('logoutAdminBtn')?.addEventListener('click', () => {
     document.getElementById('adminArea').classList.add('hidden');
     alert("Você saiu do modo administrador.");
 });
+
+		// Proteção temporária contra appendChild em body null
+(function() {
+  const originalAppendChild = Element.prototype.appendChild;
+  Element.prototype.appendChild = function(newNode) {
+    if (this === document.body && !document.body) {
+      console.warn("Ignorando appendChild em body null");
+      return newNode;
+    }
+    return originalAppendChild.apply(this, arguments);
+  };
+})();
 	
 </script>
 </body>
