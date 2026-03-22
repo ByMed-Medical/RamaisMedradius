@@ -2,11 +2,10 @@ backend:
   name: github
   repo: ByMed-Medical/RamaisMedradius
   branch: main
-  base_url: https://api.netlify.com
-  auth_endpoint: auth
+  squash_merges: true
 
-media_folder: "static/images"
-public_folder: "/images"
+media_folder: static/images
+public_folder: /images
 
 collections:
   - name: "ramais"
@@ -16,14 +15,30 @@ collections:
         name: "ramais"
         file: "ramais.json"
         format: "json"
+        identifier_field: ramal
         fields:
-          - label: "Ramais"
+          - label: "Entradas de Ramais"
             name: "ramais"
             widget: "list"
+            summary: "{{fields.ramal}} – {{fields.setor}}"
             fields:
-              - { label: "Ramal", name: "ramal", widget: "string" }
-              - { label: "Local", name: "local", widget: "string" }
-              - { label: "Setor", name: "setor", widget: "string" }
-              - { label: "Subsetor", name: "subsetor", widget: "string" }
-              - { label: "Workstation", name: "Workstation", widget: "string" }
-              - { label: "Colaborador", name: "colaborador", widget: "string" }
+              - label: "Ramal"
+                name: "ramal"
+                widget: "string"
+                required: true
+              - label: "Local"
+                name: "local"
+                widget: "string"
+              - label: "Setor"
+                name: "setor"
+                widget: "string"
+              - label: "Subsetor"
+                name: "subsetor"
+                widget: "string"
+              - label: "Workstation"
+                name: "Workstation"
+                widget: "string"
+              - label: "Colaborador(es)"
+                name: "colaborador"
+                widget: "string"
+                hint: "Separe múltiplos com / ou ,"
