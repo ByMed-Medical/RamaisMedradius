@@ -7,57 +7,7 @@
 </head>
 <body>
   <script src="https://unpkg.com/decap-cms@^3.3.0/dist/decap-cms.js"></script>
-  <!-- Botão Toggle Dark/Light Mode -->
-  <script>
-  // Aguarda o Decap CMS carregar completamente
-  window.addEventListener('load', function() {
-    setTimeout(() => {
-      if (document.getElementById('theme-toggle')) return; // evita duplicar
-
-      const toggleBtn = document.createElement('button');
-      toggleBtn.id = 'theme-toggle';
-      toggleBtn.innerHTML = '🌙 Modo Escuro';
-      toggleBtn.style.cssText = `
-        position: fixed; 
-        bottom: 25px; 
-        right: 25px; 
-        z-index: 99999; 
-        padding: 12px 18px; 
-        border: none; 
-        border-radius: 50px; 
-        background: #222; 
-        color: white; 
-        font-size: 15px; 
-        cursor: pointer; 
-        box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-        transition: all 0.3s ease;
-      `;
-
-      document.body.appendChild(toggleBtn);
-
-      const html = document.documentElement;
-
-      // Carrega tema salvo
-      if (localStorage.getItem('theme') === 'dark' || 
-          (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        html.classList.add('dark');
-        toggleBtn.innerHTML = '☀️ Modo Claro';
-      }
-
-      toggleBtn.addEventListener('click', () => {
-        html.classList.toggle('dark');
-
-        if (html.classList.contains('dark')) {
-          toggleBtn.innerHTML = '☀️ Modo Claro';
-          localStorage.setItem('theme', 'dark');
-        } else {
-          toggleBtn.innerHTML = '🌙 Modo Escuro';
-          localStorage.setItem('theme', 'light');
-        }
-      });
-    }, 1500); // espera 1,5 segundos para o CMS carregar
-  });
-</script>
+ 
   
 </body>
 </html>
