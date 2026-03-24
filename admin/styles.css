@@ -1,0 +1,105 @@
+/* ==================== DARK MODE PARA DECAP CMS ==================== */
+
+.dark {
+  /* Cores principais */
+  --bg: #0f0f0f;
+  --panel: #1a1a1a;
+  --card: #242424;
+  --text: #e0e0e0;
+  --text-light: #aaaaaa;
+  --border: #333;
+  --accent: #0066ff;
+  --accent-hover: #3388ff;
+}
+
+/* Fundo geral */
+.dark body,
+.dark .cms {
+  background: var(--bg) !important;
+  color: var(--text) !important;
+}
+
+/* Painéis e sidebar */
+.dark .cms-frame,
+.dark .cms-sidebar,
+.dark .cms-main,
+.dark .react-tabs__tab-panel,
+.dark .cms-editor-pane,
+.dark .cms-collection-list {
+  background: var(--panel) !important;
+  border-color: var(--border) !important;
+}
+
+/* Cards e entradas */
+.dark .cms-card,
+.dark .cms-list-panel,
+.dark .cms-widget,
+.dark .react-tabs__tab-list {
+  background: var(--card) !important;
+  border-color: var(--border) !important;
+}
+
+/* Textos */
+.dark h1, .dark h2, .dark h3,
+.dark .cms-header,
+.dark .cms-collection-name {
+  color: var(--text) !important;
+}
+
+.dark .cms-text,
+.dark p,
+.dark label,
+.dark .cms-widget-label {
+  color: var(--text-light) !important;
+}
+
+/* Inputs, selects, textareas */
+.dark input,
+.dark textarea,
+.dark select,
+.dark .cms-input,
+.dark .CodeMirror,
+.dark .react-codemirror2 {
+  background: #2a2a2a !important;
+  color: #fff !important;
+  border-color: #444 !important;
+}
+
+/* Botões */
+.dark button,
+.dark .cms-button {
+  background: #333 !important;
+  color: #fff !important;
+  border-color: #555 !important;
+}
+
+.dark button:hover,
+.dark .cms-button:hover {
+  background: #444 !important;
+}
+
+/* Botão de login com GitHub */
+.dark .cms-github-button {
+  background: #333 !important;
+  color: white !important;
+}
+
+/* Aba ativa */
+.dark .react-tabs__tab--selected {
+  background: var(--panel) !important;
+  border-bottom-color: var(--accent) !important;
+  color: white !important;
+}
+
+/* Scrollbar (opcional, fica mais bonito) */
+.dark ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: #555;
+  border-radius: 4px;
+}
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #777;
+}
