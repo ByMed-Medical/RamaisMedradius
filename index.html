@@ -3,6 +3,31 @@
 <head>
 
 	<link rel="stylesheet" href="styles.css">
+
+    /* Dark Mode */
+.dark {
+  --bg: #0f0f0f;
+  --text: #e0e0e0;
+  --panel: #1a1a1a;
+  --card: #242424;
+  --border: #333;
+}
+
+.dark body {
+  background: var(--bg) !important;
+  color: var(--text) !important;
+}
+
+.dark header, .dark footer, .dark nav, .dark .card, .dark section {
+  background: var(--panel) !important;
+  border-color: var(--border) !important;
+}
+
+.dark h1, .dark h2, .dark p, .dark a {
+  color: var(--text) !important;
+}
+
+/* Ajuste os seletores conforme sua página (use o DevTools para ver as classes) */
 	
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
