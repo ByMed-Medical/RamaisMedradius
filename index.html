@@ -68,6 +68,47 @@
 </head>
 <body class="bg-gray-50 font-sans">
     <div class="max-w-7xl mx-auto p-6 md:p-8">
+
+		<!-- Botão de Alternar Tema (Light / Dark) -->
+<button id="theme-toggle" 
+        style="position: fixed; bottom: 20px; right: 20px; z-index: 9999;
+               padding: 12px 20px; border: none; border-radius: 50px; 
+               background: #222; color: white; font-size: 16px; cursor: pointer;
+               box-shadow: 0 4px 15px rgba(0,0,0,0.4); transition: all 0.3s;">
+  🌙 Modo Escuro
+</button>
+
+<script>
+  const toggle = document.getElementById('theme-toggle');
+  const html = document.documentElement;
+
+  // Carrega o tema salvo ou prefere o do sistema
+  function loadTheme() {
+    if (localStorage.getItem('theme') === 'dark' || 
+        (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      html.classList.add('dark');
+      toggle.innerHTML = '☀️ Modo Claro';
+    } else {
+      html.classList.remove('dark');
+      toggle.innerHTML = '🌙 Modo Escuro';
+    }
+  }
+
+  loadTheme();
+
+  // Clique no botão
+  toggle.addEventListener('click', () => {
+    html.classList.toggle('dark');
+
+    if (html.classList.contains('dark')) {
+      toggle.innerHTML = '☀️ Modo Claro';
+      localStorage.setItem('theme', 'dark');
+    } else {
+      toggle.innerHTML = '🌙 Modo Escuro';
+      localStorage.setItem('theme', 'light');
+    }
+  });
+</script>
 	
 	<!-- Dedicatória discreta -->
 <footer class="fixed bottom-2 right-4 text-xs text-gray-400 font-light pointer-events-none select-none z-10">
