@@ -1,6 +1,6 @@
 backend:
   name: github
-  repo: ByMed-Medical/RamaisMedradius  # ← MUDE ESSA LINHA
+  repo: bymed-ramais-medradius  # ← MUDE ESSA LINHA
   branch: main
 
 media_folder: "static/images"
