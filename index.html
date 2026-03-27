@@ -689,32 +689,32 @@ async function simpleHash(str) {
 }
 
 // Botão Admin no cabeçalho (adicione isso no HTML, logo após o <p> do subtítulo)
-//const header = document.querySelector('.text-center.mb-8');
-//header.insertAdjacentHTML('beforeend', `
-//    <button id="adminBtn" class="mt-4 px-4 py-2 bg-purple-600 text-white rounded-xl text-sm hover:bg-purple-700">
-//        <i class="fa-solid fa-lock"></i> Modo Admin
-//    </button>
-//    <div id="adminArea" class="hidden mt-6 p-6 bg-white rounded-2xl shadow-lg border border-purple-200">
-//        <h3 class="text-lg font-bold mb-4 text-purple-700">Área Administrativa</h3>
+const header = document.querySelector('.text-center.mb-8');
+header.insertAdjacentHTML('beforeend', `
+    <button id="adminBtn" class="mt-4 px-4 py-2 bg-purple-600 text-white rounded-xl text-sm hover:bg-purple-700">
+        <i class="fa-solid fa-lock"></i> Modo Admin
+    </button>
+    <div id="adminArea" class="hidden mt-6 p-6 bg-white rounded-2xl shadow-lg border border-purple-200">
+        <h3 class="text-lg font-bold mb-4 text-purple-700">Área Administrativa</h3>
         
-//        <div class="flex flex-wrap gap-4 mb-6">
-//            <button id="addNewBtn" class="px-4 py-2 bg-green-600 text-white rounded-xl hover:bg-green-700">
-//                + Novo Ramal
-//            </button>
-//            <button id="exportCsvBtn" class="px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700">
-//                Exportar CSV
-//            </button>
-//            <label class="px-4 py-2 bg-orange-600 text-white rounded-xl hover:bg-orange-700 cursor-pointer">
-//                Importar CSV
-//                <input type="file" id="importCsv" accept=".csv" class="hidden">
-//            </label>
-//            <button id="saveChangesBtn" class="px-4 py-2 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700">
-//                Salvar Alterações
-//           </button>
-//            <button id="logoutAdminBtn" class="px-4 py-2 bg-red-600 text-white rounded-xl hover:bg-red-700">
-//                Sair do Admin
-//            </button>
-//        </div>
+        <div class="flex flex-wrap gap-4 mb-6">
+            <button id="addNewBtn" class="px-4 py-2 bg-green-600 text-white rounded-xl hover:bg-green-700">
+                + Novo Ramal
+            </button>
+            <button id="exportCsvBtn" class="px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700">
+                Exportar CSV
+            </button>
+            <label class="px-4 py-2 bg-orange-600 text-white rounded-xl hover:bg-orange-700 cursor-pointer">
+                Importar CSV
+                <input type="file" id="importCsv" accept=".csv" class="hidden">
+            </label>
+            <button id="saveChangesBtn" class="px-4 py-2 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700">
+                Salvar Alterações
+           </button>
+            <button id="logoutAdminBtn" class="px-4 py-2 bg-red-600 text-white rounded-xl hover:bg-red-700">
+                Sair do Admin
+            </button>
+        </div>
 
         <div id="editTable" class="overflow-x-auto max-h-96 overflow-y-auto border rounded"></div>
     </div>
