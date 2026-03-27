@@ -26,17 +26,51 @@
 }
 
 .dark body {
-  background: var(--bg) !important;
-  color: var(--text) !important;
+  background: var(--bg);
+  color: var(--text);
 }
 
-.dark header, .dark footer, .dark nav, .dark .card, .dark section {
-  background: var(--panel) !important;
-  border-color: var(--border) !important;
+.dark header,
+.dark footer,
+.dark nav {
+  background: var(--panel);
+  border-color: var(--border);
 }
 
-.dark h1, .dark h2, .dark p, .dark a {
-  color: var(--text) !important;
+.dark h1, 
+.dark h2, 
+.dark h3,
+.dark p, 
+.dark span,
+.dark a {
+  color: var(--text);
+}
+
+.dark .ramal-card {
+  background: #1f2937; /* cinza escuro bonito */
+  color: #e5e7eb;
+}
+
+.dark table {
+  background: #1f2937;
+  color: #e5e7eb;
+}
+
+.dark thead {
+  background: #374151;
+  color: #d1d5db;
+}
+
+.dark tbody tr {
+  border-color: #374151;
+}
+
+.dark tbody tr:hover {
+  background: #374151;
+}
+
+.dark .bg-gradient-to-r {
+  background: linear-gradient(to right, #111827, #374151);
 }
 
 /* Ajuste os seletores conforme sua página (use o DevTools para ver as classes) */
@@ -118,13 +152,13 @@
         <!-- Cabeçalho com logo e texto centralizados -->
         <div class="text-center mb-8">
             <div class="flex justify-between items-center mb-8">
-            <img
+            
                     <!-- Opção A - tamanho fixo em altura (muito usada para logos) -->
                     <img
-                        src="https://i.ibb.co/1S3TgBH/logo-G-Dark.png" 
-                        alt="Logo MedRadius" 
-                        class="mx-auto h-48"           <!-- 48px --> 
-                        <!-- ou h-10 (40px), h-16 (64px), h-20 (80px), etc -->
+                        src="https://i.ibb.co/1S3TgBH/logo-G-Dark.png"
+                        alt="Logo MedRadius"
+                        class="mx-auto h-32 md:h-48 object-contain"
+                    />
             </div>
             <p class="text-gray-700 font-medium text-base md:text-lg">
                 Diretório dinâmico • Hospital • Clínica • Consultórios
@@ -163,7 +197,7 @@
 
             <!-- Cards – menores -->
             <div class="lg:col-span-9">
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="cardsContainer"></div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start" id="cardsContainer"></div>
             </div>
         </div>
 
@@ -189,7 +223,7 @@
         </div>
     </div>
 
-    <script>
+    <script defer>
     // === DADOS (mantido igual) ===
     const ramaisData = [
   {"local":"MEDRADIUS CLINICA","setor":"ALMOXARIFADO","subsetor":"CENTRAL","ramal":"129","Workstation":"172.18.3.123","colaborador":""},
@@ -217,7 +251,10 @@
   
   {"local":"MEDRADIUS CLINICA","setor":"DP","subsetor":"DP","ramal":"146","Workstation":"172.18.2.148","colaborador":""},
   {"local":"MEDRADIUS CLINICA","setor":"ENFERMEIRA (CME)","subsetor":"ENFERMEIRA (CME)","ramal":"126","Workstation":"172.18.3.130","colaborador":""},
-  {"local":"MEDRADIUS CLINICA","setor":"ENTREGA DE EXAMES","subsetor":"ENTREGA DE EXAMES","ramal":"118","Workstation":"172.18.2.91","colaborador":""},
+  {"local":"MEDRADIUS CLINICA","setor":"LAUDO E ENTREGA DE EXAMES","subsetor":"ENTREGA DE EXAMES/ENTREGA DE EXAMES","ramal":"118","Workstation":"ETREGA04/ENTREGA02","colaborador":"GIZELI/JOSILENE"},
+  {"local":"MEDRADIUS CLINICA","setor":"LAUDO E ENTREGA DE EXAMES","subsetor":"ENTREGA DE EXAMES/ENTREGA DE EXAMES","ramal":"260","Workstation":"ETREGA03/ENTREGA01","colaborador":"FRANCILEA/GLEICIANE"},
+  {"local":"MEDRADIUS CLINICA","setor":"LAUDO E ENTREGA DE EXAMES","subsetor":"DIGITAÇÃO/DIGITAÇÃO/DIGITAÇÃO","ramal":"116","Workstation":"SALA01LAUDO05/SALA01LAUDO06/SALA01LAUDO07","colaborador":"JU/LIVIA/NATHALIA"},
+  {"local":"MEDRADIUS CLINICA","setor":"LAUDO E ENTREGA DE EXAMES","subsetor":"COORDENADORA/MONTAGEM/MONTAGEM/MONTAGEM","ramal":"117","Workstation":"COORD01/SALA01LAUDO02/SALA01LAUDO04/SALA01LAUDO03","colaborador":"OLIVIA/CLARA/HELLOYSE/MARCIA BARROS"},
   {"local":"MEDRADIUS CLINICA","setor":"FATURAMENTO","subsetor":"COORDENAÇÃO","ramal":"140","Workstation":"...","colaborador":"HELENA"},	
   {"local":"MEDRADIUS CLINICA","setor":"FATURAMENTO","subsetor":"INTERNAÇÃO","ramal":"101","Workstation":".../...","colaborador":"ROSE/MARCELA"},
   {"local":"MEDRADIUS CLINICA","setor":"FATURAMENTO","subsetor":"DIAGNÓSTICO / QUIMEO TERAPIA","ramal":"141","Workstation":".../...","colaborador":"JACILENE/PAULA"},
@@ -434,7 +471,7 @@
 
     items.forEach(item => {
         const card = document.createElement('div');
-        card.className = 'ramal-card bg-white rounded-3xl shadow-lg border border-gray-200 overflow-hidden flex flex-col h-full';
+        card.className = 'ramal-card bg-white rounded-3xl shadow-lg border border-gray-200 overflow-hidden flex flex-col';
 
         // Função auxiliar para transformar string separada em lista bonita
         const splitList = (str) => {
@@ -442,61 +479,63 @@
             return str.split(/[/,;|]\s*/).map(s => s.trim()).filter(Boolean);
         };
 
+        const subsetores = splitList(item.subsetor);
         const colaboradores = splitList(item.colaborador);
         const workstations = splitList(item.Workstation);
 
-        let html = `
-            <div class="bg-gradient-to-r from-blue-700 to-indigo-700 text-white px-6 py-4 flex justify-between items-center">
-                <div class="text-5xl md:text-6xl font-black tracking-tight drop-shadow-md">
-                    ${item.ramal}
-                </div>
-                <div class="text-right">
-                    <div class="text-sm font-semibold uppercase tracking-wide opacity-100">
-                        ${item.setor}
-                    </div>
-                    <div class="text-xs opacity-60 mt-1">
-                        ${item.local}
-                    </div>
-                </div>
+        // pega o maior tamanho entre os arrays
+        const maxLength = Math.max(
+            subsetores.length,
+            colaboradores.length,
+            workstations.length
+        );
+
+        // cria linhas alinhadas
+        const rows = [];
+        for (let i = 0; i < maxLength; i++) {
+            rows.push({
+                subsetor: subsetores[i] || '—',
+                colaborador: colaboradores[i] || '—',
+                workstation: workstations[i] || '—'
+            });
+}
+
+     let html = `
+    <div class="bg-gradient-to-r from-blue-700 to-indigo-700 text-white px-6 py-4 flex justify-between items-center">
+        <div class="text-5xl md:text-6xl font-black tracking-tight drop-shadow-md">
+            ${item.ramal}
+        </div>
+        <div class="text-right">
+            <div class="text-sm font-semibold uppercase tracking-wide opacity-100">
+                ${item.setor}
             </div>
-
-            <div class="p-6 flex-grow flex flex-col">
-                <!-- Setor + Subsetor -->
-                <div class="mb-5">
-                    
-                    <p class="text-gray-600 text-sm">${item.subsetor || '—'}</p>
-                </div>
-
-                <!-- Listas de workstations e colaboradores -->
-                <div class="grid md:grid-cols-2 gap-6 mt-auto">
-                    <!-- Workstations -->
-                    <div>
-                        <h4 class="text-xs uppercase font-semibold text-gray-500 mb-2 tracking-wider">
-                            Workstation${workstations.length > 1 ? 's' : ''}
-                        </h4>
-                        ${workstations.length > 0 ? `
-                            <ul class="space-y-1.5 text-sm font-mono text-gray-700">
-                                ${workstations.map(ws => `<li>${ws}</li>`).join('')}
-                            </ul>
-                        ` : '<p class="text-gray-400 text-sm italic">—</p>'}
-                    </div>
-
-                    <!-- Colaboradores -->
-                    <div>
-                        <h4 class="text-xs uppercase font-semibold text-gray-500 mb-2 tracking-wider">
-                            Colaborador${colaboradores.length > 1 ? 'es' : ''}
-                        </h4>
-                        ${colaboradores.length > 0 ? `
-                            <ul class="space-y-1.5 text-sm text-gray-700">
-                                ${colaboradores.map(nome => `<li class="flex items-center gap-2"><span class="text-green-600">•</span> ${nome}</li>`).join('')}
-                            </ul>
-                        ` : '<p class="text-gray-400 text-sm italic">—</p>'}
-                    </div>
-                </div>
-
-                
+            <div class="text-xs opacity-60 mt-1">
+                ${item.local}
             </div>
-        `;
+        </div>
+    </div>
+
+    <div class="mt-auto overflow-x-auto">
+        <table class="w-full text-sm border border-gray-200 rounded-xl overflow-hidden">
+            <thead class="bg-gray-100 text-gray-600 text-xs uppercase">
+                <tr>
+                    <th class="p-2 text-left">Subsetor</th>
+                    <th class="p-2 text-left">Colaborador</th>
+                    <th class="p-2 text-left">Workstation</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${rows.map(row => `
+                    <tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
+                        <td class="p-2">${row.subsetor}</td>
+                        <td class="p-2">${row.colaborador}</td>
+                        <td class="p-2 font-mono">${row.workstation}</td>
+                    </tr>
+                `).join('')}
+            </tbody>
+        </table>
+    </div>
+`;
 
         card.innerHTML = html;
         container.appendChild(card);
@@ -616,6 +655,8 @@
 
     // Inicialização
     try {
+
+        document.addEventListener('DOMContentLoaded', () => {
         renderCards(ramaisData);
         renderTree();
         
@@ -624,6 +665,8 @@
         
         if (searchEl) searchEl.addEventListener('input', filterData);
         if (filterEl) filterEl.addEventListener('change', filterData);
+        });
+
     } catch (err) {
         console.error("Erro na inicialização:", err);
         document.body.insertAdjacentHTML('beforeend', '<div style="position:fixed;top:10px;right:10px;background:red;color:white;padding:10px;border-radius:8px;">Erro ao carregar página. Veja o console (F12).</div>');
@@ -871,17 +914,17 @@ document.getElementById('logoutAdminBtn')?.addEventListener('click', () => {
     alert("Você saiu do modo administrador.");
 });
 
-		// Proteção temporária contra appendChild em body null
-(function() {
-  const originalAppendChild = Element.prototype.appendChild;
-  Element.prototype.appendChild = function(newNode) {
-    if (this === document.body && !document.body) {
-      console.warn("Ignorando appendChild em body null");
-      return newNode;
-    }
-    return originalAppendChild.apply(this, arguments);
-  };
-})();
+// Proteção temporária contra appendChild em body null
+//(function() {
+//  const originalAppendChild = Element.prototype.appendChild;
+//  Element.prototype.appendChild = function(newNode) {
+//    if (this === document.body && !document.body) {
+//      console.warn("Ignorando appendChild em body null");
+//      return newNode;
+//    }
+//    return originalAppendChild.apply(this, arguments);
+//  };
+//})();
 	
 </script>
 </body>
