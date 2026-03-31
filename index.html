@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 
-	<link rel="stylesheet" href="styles.css">
+	<!-- <link rel="stylesheet" href="styles.css"> -->
 
    
 	
@@ -16,64 +16,158 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
 
-	 /* Dark Mode */
-.dark {
-  --bg: #0f0f0f;
-  --text: #e0e0e0;
-  --panel: #1a1a1a;
-  --card: #242424;
-  --border: #333;
-}
+            /* Dark Mode */
+        .dark {
+        --bg: #0f0f0f;
+        --text: #e0e0e0;
+        --panel: #1a1a1a;
+        --card: #242424;
+        --border: #333;
+        }
 
-.dark body {
-  background: var(--bg);
-  color: var(--text);
-}
+        .dark body {
+        background: var(--bg);
+        color: var(--text);
+        }
 
-.dark header,
-.dark footer,
-.dark nav {
-  background: var(--panel);
-  border-color: var(--border);
-}
+        .dark header,
+        .dark footer,
+        .dark nav {
+        background: var(--panel);
+        border-color: var(--border);
+        }
 
-.dark h1, 
-.dark h2, 
-.dark h3,
-.dark p, 
-.dark span,
-.dark a {
-  color: var(--text);
-}
+        .dark h1, 
+        .dark h2, 
+        .dark h3,
+        .dark p, 
+        .dark span,
+        .dark a {
+        color: var(--text);
+        }
 
-.dark .ramal-card {
-  background: #1f2937; /* cinza escuro bonito */
-  color: #e5e7eb;
-}
+        .dark .ramal-card {
+        background: #1f2937; /* cinza escuro bonito */
+        color: #e5e7eb;
+        }
 
-.dark table {
-  background: #1f2937;
-  color: #e5e7eb;
-}
+        .dark table {
+        background: #1f2937;
+        color: #e5e7eb;
+        }
 
-.dark thead {
-  background: #374151;
-  color: #d1d5db;
-}
+        .dark thead {
+        background: #374151;
+        color: #d1d5db;
+        }
 
-.dark tbody tr {
-  border-color: #374151;
-}
+        .dark tbody tr {
+        border-color: #374151;
+        }
 
-.dark tbody tr:hover {
-  background: #374151;
-}
+        .dark tbody tr:hover {
+        background: #374151;
+        }
 
-.dark .bg-gradient-to-r {
-  background: linear-gradient(to right, #111827, #374151);
-}
+        .dark .bg-gradient-to-r {
+        background: linear-gradient(to right, #111827, #374151);
+        }
 
-/* Ajuste os seletores conforme sua página (use o DevTools para ver as classes) */
+        /* ===== MAPA MENTAL DARK MODE AJUSTADO ===== */
+        .dark #treeView {
+        background: transparent;
+        color: #e5e7eb;
+        }
+
+        /* Cards principais (locals) */
+        .dark #treeView > details > summary {
+        background: #1f2937;
+        color: #60a5fa;
+        border: 1px solid #374151;
+        }
+
+        /* Setores */
+        .dark #treeView details details > summary {
+        background: transparent;
+        color: #d1d5db;
+        }
+
+        /* Linhas internas */
+        .dark #treeView div div {
+        background: transparent;
+        color: #9ca3af;
+        }
+
+        /* Hover leve (importante pra UX) */
+        .dark #treeView div div:hover {
+        background: #374151;
+        color: #fff;
+        }
+
+        /* Remove aquele efeito "pesado" */
+        .dark #treeView details {
+        background: transparent;
+        border: none;
+        }
+
+        /* Ajuste no container geral */
+        .dark .lg\:col-span-3 {
+        background: #111827;
+        border: 1px solid #1f2937;
+        }
+
+        .dark #treeView summary {
+        border-radius: 12px;
+        padding: 8px 12px;
+        transition: all 0.2s ease;
+        }
+
+        .dark #treeView summary:hover {
+        background: #374151;
+        }
+
+        /* ===== SELECT PADRÃO (modo claro) ===== */
+        select {
+        background-color: #ffffff;
+        color: #111827;
+        border-color: #d1d5db;
+        }
+
+        /* ===== DARK MODE ===== */
+        .dark select {
+        background-color: #1f2937;
+        color: #e5e7eb;
+        border-color: #374151;
+        }
+
+        /* opções do dropdown */
+        .dark select option {
+        background-color: #1f2937;
+        color: #e5e7eb;
+        }
+
+        /* ===== CARDS DARK MODE ===== */
+        .dark .ramal-card {
+        background-color: #1f2937 !important;
+        color: #e5e7eb !important;
+        }
+
+        /* tabela dentro do card */
+        .dark .ramal-card table {
+        background-color: #1f2937;
+        color: #e5e7eb;
+        }
+
+        /* linhas */
+        .dark .ramal-card tbody tr {
+        border-color: #374151;
+        }
+
+        .dark .ramal-card tbody tr:hover {
+        background-color: #374151;
+        }
+
+        /* Ajuste os seletores conforme sua página (use o DevTools para ver as classes) */
 
 		
         .ramal-card { 
@@ -98,52 +192,179 @@
 		footer:hover {
 			opacity: 1.0;
 		}
+
+        /* === CORREÇÃO FORÇADA PARA OS CARDS === */
+        .ramal-card {
+            background: white !important;
+        }
+        .dark .ramal-card {
+            background: var(--card) !important;
+        }
+
+        .ramal-card > div:last-child {          /* o corpo do card */
+            background: white !important;
+        }
+        .dark .ramal-card > div:last-child {
+            background: var(--card) !important;
+        }
+
+        /* Correção forte para cards com tabela */
+        .ramal-card {
+            background-color: white !important;
+        }
+        .dark .ramal-card {
+            background-color: #1a1a1a !important;   /* ou var(--card) se preferir */
+        }
+
+        .ramal-card > div:last-child {
+            background-color: white !important;
+        }
+        .dark .ramal-card > div:last-child {
+            background-color: #1a1a1a !important;
+        }
+
+        /* === FORÇAR CORES CORRETAS NOS CARDS === */
+        .ramal-card {
+            background-color: #ffffff !important;
+        }
+
+        .dark .ramal-card {
+            background-color: #1f2937 !important;
+        }
+
+        /* Corpo da tabela */
+        .ramal-card .card-body {
+            background-color: #ffffff !important;
+        }
+
+        .dark .ramal-card .card-body {
+            background-color: #1f2937 !important;
+        }
+
+        /* Cabeçalho da tabela */
+        .ramal-card thead {
+            background-color: #f3f4f6 !important;
+        }
+
+        .dark .ramal-card thead {
+            background-color: #374151 !important;
+        }
+
+        /* Linhas da tabela */
+        .ramal-card tbody tr {
+            background-color: #ffffff !important;
+        }
+
+        .dark .ramal-card tbody tr {
+            background-color: #1f2937 !important;
+        }
+
+        .ramal-card tbody tr:hover {
+            background-color: #f9fafb !important;
+        }
+
+        .dark .ramal-card tbody tr:hover {
+            background-color: #374151 !important;
+        }
+
+        /* ==================== MELHORIA RADICAL - DARK MODE ==================== */
+        .ramal-card {
+            transition: all 0.3s ease;
+            background-color: #ffffff !important;
+            border-color: #e5e7eb !important;
+        }
+
+        .dark .ramal-card {
+            background-color: #1e2937 !important;   /* slate-800 - mais bonito que gray-900 */
+            border-color: #334155 !important;
+        }
+
+        /* Corpo da tabela */
+        .ramal-card .card-body {
+            background-color: #ffffff !important;
+        }
+
+        .dark .ramal-card .card-body {
+            background-color: #1e2937 !important;
+        }
+
+        /* Cabeçalho da tabela */
+        .ramal-card thead {
+            background-color: #f8fafc !important;
+        }
+
+        .dark .ramal-card thead {
+            background-color: #334155 !important;
+        }
+
+        /* Linhas */
+        .ramal-card tbody tr {
+            background-color: transparent !important;
+        }
+
+        .ramal-card tbody tr:hover {
+            background-color: #f1f5f9 !important;
+        }
+
+        .dark .ramal-card tbody tr:hover {
+            background-color: #475569 !important;
+        }
+
+        /* Cores de texto */
+        .ramal-card .text-light {
+            color: #1e2937 !important;
+        }
+
+        .dark .ramal-card .text-light {
+            color: #e2e8f0 !important;
+        }
+      
+
     </style>
 </head>
 <body class="bg-gray-50 font-sans">
     <div class="max-w-7xl mx-auto p-6 md:p-8">
 
 		<!-- Botão de Alternar Tema (Light / Dark) -->
-<!--<button id="theme-toggle" 
-        style="position: fixed; bottom: 20px; right: 20px; z-index: 9999;
-               padding: 12px 20px; border: none; border-radius: 50px; 
-               background: #222; color: white; font-size: 16px; cursor: pointer;
-               box-shadow: 0 4px 15px rgba(0,0,0,0.4); transition: all 0.3s;">
-  🌙 Modo Escuro
-</button>
+            <button id="theme-toggle" 
+                    style="position: fixed; bottom: 20px; right: 20px; z-index: 9999;
+                        padding: 12px 20px; border: none; border-radius: 50px; 
+                        background: #222; color: white; font-size: 16px; cursor: pointer;
+                        box-shadow: 0 4px 15px rgba(0,0,0,0.4); transition: all 0.3s;">
+            🌙 Modo Escuro
+            </button>
 
-<script>
-  const toggle = document.getElementById('theme-toggle');
-  const html = document.documentElement;
+            <script>
+            const toggle = document.getElementById('theme-toggle');
+            const html = document.documentElement;
 
-  // Carrega o tema salvo ou prefere o do sistema
-  function loadTheme() {
-    if (localStorage.getItem('theme') === 'dark' || 
-        (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      html.classList.add('dark');
-      toggle.innerHTML = '☀️ Modo Claro';
-    } else {
-      html.classList.remove('dark');
-      toggle.innerHTML = '🌙 Modo Escuro';
-    }
-  }
+            // Carrega o tema salvo ou prefere o do sistema
+            function loadTheme() {
+                if (localStorage.getItem('theme') === 'dark' || 
+                    (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                html.classList.add('dark');
+                toggle.innerHTML = '☀️ Modo Claro';
+                } else {
+                html.classList.remove('dark');
+                toggle.innerHTML = '🌙 Modo Escuro';
+                }
+            }
 
-  loadTheme();
+            loadTheme();
 
-  // Clique no botão
-  toggle.addEventListener('click', () => {
-    html.classList.toggle('dark');
+            // Clique no botão
+            toggle.addEventListener('click', () => {
+                html.classList.toggle('dark');
 
-    if (html.classList.contains('dark')) {
-      toggle.innerHTML = '☀️ Modo Claro';
-      localStorage.setItem('theme', 'dark');
-    } else {
-      toggle.innerHTML = '🌙 Modo Escuro';
-      localStorage.setItem('theme', 'light');
-    }
-  });
-</script>
-		-->
+                if (html.classList.contains('dark')) {
+                toggle.innerHTML = '☀️ Modo Claro';
+                localStorage.setItem('theme', 'dark');
+                } else {
+                toggle.innerHTML = '🌙 Modo Escuro';
+                localStorage.setItem('theme', 'light');
+                }
+            });
+            </script>
 	
 	<!-- Dedicatória discreta -->
 <footer class="fixed bottom-3 left-4 text-xs text-gray-600 font-light pointer-events-none select-none z-10">
@@ -176,7 +397,7 @@
             >
             <select 
                 id="localFilter" 
-                class="border border-gray-300 rounded-xl px-4 py-3 bg-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 sm:w-64"
+                class="bg-gray-800 border border-gray-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 sm:w-64"
             >
                 <option value="">Todos os locais</option>
                 <option value="MEDRADIUS CLINICA">🏥 MEDRADIUS CLINICA</option>
@@ -206,6 +427,7 @@
         <button onclick="toggleTable()" class="mt-10 px-6 py-3 bg-blue-600 text-white rounded-xl font-medium flex items-center gap-2 mx-auto hover:bg-blue-700">
             <i class="fa-solid fa-table"></i> Ver em Tabela Completa
         </button>
+</button>
 
         <div id="tableView" class="hidden mt-8 overflow-x-auto">
             <table class="w-full text-sm border-collapse">
@@ -225,7 +447,8 @@
     </div>
 
     <script defer>
-    // === DADOS (mantido igual) ===
+    // ==================== DADOS + CARREGAMENTO INICIAL ====================
+// === DADOS (mantido igual) ===
     const ramaisData = [
   {"local":"MEDRADIUS CLINICA","setor":"ALMOXARIFADO","subsetor":"CENTRAL","ramal":"129","Workstation":"172.18.3.123","colaborador":""},
   {"local":"MEDRADIUS CLINICA","setor":"ALMOXARIFADO","subsetor":"OBRAS/PATRIMÔNIO","ramal":"128","Workstation":"172.18.3.8","colaborador":""},
@@ -461,88 +684,79 @@
   {"local":"MEDRADIUS MANGABEIRAS","setor":"ULTRASSOM","subsetor":"","ramal":"606","Workstation":"","colaborador":""}
 ];
 
-    // Função de render dos cards
+    // Função de render dos cards - MELHORIA RADICAL (estável em claro/escuro)
     function renderCards(items) {
-    const container = document.getElementById('cardsContainer');
-    container.innerHTML = '';
+        const container = document.getElementById('cardsContainer');
+        container.innerHTML = '';
 
-    if (items.length === 0) {
-        container.innerHTML = '<p class="col-span-full text-center py-12 text-gray-500 text-lg">Nenhum ramal encontrado</p>';
-        return;
+        if (items.length === 0) {
+            container.innerHTML = '<p class="col-span-full text-center py-12 text-gray-500 text-lg">Nenhum ramal encontrado</p>';
+            return;
+        }
+
+        items.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'ramal-card rounded-3xl shadow-lg border overflow-hidden flex flex-col';
+
+            const splitList = (str) => {
+                if (!str || typeof str !== 'string') return [];
+                return str.split(/[/,;|]\s*/).map(s => s.trim()).filter(Boolean);
+            };
+
+            const subsetores = splitList(item.subsetor);
+            const colaboradores = splitList(item.colaborador);
+            const workstations = splitList(item.Workstation);
+
+            const maxLength = Math.max(subsetores.length, colaboradores.length, workstations.length);
+
+            const rows = [];
+            for (let i = 0; i < maxLength; i++) {
+                rows.push({
+                    subsetor: subsetores[i] || '—',
+                    colaborador: colaboradores[i] || '—',
+                    workstation: workstations[i] || '—'
+                });
+            }
+
+            let html = `
+                <!-- Header - Gradiente Azul (igual nos dois modos) -->
+                <div class="bg-gradient-to-r from-blue-700 to-indigo-700 text-white px-6 py-5 flex justify-between items-start">
+                    <div class="text-5xl md:text-6xl font-black tracking-tighter drop-shadow-md">
+                        ${item.ramal}
+                    </div>
+                    <div class="text-right">
+                        <div class="text-sm font-semibold uppercase tracking-wide">${item.setor}</div>
+                        <div class="text-xs opacity-75 mt-1">${item.local}</div>
+                    </div>
+                </div>
+
+                <!-- Corpo da Tabela -->
+                <div class="card-body p-6">
+                    <table class="w-full text-sm border border-gray-200 dark:border-slate-600 rounded-xl overflow-hidden">
+                        <thead>
+                            <tr>
+                                <th class="p-3 text-left font-medium text-light">Subsetor</th>
+                                <th class="p-3 text-left font-medium text-light">Colaborador</th>
+                                <th class="p-3 text-left font-medium text-light">Workstation</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100 dark:divide-slate-600">
+                            ${rows.map(row => `
+                                <tr class="hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors">
+                                    <td class="p-3 text-light">${row.subsetor}</td>
+                                    <td class="p-3 text-light">${row.colaborador}</td>
+                                    <td class="p-3 font-mono text-light">${row.workstation}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+
+            card.innerHTML = html;
+            container.appendChild(card);
+        });
     }
-
-    items.forEach(item => {
-        const card = document.createElement('div');
-        card.className = 'ramal-card bg-white rounded-3xl shadow-lg border border-gray-200 overflow-hidden flex flex-col';
-
-        // Função auxiliar para transformar string separada em lista bonita
-        const splitList = (str) => {
-            if (!str || typeof str !== 'string') return [];
-            return str.split(/[/,;|]\s*/).map(s => s.trim()).filter(Boolean);
-        };
-
-        const subsetores = splitList(item.subsetor);
-        const colaboradores = splitList(item.colaborador);
-        const workstations = splitList(item.Workstation);
-
-        // pega o maior tamanho entre os arrays
-        const maxLength = Math.max(
-            subsetores.length,
-            colaboradores.length,
-            workstations.length
-        );
-
-        // cria linhas alinhadas
-        const rows = [];
-        for (let i = 0; i < maxLength; i++) {
-            rows.push({
-                subsetor: subsetores[i] || '—',
-                colaborador: colaboradores[i] || '—',
-                workstation: workstations[i] || '—'
-            });
-}
-
-     let html = `
-    <div class="bg-gradient-to-r from-blue-700 to-indigo-700 text-white px-6 py-4 flex justify-between items-center">
-        <div class="text-5xl md:text-6xl font-black tracking-tight drop-shadow-md">
-            ${item.ramal}
-        </div>
-        <div class="text-right">
-            <div class="text-sm font-semibold uppercase tracking-wide opacity-100">
-                ${item.setor}
-            </div>
-            <div class="text-xs opacity-60 mt-1">
-                ${item.local}
-            </div>
-        </div>
-    </div>
-
-    <div class="mt-auto overflow-x-auto">
-        <table class="w-full text-sm border border-gray-200 rounded-xl overflow-hidden">
-            <thead class="bg-gray-100 text-gray-600 text-xs uppercase">
-                <tr>
-                    <th class="p-2 text-left">Subsetor</th>
-                    <th class="p-2 text-left">Colaborador</th>
-                    <th class="p-2 text-left">Workstation</th>
-                </tr>
-            </thead>
-            <tbody>
-                ${rows.map(row => `
-                    <tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100">
-                        <td class="p-2">${row.subsetor}</td>
-                        <td class="p-2">${row.colaborador}</td>
-                        <td class="p-2 font-mono">${row.workstation}</td>
-                    </tr>
-                `).join('')}
-            </tbody>
-        </table>
-    </div>
-`;
-
-        card.innerHTML = html;
-        container.appendChild(card);
-    });
-}
 
     // Mapa mental (árvore) – versão mais robusta
     function renderTree() {
@@ -632,7 +846,7 @@
         renderCards(filtered);
     }
 
-    // Tabela completa
+            // Tabela completa
     function toggleTable() {
         const tableView = document.getElementById('tableView');
         if (!tableView) return;
@@ -678,10 +892,10 @@
 //          MODO ADMIN SIMPLES (client-side)
 // =============================================
 
-const ADMIN_PASSWORD_HASH = "9754e83c2c35729ae52d5de5c11d7920ad4001897d55700372315ba07a726084"; // hash de Senha@123-Med
-let isAdmin = false;
+//const ADMIN_PASSWORD_HASH = "9754e83c2c35729ae52d5de5c11d7920ad4001897d55700372315ba07a726084"; // hash de Senha@123-Med
+//let isAdmin = false;
 
-// Função hash simples (SHA-256 via Web Crypto - não precisa de lib)
+// Função hash para senha do Admin (necessária)
 async function simpleHash(str) {
     const msgBuffer = new TextEncoder().encode(str);
     const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
@@ -689,39 +903,66 @@ async function simpleHash(str) {
     return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
-// Botão Admin no cabeçalho (adicione isso no HTML, logo após o <p> do subtítulo)
+ // =============================================
+// MODO ADMIN - SALVAR NO GITHUB (Versão Corrigida)
+// =============================================
+
+const ADMIN_PASSWORD_HASH = "9754e83c2c35729ae52d5de5c11d7920ad4001897d55700372315ba07a726084";
+let isAdmin = false;
+
+// Configurações GitHub
+const GITHUB_OWNER = "ByMed-Medical";
+const GITHUB_REPO  = "RamaisMedradius";
+const FILE_PATH    = "ramais.json";
+const BRANCH       = "main";
+
+let githubToken = localStorage.getItem('githubToken') || '';
+
+// Função hash da senha (OBRIGATÓRIA)
+async function simpleHash(str) {
+    const msgBuffer = new TextEncoder().encode(str);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+// Inserir Interface do Admin (atualizado)
 const header = document.querySelector('.text-center.mb-8');
 header.insertAdjacentHTML('beforeend', `
-    <button id="adminBtn" class="mt-4 px-4 py-2 bg-purple-600 text-white rounded-xl text-sm hover:bg-purple-700">
+    <button id="adminBtn" class="mt-4 px-4 py-2 bg-purple-600 text-white rounded-xl text-sm hover:bg-purple-700 transition-colors">
         <i class="fa-solid fa-lock"></i> Modo Admin
     </button>
-    <div id="adminArea" class="hidden mt-6 p-6 bg-white rounded-2xl shadow-lg border border-purple-200">
-        <h3 class="text-lg font-bold mb-4 text-purple-700">Área Administrativa</h3>
+
+    <div id="adminArea" class="hidden mt-6 p-6 bg-white dark:bg-slate-800 rounded-2xl shadow-lg border border-purple-200 dark:border-purple-700">
+        <h3 class="text-lg font-bold mb-4 text-purple-700 dark:text-purple-300">Área Administrativa - GitHub</h3>
         
-        <div class="flex flex-wrap gap-4 mb-6">
-            <button id="addNewBtn" class="px-4 py-2 bg-green-600 text-white rounded-xl hover:bg-green-700">
-                + Novo Ramal
-            </button>
-            <button id="exportCsvBtn" class="px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700">
-                Exportar CSV
-            </button>
-            <label class="px-4 py-2 bg-orange-600 text-white rounded-xl hover:bg-orange-700 cursor-pointer">
+        <div class="mb-6">
+            <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">GitHub Personal Access Token</label>
+            <input id="githubTokenInput" type="password" value="${githubToken}" 
+                   class="w-full p-3 border border-gray-300 dark:border-slate-600 rounded-xl bg-white dark:bg-slate-900 focus:outline-none focus:border-purple-500"
+                   placeholder="ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxx">
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Token com escopo <strong>repo</strong>. Salvo apenas no seu navegador.</p>
+        </div>
+
+        <div class="flex flex-wrap gap-3 mb-6">
+            <button id="addNewBtn" class="px-5 py-2 bg-green-600 text-white rounded-xl hover:bg-green-700">+ Novo Ramal</button>
+            <button id="exportCsvBtn" class="px-5 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700">Exportar CSV</button>
+            <label class="px-5 py-2 bg-orange-600 text-white rounded-xl hover:bg-orange-700 cursor-pointer">
                 Importar CSV
                 <input type="file" id="importCsv" accept=".csv" class="hidden">
             </label>
-            <button id="saveChangesBtn" class="px-4 py-2 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700">
-                Salvar Alterações
-           </button>
-            <button id="logoutAdminBtn" class="px-4 py-2 bg-red-600 text-white rounded-xl hover:bg-red-700">
-                Sair do Admin
+            <button id="saveToGitHubBtn" class="px-5 py-2 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 font-medium">
+                💾 Salvar no GitHub
             </button>
+            <button id="logoutAdminBtn" class="px-5 py-2 bg-red-600 text-white rounded-xl hover:bg-red-700">Sair do Admin</button>
         </div>
 
-        <div id="editTable" class="overflow-x-auto max-h-96 overflow-y-auto border rounded"></div>
+        <div id="editTable" class="overflow-x-auto max-h-[520px] overflow-y-auto border border-gray-200 dark:border-slate-700 rounded-xl"></div>
     </div>
 `);
 
-// Eventos
+// ==================== EVENTOS DO ADMIN ====================
+
 document.getElementById('adminBtn').addEventListener('click', async () => {
     if (isAdmin) {
         toggleAdminArea();
@@ -734,9 +975,8 @@ document.getElementById('adminBtn').addEventListener('click', async () => {
     const hashInput = await simpleHash(senha);
     if (hashInput === ADMIN_PASSWORD_HASH) {
         isAdmin = true;
-        alert("Modo administrador ativado!");
+        alert("✅ Modo administrador ativado!");
         toggleAdminArea();
-        loadEditableTable();
     } else {
         alert("Senha incorreta.");
     }
@@ -750,60 +990,69 @@ function toggleAdminArea() {
     }
 }
 
-// Carrega tabela editável
-function loadEditableTable() {
-    const container = document.getElementById('editTable');
-    if (!container) return;
-
-    let html = `
-        <table class="w-full text-sm">
-            <thead class="bg-purple-100 sticky top-0">
-                <tr>
-                    <th class="p-2">Local</th>
-                    <th class="p-2">Setor</th>
-                    <th class="p-2">Subsetor</th>
-                    <th class="p-2">Ramal</th>
-                    <th class="p-2">Workstation</th>
-                    <th class="p-2">Colaborador</th>
-                    <th class="p-2">Ações</th>
-                </tr>
-            </thead>
-            <tbody id="editableBody">
-            </tbody>
-        </table>
-    `;
-    container.innerHTML = html;
-
-    const tbody = document.getElementById('editableBody');
-    ramaisData.forEach((item, index) => {
-        const tr = document.createElement('tr');
-        tr.className = 'border-b hover:bg-purple-50';
-        tr.innerHTML = `
-            <td class="p-2"><input type="text" value="${item.local || ''}" data-index="${index}" data-field="local" class="w-full p-1 border rounded"></td>
-            <td class="p-2"><input type="text" value="${item.setor || ''}" data-index="${index}" data-field="setor" class="w-full p-1 border rounded"></td>
-            <td class="p-2"><input type="text" value="${item.subsetor || ''}" data-index="${index}" data-field="subsetor" class="w-full p-1 border rounded"></td>
-            <td class="p-2"><input type="text" value="${item.ramal || ''}" data-index="${index}" data-field="ramal" class="w-full p-1 border rounded font-bold"></td>
-            <td class="p-2"><input type="text" value="${item.Workstation || ''}" data-index="${index}" data-field="Workstation" class="w-full p-1 border rounded"></td>
-            <td class="p-2"><input type="text" value="${item.colaborador || ''}" data-index="${index}" data-field="colaborador" class="w-full p-1 border rounded"></td>
-            <td class="p-2"><button class="text-red-600 hover:text-red-800" onclick="deleteItem(${index})">Excluir</button></td>
-        `;
-        tbody.appendChild(tr);
-    });
-}
-
-// Salvar alterações nos inputs (em tempo real)
-document.addEventListener('change', e => {
-    if (e.target.matches('#editTable input')) {
-        const index = e.target.dataset.index;
-        const field = e.target.dataset.field;
-        if (ramaisData[index]) {
-            ramaisData[index][field] = e.target.value.trim();
-        }
-    }
+// Salvar Token
+document.getElementById('githubTokenInput').addEventListener('change', (e) => {
+    githubToken = e.target.value.trim();
+    if (githubToken) localStorage.setItem('githubToken', githubToken);
 });
 
-// Adicionar novo
-document.getElementById('addNewBtn')?.addEventListener('click', () => {
+// ==================== SALVAR NO GITHUB ====================
+async function saveToGitHub() {
+    if (!githubToken) {
+        alert("⚠️ Insira seu GitHub Personal Access Token primeiro.");
+        return;
+    }
+
+    const commitMessage = prompt("Mensagem de commit:", `Atualização de ramais - ${new Date().toLocaleDateString('pt-BR')}`);
+    if (!commitMessage) return;
+
+    try {
+        let sha = null;
+        try {
+            const getResp = await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${FILE_PATH}`, {
+                headers: { 'Authorization': `token ${githubToken}` }
+            });
+            if (getResp.ok) {
+                const data = await getResp.json();
+                sha = data.sha;
+            }
+        } catch (e) {}
+
+        const contentBase64 = btoa(unescape(encodeURIComponent(JSON.stringify(ramaisData, null, 2))));
+
+        const response = await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${FILE_PATH}`, {
+            method: 'PUT',
+            headers: {
+                'Authorization': `token ${githubToken}`,
+                'Accept': 'application/vnd.github.v3+json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                message: commitMessage,
+                content: contentBase64,
+                sha: sha,
+                branch: BRANCH
+            })
+        });
+
+        if (response.ok) {
+            alert("✅ Dados salvos com sucesso no GitHub!");
+            renderCards(ramaisData);
+            renderTree();
+        } else {
+            const err = await response.json();
+            alert("Erro:\n" + (err.message || "Token inválido ou sem permissão."));
+        }
+    } catch (err) {
+        alert("Erro de conexão: " + err.message);
+    }
+}
+
+document.getElementById('saveToGitHubBtn').addEventListener('click', saveToGitHub);
+
+// ==================== Funções auxiliares mantidas ====================
+
+document.getElementById('addNewBtn').addEventListener('click', () => {
     ramaisData.push({
         local: "MEDRADIUS CLINICA",
         setor: "NOVO SETOR",
@@ -815,7 +1064,6 @@ document.getElementById('addNewBtn')?.addEventListener('click', () => {
     loadEditableTable();
 });
 
-// Excluir
 window.deleteItem = function(index) {
     if (confirm("Excluir este ramal?")) {
         ramaisData.splice(index, 1);
@@ -823,57 +1071,74 @@ window.deleteItem = function(index) {
     }
 };
 
-// Salvar no localStorage
-document.getElementById('saveChangesBtn')?.addEventListener('click', () => {
-    try {
-        localStorage.setItem('ramaisDataCustom', JSON.stringify(ramaisData));
-        alert("Alterações salvas localmente!");
-        // Recarrega os dados principais
-        renderCards(ramaisData);
-        renderTree();
-    } catch (err) {
-        alert("Erro ao salvar: " + err.message);
+function loadEditableTable() {
+    const container = document.getElementById('editTable');
+    if (!container) return;
+
+    let html = `
+        <table class="w-full text-sm">
+            <thead class="bg-gray-100 dark:bg-slate-700 sticky top-0">
+                <tr>
+                    <th class="p-3 text-left">Local</th>
+                    <th class="p-3 text-left">Setor</th>
+                    <th class="p-3 text-left">Subsetor</th>
+                    <th class="p-3 text-left">Ramal</th>
+                    <th class="p-3 text-left">Workstation</th>
+                    <th class="p-3 text-left">Colaborador</th>
+                    <th class="p-3 text-left">Ações</th>
+                </tr>
+            </thead>
+            <tbody id="editableBody"></tbody>
+        </table>
+    `;
+    container.innerHTML = html;
+
+    const tbody = document.getElementById('editableBody');
+    ramaisData.forEach((item, index) => {
+        const tr = document.createElement('tr');
+        tr.className = 'border-b hover:bg-gray-50 dark:hover:bg-slate-800';
+        tr.innerHTML = `
+            <td class="p-3"><input type="text" value="${item.local || ''}" data-index="${index}" data-field="local" class="w-full p-2 border rounded dark:bg-slate-800"></td>
+            <td class="p-3"><input type="text" value="${item.setor || ''}" data-index="${index}" data-field="setor" class="w-full p-2 border rounded dark:bg-slate-800"></td>
+            <td class="p-3"><input type="text" value="${item.subsetor || ''}" data-index="${index}" data-field="subsetor" class="w-full p-2 border rounded dark:bg-slate-800"></td>
+            <td class="p-3"><input type="text" value="${item.ramal || ''}" data-index="${index}" data-field="ramal" class="w-full p-2 border rounded font-bold dark:bg-slate-800"></td>
+            <td class="p-3"><input type="text" value="${item.Workstation || ''}" data-index="${index}" data-field="Workstation" class="w-full p-2 border rounded dark:bg-slate-800"></td>
+            <td class="p-3"><input type="text" value="${item.colaborador || ''}" data-index="${index}" data-field="colaborador" class="w-full p-2 border rounded dark:bg-slate-800"></td>
+            <td class="p-3"><button onclick="deleteItem(${index})" class="text-red-600 hover:text-red-800">Excluir</button></td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+// Atualização em tempo real dos inputs
+document.addEventListener('change', e => {
+    if (e.target.matches('#editTable input')) {
+        const index = parseInt(e.target.dataset.index);
+        const field = e.target.dataset.field;
+        if (ramaisData[index]) {
+            ramaisData[index][field] = e.target.value.trim();
+        }
     }
 });
 
-// Carregar do localStorage ao iniciar (se existir)
-window.addEventListener('load', () => {
-    const saved = localStorage.getItem('ramaisDataCustom');
-    if (saved) {
-        try {
-            const parsed = JSON.parse(saved);
-            if (Array.isArray(parsed) && parsed.length > 0) {
-                ramaisData.length = 0;
-                ramaisData.push(...parsed);
-                renderCards(ramaisData);
-                renderTree();
-                console.log("Dados customizados carregados do localStorage");
-            }
-        } catch (e) {}
-    }
-});
+// ==================== IMPORTAR E EXPORTAR CSV (mantidos) ====================
 
-// Exportar CSV
-document.getElementById('exportCsvBtn')?.addEventListener('click', () => {
+document.getElementById('exportCsvBtn').addEventListener('click', () => {
     const headers = ["local","setor","subsetor","ramal","Workstation","colaborador"];
-    const csv = [
-        headers.join(','),
-        ...ramaisData.map(row => 
-            headers.map(h => `"${(row[h] || '').toString().replace(/"/g,'""')}"`).join(',')
-        )
-    ].join('\n');
+    const csv = [headers.join(','), ...ramaisData.map(row => 
+        headers.map(h => `"${(row[h] || '').toString().replace(/"/g,'""')}"`).join(',')
+    )].join('\n');
 
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'ramais_medradius_atualizado.csv';
+    link.download = `ramais_medradius_${new Date().toISOString().slice(0,10)}.csv`;
     link.click();
     URL.revokeObjectURL(url);
 });
 
-// Importar CSV
-document.getElementById('importCsv')?.addEventListener('change', e => {
+document.getElementById('importCsv').addEventListener('change', e => {
     const file = e.target.files[0];
     if (!file) return;
 
@@ -883,12 +1148,10 @@ document.getElementById('importCsv')?.addEventListener('change', e => {
         const lines = text.split(/\r?\n/);
         const newData = [];
 
-        // Pula cabeçalho se existir
         for (let i = 1; i < lines.length; i++) {
             if (!lines[i].trim()) continue;
             const cols = lines[i].split(',').map(c => c.trim().replace(/^"|"$/g,'').replace(/""/g,'"'));
             if (cols.length < 4) continue;
-
             newData.push({
                 local: cols[0] || "",
                 setor: cols[1] || "",
@@ -899,35 +1162,25 @@ document.getElementById('importCsv')?.addEventListener('change', e => {
             });
         }
 
-        if (newData.length > 0 && confirm(`Substituir tudo por ${newData.length} linhas do CSV?`)) {
+        if (newData.length > 0 && confirm(`Importar ${newData.length} ramais?`)) {
             ramaisData.length = 0;
             ramaisData.push(...newData);
             loadEditableTable();
-            alert("Dados importados! Clique em 'Salvar Alterações' para persistir.");
+            alert("Dados importados! Clique em 'Salvar no GitHub' para publicar.");
         }
     };
     reader.readAsText(file);
 });
 
 // Logout
-document.getElementById('logoutAdminBtn')?.addEventListener('click', () => {
+document.getElementById('logoutAdminBtn').addEventListener('click', () => {
     isAdmin = false;
     document.getElementById('adminArea').classList.add('hidden');
-    alert("Você saiu do modo administrador.");
 });
 
-// Proteção temporária contra appendChild em body null
-//(function() {
-//  const originalAppendChild = Element.prototype.appendChild;
-//  Element.prototype.appendChild = function(newNode) {
-//    if (this === document.body && !document.body) {
-//      console.warn("Ignorando appendChild em body null");
-//      return newNode;
-//    }
-//    return originalAppendChild.apply(this, arguments);
-//  };
-//})();
 	
 </script>
+</body>
+</html>
 </body>
 </html>
