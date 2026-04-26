@@ -120,44 +120,60 @@
     }
 
     function renderTree() {
-        const container = document.getElementById('treeView');
-        container.innerHTML = '';
-        const grouped = {};
+    const container = document.getElementById('treeView');
+    container.innerHTML = '';
+    const grouped = {};
 
-        ramaisData.forEach(item => {
-            if (!grouped[item.local]) grouped[item.local] = {};
-            if (!grouped[item.local][item.setor]) grouped[item.local][item.setor] = [];
-            grouped[item.local][item.setor].push(item);
-        });
+    ramaisData.forEach(item => {
+        if (!grouped[item.local]) grouped[item.local] = {};
+        if (!grouped[item.local][item.setor]) grouped[item.local][item.setor] = [];
+        grouped[item.local][item.setor].push(item);
+    });
 
-        Object.keys(grouped).sort().forEach(local => {
-            const details = document.createElement('details');
-            details.open = true;
-            details.innerHTML = `<summary class="bg-slate-700 px-4 py-3 rounded-2xl cursor-pointer font-medium">${local} <span class="text-xs">(${Object.keys(grouped[local]).length} setores)</span></summary>`;
+    Object.keys(grouped).sort().forEach(local => {
+        const details = document.createElement('details');   // ← sem .open = true
+        details.innerHTML = `
+            <summary class="bg-slate-700 hover:bg-slate-600 px-4 py-3 rounded-2xl cursor-pointer font-medium flex justify-between items-center">
+                <span>${local}</span>
+                <span class="text-xs bg-slate-800 px-2.5 py-1 rounded-full">${Object.keys(grouped[local]).length} setores</span>
+            </summary>`;
+        
+        const innerDiv = document.createElement('div');
+        innerDiv.className = 'pl-6 mt-3 space-y-3';
+
+        Object.keys(grouped[local]).sort().forEach(setor => {
+            const subDetails = document.createElement('details');  // também fechado por padrão
+            subDetails.innerHTML = `
+                <summary class="text-slate-300 hover:text-white cursor-pointer py-2 px-3 rounded-xl flex justify-between">
+                    <span>${setor}</span>
+                    <span class="text-xs text-slate-500">(${grouped[local][setor].length})</span>
+                </summary>`;
             
-            const div = document.createElement('div');
-            div.className = 'pl-6 mt-2 space-y-3';
+            const list = document.createElement('div');
+            list.className = 'pl-6 mt-2 space-y-1 text-sm';
 
-            Object.keys(grouped[local]).sort().forEach(setor => {
-                const sub = document.createElement('details');
-                sub.innerHTML = `<summary class="text-slate-300 cursor-pointer">${setor} (${grouped[local][setor].length})</summary>`;
-                
-                const list = document.createElement('div');
-                list.className = 'pl-6 text-sm mt-2 space-y-1';
-                grouped[local][setor].forEach(r => {
-                    const row = document.createElement('div');
-                    row.className = 'flex justify-between hover:bg-slate-700 p-2 rounded-xl cursor-pointer';
-                    row.innerHTML = `<span class="text-blue-400">${r.ramal}</span><span>${r.subsetor || ''}</span>`;
-                    row.onclick = () => copyRamal(r.ramal);
-                    list.appendChild(row);
-                });
-                sub.appendChild(list);
-                div.appendChild(sub);
+            grouped[local][setor].forEach(r => {
+                const row = document.createElement('div');
+                row.className = 'flex justify-between hover:bg-slate-700 p-2.5 rounded-xl cursor-pointer transition-colors';
+                row.innerHTML = `
+                    <span class="text-blue-400 font-medium">${r.ramal}</span>
+                    <span class="text-slate-400 truncate">${r.subsetor || ''}</span>
+                `;
+                row.onclick = (e) => {
+                    e.stopPropagation();
+                    copyRamal(r.ramal);
+                };
+                list.appendChild(row);
             });
-            details.appendChild(div);
-            container.appendChild(details);
+            
+            subDetails.appendChild(list);
+            innerDiv.appendChild(subDetails);
         });
-    }
+        
+        details.appendChild(innerDiv);
+        container.appendChild(details);
+    });
+}
 
     function filterData() {
         const term = document.getElementById('search').value.toLowerCase().trim();
