@@ -136,53 +136,61 @@
     }
 
     function renderCards(items) {
-        const container = document.getElementById('cardsContainer');
-        container.innerHTML = '';
+    const container = document.getElementById('cardsContainer');
+    container.innerHTML = '';
 
-        items.forEach(item => {
-            const card = document.createElement('div');
-            card.className = 'ramal-card rounded-3xl shadow overflow-hidden';
-
-            const subsetores = (item.subsetor || '').split(/[/,;|]\s*/).map(s => s.trim()).filter(Boolean);
-            const colaboradores = (item.colaborador || '').split(/[/,;|]\s*/).map(s => s.trim()).filter(Boolean);
-
-            let rowsHTML = '';
-            const max = Math.max(subsetores.length, colaboradores.length, 1);
-            for (let i = 0; i < max; i++) {
-                rowsHTML += `
-                    <tr class="hover:bg-slate-700">
-                        <td class="p-3">${subsetores[i] || '—'}</td>
-                        <td class="p-3">${colaboradores[i] || '—'}</td>
-                        ${isTiMode ? `<td class="p-3 font-mono text-slate-300">${item.Workstation || '—'}</td>` : ''}
-                    </tr>`;
-            }
-
-            card.innerHTML = `
-                <div class="bg-gradient-to-r from-blue-700 to-indigo-700 text-white px-6 py-5 flex justify-between items-start">
-                    <div class="text-6xl font-black tracking-tighter">${item.ramal}</div>
-                    <div class="text-right">
-                        <div class="font-semibold uppercase">${item.setor}</div>
-                        <div class="text-xs opacity-75">${item.local}</div>
-                    </div>
-                </div>
-                <div class="p-6">
-                    <table class="w-full text-sm">
-                        <thead class="bg-slate-800">
-                            <tr>
-                                <th class="p-3 text-left">Subsetor</th>
-                                <th class="p-3 text-left">Colaborador</th>
-                                ${isTiMode ? `<th class="p-3 text-left">Workstation</th>` : ''}
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-slate-700">
-                            ${rowsHTML}
-                        </tbody>
-                    </table>
-                </div>
-            `;
-            container.appendChild(card);
-        });
+    if (items.length === 0) {
+        container.innerHTML = '<p class="col-span-full text-center py-20 text-slate-400 text-lg">Nenhum ramal encontrado</p>';
+        return;
     }
+
+    items.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'ramal-card rounded-3xl shadow overflow-hidden';
+
+        // Separa os campos mantendo a ordem
+        const subsetores = (item.subsetor || '').split(/[/,;|]\s*/).map(s => s.trim()).filter(Boolean);
+        const colaboradores = (item.colaborador || '').split(/[/,;|]\s*/).map(s => s.trim()).filter(Boolean);
+        const workstations = (item.Workstation || '').split(/[/,;|]\s*/).map(s => s.trim()).filter(Boolean);
+
+        const maxRows = Math.max(subsetores.length, colaboradores.length, workstations.length, 1);
+
+        let rowsHTML = '';
+        for (let i = 0; i < maxRows; i++) {
+            rowsHTML += `
+                <tr class="hover:bg-slate-700 transition-colors">
+                    <td class="p-3">${subsetores[i] || '—'}</td>
+                    <td class="p-3">${colaboradores[i] || '—'}</td>
+                    ${isTiMode ? `<td class="p-3 font-mono text-emerald-300">${workstations[i] || '—'}</td>` : ''}
+                </tr>`;
+        }
+
+        card.innerHTML = `
+            <div class="bg-gradient-to-r from-blue-700 to-indigo-700 text-white px-6 py-5 flex justify-between items-start">
+                <div class="text-6xl font-black tracking-tighter">${item.ramal}</div>
+                <div class="text-right">
+                    <div class="font-semibold uppercase">${item.setor}</div>
+                    <div class="text-xs opacity-75">${item.local}</div>
+                </div>
+            </div>
+            <div class="p-6">
+                <table class="w-full text-sm border border-slate-600 rounded-xl overflow-hidden">
+                    <thead class="bg-slate-800">
+                        <tr>
+                            <th class="p-3 text-left">Subsetor</th>
+                            <th class="p-3 text-left">Colaborador</th>
+                            ${isTiMode ? `<th class="p-3 text-left">Workstation</th>` : ''}
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-700">
+                        ${rowsHTML}
+                    </tbody>
+                </table>
+            </div>
+        `;
+        container.appendChild(card);
+    });
+}
 
     // Restante do código (renderTree, filterData, admin, etc.) mantido igual
     function renderTree() {
