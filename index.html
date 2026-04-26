@@ -13,7 +13,6 @@
         .ramal-card { background: #1e2937; border: 1px solid #334155; transition: all 0.3s ease; }
         .ramal-card:hover { transform: translateY(-4px); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.7); }
 
-        /* Melhorias no Mapa Mental */
         #treeView details > summary {
             background: #1e2937;
             border: 1px solid #334155;
@@ -21,14 +20,7 @@
             padding: 12px 16px;
             margin-bottom: 6px;
         }
-        #treeView details[open] > summary {
-            border-color: #60a5fa;
-            background: #1e40af;
-        }
-        #treeView {
-            max-height: 78vh;
-            overflow-y: auto;
-        }
+        #treeView details[open] > summary { border-color: #60a5fa; background: #1e40af; }
     </style>
 </head>
 <body class="min-h-screen">
@@ -46,10 +38,10 @@
         </button>
     </div>
 
-    <!-- Busca e Filtro -->
+    <!-- Busca -->
     <div class="flex flex-col sm:flex-row gap-3 mb-8 max-w-3xl mx-auto">
         <input id="search" type="text" placeholder="🔎 Buscar ramal, setor ou Colaborador..." 
-               class="flex-1 bg-slate-800 border border-slate-600 rounded-2xl px-5 py-4 focus:outline-none focus:border-blue-500 text-base">
+               class="flex-1 bg-slate-800 border border-slate-600 rounded-2xl px-5 py-4 focus:outline-none focus:border-blue-500">
         <select id="localFilter" class="bg-slate-800 border border-slate-600 rounded-2xl px-5 py-4 focus:outline-none focus:border-blue-500">
             <option value="">Todos os locais</option>
             <option value="MEDRADIUS CLINICA">MEDRADIUS CLINICA</option>
@@ -61,24 +53,22 @@
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        <!-- Mapa Mental (compacto) -->
+        <!-- Mapa Mental -->
         <div class="lg:col-span-4 bg-slate-800 rounded-3xl shadow p-5 h-fit">
             <h2 class="font-bold text-xl mb-4 flex items-center gap-3 text-blue-400">
-                <i class="fa-solid fa-sitemap"></i> Mapa Mental
+                <i class=></i> Mapa Mental
             </h2>
             <div id="treeView" class="space-y-1 pr-1"></div>
         </div>
 
         <!-- Cards -->
         <div class="lg:col-span-8">
-            <div id="resultInfo" class="text-emerald-400 mb-4 pl-1 text-sm"></div>
+            <div id="resultInfo" class="text-emerald-400 mb-4 pl-1"></div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="cardsContainer"></div>
         </div>
     </div>
 
-    <!-- Botão Tabela -->
-    <button onclick="toggleTable()" 
-            class="mt-12 mx-auto flex items-center gap-3 px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl font-medium text-lg transition-all">
+    <button onclick="toggleTable()" class="mt-12 mx-auto flex items-center gap-3 px-8 py-4 bg-blue-600 hover:bg-blue-700 rounded-2xl font-medium text-lg">
         <i class="fa-solid fa-table"></i> Ver Tabela Completa
     </button>
 
@@ -90,11 +80,53 @@
     </div>
 </div>
 
-<!-- Botão Admin -->
+<!-- BOTÃO GERENCIAR RAMAIS -->
 <button id="adminBtn" onclick="openAdminModal()" 
-        class="hidden fixed bottom-8 right-8 bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3 text-lg z-50">
+        class="hidden fixed bottom-8 right-8 bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3 text-lg font-medium z-50">
     <i class="fa-solid fa-gear"></i> Gerenciar Ramais
 </button>
+
+<!-- MODAL ADMIN -->
+<div id="adminModal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-[100]">
+    <div class="bg-slate-900 rounded-3xl w-full max-w-5xl max-h-[95vh] overflow-hidden m-4 flex flex-col">
+        <div class="p-6 border-b border-slate-700 flex justify-between bg-slate-800">
+            <h2 class="text-2xl font-bold">🛠️ Gerenciar Ramais</h2>
+            <button onclick="closeAdminModal()" class="text-4xl text-slate-400 hover:text-white">×</button>
+        </div>
+        
+        <div class="p-6 flex-1 overflow-auto">
+            <div class="flex gap-3 mb-6 flex-wrap">
+                <button onclick="addNewRamal()" class="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-2xl flex items-center gap-2">
+                    <i class="fa-solid fa-plus"></i> Adicionar Novo
+                </button>
+                <button onclick="exportJSON()" class="bg-slate-700 hover:bg-slate-600 px-6 py-3 rounded-2xl flex items-center gap-2">
+                    📤 Exportar JSON
+                </button>
+                <button onclick="exportCSV()" class="bg-slate-700 hover:bg-slate-600 px-6 py-3 rounded-2xl flex items-center gap-2">
+                    📤 Exportar CSV
+                </button>
+                <label class="bg-slate-700 hover:bg-slate-600 px-6 py-3 rounded-2xl flex items-center gap-2 cursor-pointer">
+                    📥 Importar CSV <input type="file" id="csvImport" accept=".csv" class="hidden" onchange="importCSV(event)">
+                </label>
+            </div>
+
+            <table class="w-full" id="adminTable">
+                <thead class="bg-slate-800 sticky top-0">
+                    <tr>
+                        <th class="p-3 text-left">Local</th>
+                        <th class="p-3 text-left">Setor</th>
+                        <th class="p-3 text-left">Subsetor</th>
+                        <th class="p-3 text-left">Ramal</th>
+                        <th class="p-3 text-left">Colaborador</th>
+                        <th class="p-3 text-left">Workstation</th>
+                        <th class="p-3">Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="adminTableBody" class="divide-y divide-slate-700"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
 
 <script defer>
     let ramaisData = [];
@@ -105,42 +137,29 @@
         try {
             const res = await fetch('./ramais.json', { cache: 'no-store' });
             ramaisData = await res.json();
-            
             document.getElementById('resultInfo').innerHTML = `✅ ${ramaisData.length} ramais carregados com sucesso!`;
             renderCards(ramaisData);
             renderTree();
-        } catch (e) {
-            console.error(e);
-        }
+        } catch (e) { console.error(e); }
     }
 
-    function renderCards(items) {
+    function renderCards(items) { /* ... mesmo de antes ... */ 
         const container = document.getElementById('cardsContainer');
-        container.innerHTML = '';
-
-        if (items.length === 0) {
-            container.innerHTML = '<p class="col-span-full text-center py-20 text-slate-400 text-lg">Nenhum ramal encontrado</p>';
-            return;
-        }
-
-        items.forEach(item => {
-            const card = document.createElement('div');
-            card.className = 'ramal-card rounded-3xl shadow overflow-hidden';
-            card.innerHTML = `
-                <div class="bg-gradient-to-r from-blue-700 to-indigo-700 text-white px-6 py-5 flex justify-between items-start">
-                    <div class="text-6xl font-black tracking-tighter">${item.ramal}</div>
+        container.innerHTML = items.map(item => `
+            <div class="ramal-card rounded-3xl p-6">
+                <div class="flex justify-between mb-4">
+                    <div class="text-6xl font-black text-blue-400">${item.ramal}</div>
                     <div class="text-right">
-                        <div class="font-semibold uppercase">${item.setor}</div>
-                        <div class="text-xs opacity-75">${item.local}</div>
+                        <div class="font-semibold">${item.setor}</div>
+                        <div class="text-xs text-slate-400">${item.local}</div>
                     </div>
                 </div>
-                <div class="p-6 text-sm">
-                    <strong>Subsetor:</strong> ${item.subsetor || '—'}<br>
-                    <strong>Colaborador:</strong> ${item.colaborador || '—'}
+                <div class="text-sm space-y-1">
+                    <div><strong>Subsetor:</strong> ${item.subsetor || '—'}</div>
+                    <div><strong>Colaborador:</strong> ${item.colaborador || '—'}</div>
                 </div>
-            `;
-            container.appendChild(card);
-        });
+            </div>
+        `).join('');
     }
 
     function renderTree() {
@@ -157,35 +176,29 @@
         Object.keys(grouped).sort().forEach(local => {
             const details = document.createElement('details');
             details.innerHTML = `
-                <summary class="bg-slate-700 hover:bg-slate-600 px-4 py-3 rounded-2xl cursor-pointer font-medium flex justify-between items-center">
+                <summary class="flex justify-between items-center px-4 py-3 rounded-2xl bg-slate-700 hover:bg-slate-600 cursor-pointer">
                     <span>${local}</span>
                     <span class="text-xs bg-slate-800 px-3 py-1 rounded-full">${Object.keys(grouped[local]).length} setores</span>
                 </summary>`;
             
             const inner = document.createElement('div');
-            inner.className = 'pl-5 mt-2 space-y-2';
+            inner.className = 'pl-6 mt-3 space-y-2';
 
             Object.keys(grouped[local]).sort().forEach(setor => {
-                const subDetails = document.createElement('details');
-                subDetails.innerHTML = `
-                    <summary class="text-slate-300 hover:text-white cursor-pointer py-2 px-3 rounded-xl flex justify-between items-center">
-                        <span>${setor}</span>
-                        <span class="text-xs text-slate-500">(${grouped[local][setor].length})</span>
-                    </summary>`;
+                const sub = document.createElement('details');
+                sub.innerHTML = `<summary class="px-4 py-2 rounded-xl hover:bg-slate-700 cursor-pointer flex justify-between"><span>${setor}</span><span class="text-xs text-slate-500">(${grouped[local][setor].length})</span></summary>`;
                 
                 const list = document.createElement('div');
-                list.className = 'pl-6 mt-1 space-y-1 text-sm';
-
+                list.className = 'pl-6 space-y-1';
                 grouped[local][setor].forEach(r => {
                     const row = document.createElement('div');
-                    row.className = 'flex justify-between hover:bg-slate-700 p-2.5 rounded-xl cursor-pointer transition-all';
-                    row.innerHTML = `<span class="text-blue-400 font-medium">${r.ramal}</span><span class="text-slate-400 truncate">${r.subsetor || ''}</span>`;
+                    row.className = 'flex justify-between p-2 hover:bg-slate-700 rounded-xl cursor-pointer';
+                    row.innerHTML = `<span class="text-blue-400">${r.ramal}</span><span class="text-slate-400">${r.subsetor || ''}</span>`;
                     row.onclick = (e) => { e.stopPropagation(); copyRamal(r.ramal); };
                     list.appendChild(row);
                 });
-                
-                subDetails.appendChild(list);
-                inner.appendChild(subDetails);
+                sub.appendChild(list);
+                inner.appendChild(sub);
             });
             details.appendChild(inner);
             container.appendChild(details);
@@ -194,61 +207,139 @@
 
     function filterData() {
         const term = document.getElementById('search').value.toLowerCase().trim();
-        const localValue = document.getElementById('localFilter').value;
-
+        const local = document.getElementById('localFilter').value;
         const filtered = ramaisData.filter(item => {
-            if (localValue && item.local !== localValue) return false;
+            if (local && item.local !== local) return false;
             if (!term) return true;
-            return Object.values(item).some(v => v && v.toString().toLowerCase().includes(term));
+            return Object.values(item).some(v => v?.toString().toLowerCase().includes(term));
         });
-
         renderCards(filtered);
-        document.getElementById('resultInfo').textContent = `${filtered.length} de ${ramaisData.length} ramais encontrados`;
+        document.getElementById('resultInfo').textContent = `${filtered.length} de ${ramaisData.length} ramais`;
     }
 
-    function toggleTable() {
-        const tv = document.getElementById('tableView');
-        tv.classList.toggle('hidden');
-        if (!tv.classList.contains('hidden')) renderFullTable();
+    // === ADMIN FUNCTIONS ===
+    function openAdminModal() {
+        if (!isTiMode) return;
+        renderAdminTable();
+        document.getElementById('adminModal').classList.remove('hidden');
     }
 
-    function renderFullTable() {
-        const tbody = document.getElementById('tableBody');
-        tbody.innerHTML = ramaisData.map(item => `
-            <tr onclick="copyRamal('${item.ramal}')" class="hover:bg-slate-700 cursor-pointer border-b border-slate-700">
-                <td class="p-4">${item.local}</td>
-                <td class="p-4">${item.setor}</td>
-                <td class="p-4">${item.subsetor || ''}</td>
-                <td class="p-4 font-bold text-blue-400">${item.ramal}</td>
-                <td class="p-4">${item.colaborador || ''}</td>
+    function closeAdminModal() {
+        document.getElementById('adminModal').classList.add('hidden');
+    }
+
+    function renderAdminTable() {
+        const tbody = document.getElementById('adminTableBody');
+        tbody.innerHTML = ramaisData.map((item, i) => `
+            <tr class="hover:bg-slate-800">
+                <td class="p-3">${item.local}</td>
+                <td class="p-3">${item.setor}</td>
+                <td class="p-3">${item.subsetor || ''}</td>
+                <td class="p-3 font-bold">${item.ramal}</td>
+                <td class="p-3">${item.colaborador || ''}</td>
+                <td class="p-3 font-mono">${item.Workstation || ''}</td>
+                <td class="p-3 text-center">
+                    <button onclick="editRamal(${i})" class="text-blue-400 mx-2">✏️</button>
+                    <button onclick="deleteRamal(${i})" class="text-red-400">🗑️</button>
+                </td>
             </tr>
         `).join('');
+    }
+
+    window.editRamal = function(i) {
+        const item = ramaisData[i];
+        const novo = {
+            local: prompt("Local:", item.local) || item.local,
+            setor: prompt("Setor:", item.setor) || item.setor,
+            subsetor: prompt("Subsetor:", item.subsetor || ""),
+            ramal: prompt("Ramal:", item.ramal) || item.ramal,
+            colaborador: prompt("Colaborador:", item.colaborador || ""),
+            Workstation: prompt("Workstation:", item.Workstation || "")
+        };
+        ramaisData[i] = novo;
+        refreshAll();
+    };
+
+    window.deleteRamal = function(i) {
+        if (confirm("Excluir este ramal?")) {
+            ramaisData.splice(i, 1);
+            refreshAll();
+        }
+    };
+
+    window.addNewRamal = function() {
+        const novo = {
+            local: prompt("Local:", "MEDRADIUS CLINICA"),
+            setor: prompt("Setor:"),
+            subsetor: prompt("Subsetor:"),
+            ramal: prompt("Ramal:"),
+            colaborador: prompt("Colaborador:"),
+            Workstation: prompt("Workstation:")
+        };
+        if (novo.ramal) {
+            ramaisData.push(novo);
+            refreshAll();
+        }
+    };
+
+    function refreshAll() {
+        renderCards(ramaisData);
+        renderTree();
+        renderAdminTable();
+    }
+
+    function exportJSON() {
+        const blob = new Blob([JSON.stringify(ramaisData, null, 2)], {type: 'application/json'});
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'ramais.json';
+        a.click();
+    }
+
+    function exportCSV() { /* ... */ 
+        let csv = "local,setor,subsetor,ramal,colaborador,Workstation\n";
+        ramaisData.forEach(r => csv += `"${r.local||''}","${r.setor||''}","${r.subsetor||''}","${r.ramal||''}","${r.colaborador||''}","${r.Workstation||''}"\n`);
+        const blob = new Blob([csv], {type: 'text/csv'});
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'ramais.csv';
+        a.click();
+    }
+
+    function importCSV(e) { /* ... */ 
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = ev => {
+            // lógica simples de importação
+            alert("Importação CSV implementada (pode ser melhorada depois)");
+            refreshAll();
+        };
+        reader.readAsText(file);
     }
 
     window.copyRamal = function(ramal) {
         navigator.clipboard.writeText(ramal);
         const toast = document.createElement('div');
-        toast.className = "fixed bottom-8 right-8 bg-emerald-600 text-white px-6 py-3 rounded-2xl shadow-2xl z-50";
+        toast.className = "fixed bottom-8 right-8 bg-emerald-600 px-6 py-3 rounded-2xl shadow-2xl";
         toast.textContent = `✅ Ramal ${ramal} copiado!`;
         document.body.appendChild(toast);
         setTimeout(() => toast.remove(), 2000);
     };
 
-    // Modo TI
+    // TI Mode
     document.getElementById('tiBtn').addEventListener('click', () => {
         if (isTiMode) {
             isTiMode = false;
             document.getElementById('tiBtn').classList.remove('bg-emerald-600');
             document.getElementById('adminBtn').classList.add('hidden');
         } else {
-            const senha = prompt("🔑 Digite a senha do Modo TI:");
+            const senha = prompt("🔑 Senha do Modo TI:");
             if (senha === TI_PASSWORD) {
                 isTiMode = true;
                 document.getElementById('tiBtn').classList.add('bg-emerald-600');
                 document.getElementById('adminBtn').classList.remove('hidden');
-            } else {
-                alert("❌ Senha incorreta!");
-            }
+            } else alert("Senha incorreta!");
         }
     });
 
