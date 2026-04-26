@@ -29,7 +29,6 @@
             background: linear-gradient(to right, #1e40af, #4338ca);
         }
 
-        /* === MAPA MENTAL - ESPAÇAMENTO SINGELO E COMPACTO === */
         #treeView {
             font-size: 0.78rem;
         }
@@ -38,7 +37,7 @@
             border: 1px solid #334155;
             border-radius: 12px;
             padding: 10px 14px;
-            margin-bottom: 4px;           /* reduzido */
+            margin-bottom: 4px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -47,14 +46,13 @@
         #treeView details[open] > summary {
             border-color: #60a5fa;
         }
-        /* Espaçamento interno mais apertado */
         #treeView > details > div {
-            padding-left: 18px;           /* reduzido de 24px */
-            margin-top: 3px;              /* bem sutil */
+            padding-left: 18px;
+            margin-top: 3px;
             margin-bottom: 2px;
         }
         #treeView .pl-6 {
-            padding-left: 1.1rem;         /* ainda mais compacto */
+            padding-left: 1.1rem;
             font-size: 0.75rem;
         }
     </style>
@@ -63,8 +61,6 @@
 
 <div class="max-w-7xl mx-auto p-6 md:p-8">
 
-    <!-- Cabeçalho com logo e texto centralizados -->
-        
     <div class="flex justify-between items-center mb-8">
         <div class="text-center flex-1">
             <img src="https://i.ibb.co/1S3TgBH/logo-G-Dark.png" 
@@ -81,32 +77,31 @@
         </button>
     </div>
 
-    <!-- Busca e filtro -->
-        <div class="flex flex-col sm:flex-row gap-3 mb-8 max-w-3xl mx-auto">
-            <input 
-                id="search" 
-                type="text" 
-                placeholder="🔎 Buscar ramal, setor ou Colaborador..." 
-                class="flex-1 border border-gray-300 rounded-xl px-4 py-3 text-base focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-            >
-            <select 
-                id="localFilter" 
-                class="bg-gray-800 border border-gray-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 sm:w-64"
-            >
-                <option value="">Todos os locais</option>
-                <option value="MEDRADIUS CLINICA"> MEDRADIUS CLINICA</option>
-                <option value="MEDRADIUS CONSULTÓRIO 1"> MEDRADIUS CONSULTÓRIO 1</option>
-                <option value="MEDRADIUS CONSULTÓRIO 2"> MEDRADIUS CONSULTÓRIO 2</option>
-				<option value="MEDRADIUS HOSPITAL"> MEDRADIUS HOSPITAL</option>
-				<option value="MEDRADIUS MANGABEIRAS"> MEDRADIUS MANGABEIRAS</option>
-            </select>
-        </div>
+    <div class="flex flex-col sm:flex-row gap-3 mb-8 max-w-3xl mx-auto">
+        <input 
+            id="search" 
+            type="text" 
+            placeholder="🔎 Buscar ramal, setor ou Colaborador..." 
+            class="flex-1 border border-gray-300 rounded-xl px-4 py-3 text-base focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+        >
+        <select 
+            id="localFilter" 
+            class="bg-gray-800 border border-gray-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 sm:w-64"
+        >
+            <option value="">Todos os locais</option>
+            <option value="MEDRADIUS CLINICA">MEDRADIUS CLINICA</option>
+            <option value="MEDRADIUS CONSULTÓRIO 1">MEDRADIUS CONSULTÓRIO 1</option>
+            <option value="MEDRADIUS CONSULTÓRIO 2">MEDRADIUS CONSULTÓRIO 2</option>
+            <option value="MEDRADIUS HOSPITAL">MEDRADIUS HOSPITAL</option>
+            <option value="MEDRADIUS MANGABEIRAS">MEDRADIUS MANGABEIRAS</option>
+        </select>
+    </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
         <!-- Mapa Mental -->
-        <div class="lg:col-span-4 bg-slate-800 rounded-3xl shadow p-5 h-fit">   <!-- padding reduzido -->
+        <div class="lg:col-span-4 bg-slate-800 rounded-3xl shadow p-5 h-fit">
             <h2 class="font-bold text-xl mb-4 flex items-center gap-3 text-blue-400">
-                <i class=></i> Mapa Mental
+                <i class="fa-solid fa-sitemap"></i> Mapa Mental
             </h2>
             <div id="treeView" class="space-y-1 pr-1 max-h-[78vh] overflow-auto custom-scroll"></div>
         </div>
@@ -138,51 +133,52 @@
 </footer>
 
 <script defer>
-    let ramaisData = [];   // começa vazio
+    let ramaisData = [];
     let isTiMode = false;
     const TI_PASSWORD = "ti2026";
 
-  // ==================== CARREGAR JSON ====================
+    // ==================== CARREGAR RAMAIS.JSON ====================
     async function loadRamais() {
-    try {
-        console.log("🔄 Tentando carregar ramais.json...");
-        
-        const response = await fetch('./ramais.json', { 
-            cache: 'no-store',
-            headers: { 'Cache-Control': 'no-cache' }
-        });
-        
-        console.log("📡 Status:", response.status, response.statusText);
-        
-        if (!response.ok) {
-            throw new Error(`HTTP ${response.status} - ${response.statusText}`);
+        try {
+            console.log("🔄 Tentando carregar ramais.json...");
+            
+            const response = await fetch('./ramais.json', { 
+                cache: 'no-store',
+                headers: { 'Cache-Control': 'no-cache' }
+            });
+            
+            console.log("📡 Status:", response.status, response.statusText);
+
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status} - ${response.statusText}`);
+            }
+
+            const contentType = response.headers.get("content-type");
+            if (!contentType || !contentType.includes("application/json")) {
+                throw new Error("Recebido conteúdo inválido: " + contentType);
+            }
+
+            ramaisData = await response.json();
+            
+            console.log(`✅ Sucesso! ${ramaisData.length} ramais carregados.`);
+            
+            renderCards(ramaisData);
+            renderTree();
+            document.getElementById('resultInfo').textContent = 
+                `${ramaisData.length} ramais carregados`;
+
+        } catch (error) {
+            console.error("❌ Erro completo:", error);
+            document.getElementById('cardsContainer').innerHTML = `
+                <div class="col-span-full text-center py-20">
+                    <p class="text-red-400 text-xl">❌ Erro ao carregar ramais.json</p>
+                    <p class="text-slate-400 mt-2">${error.message}</p>
+                    <p class="text-slate-500 text-sm mt-4">Verifique se o arquivo ramais.json está na raiz e se o vercel.json está correto.</p>
+                </div>`;
         }
-
-        const contentType = response.headers.get("content-type");
-        if (!contentType || !contentType.includes("application/json")) {
-            throw new Error("O arquivo não é JSON. Recebido: " + contentType);
-        }
-
-        ramaisData = await response.json();
-        
-        console.log(`✅ Sucesso! ${ramaisData.length} ramais carregados.`);
-        
-        renderCards(ramaisData);
-        renderTree();
-        document.getElementById('resultInfo').textContent = 
-            `${ramaisData.length} ramais carregados`;
-
-    } catch (error) {
-        console.error("❌ Erro completo:", error);
-        document.getElementById('cardsContainer').innerHTML = `
-            <div class="col-span-full text-center py-20">
-                <p class="text-red-400 text-xl">❌ Erro ao carregar ramais.json</p>
-                <p class="text-slate-400 mt-2">${error.message}</p>
-            </div>`;
     }
-}
 
-    // Render Cards (mantido igual)
+    // ==================== RENDER CARDS ====================
     function renderCards(items) {
         const container = document.getElementById('cardsContainer');
         container.innerHTML = '';
@@ -238,6 +234,7 @@
         });
     }
 
+    // ==================== RENDER TREE ====================
     function renderTree() {
         const container = document.getElementById('treeView');
         container.innerHTML = '';
@@ -258,7 +255,7 @@
                 </summary>`;
             
             const inner = document.createElement('div');
-            inner.className = 'space-y-1';   // espaçamento bem leve
+            inner.className = 'space-y-1';
 
             Object.keys(grouped[local]).sort().forEach(setor => {
                 const subDetails = document.createElement('details');
@@ -269,7 +266,7 @@
                     </summary>`;
                 
                 const list = document.createElement('div');
-                list.className = 'pl-5 text-xs space-y-0.5 mt-1';   // padding reduzido
+                list.className = 'pl-5 text-xs space-y-0.5 mt-1';
 
                 grouped[local][setor].forEach(r => {
                     const row = document.createElement('div');
@@ -289,7 +286,6 @@
         });
     }
 
-    // Demais funções permanecem iguais (filterData, toggleTable, etc.)
     function filterData() {
         const term = document.getElementById('search').value.toLowerCase().trim();
         const localValue = document.getElementById('localFilter').value;
@@ -307,6 +303,7 @@
     function toggleTable() {
         const tableView = document.getElementById('tableView');
         tableView.classList.toggle('hidden');
+        if (!tableView.classList.contains('hidden')) renderFullTable();
     }
 
     function renderFullTable() {
@@ -337,7 +334,7 @@
     window.copyRamal = function(ramal) {
         navigator.clipboard.writeText(ramal);
         const toast = document.createElement('div');
-        toast.className = "fixed bottom-8 right-8 bg-emerald-600 text-white px-6 py-3 rounded-2xl shadow-2xl";
+        toast.className = "fixed bottom-8 right-8 bg-emerald-600 text-white px-6 py-3 rounded-2xl shadow-2xl z-50";
         toast.textContent = `✅ Ramal ${ramal} copiado!`;
         document.body.appendChild(toast);
         setTimeout(() => toast.remove(), 2000);
@@ -360,11 +357,13 @@
             }
         }
         filterData();
-        if (!document.getElementById('tableView').classList.contains('hidden')) renderFullTable();
+        const tableView = document.getElementById('tableView');
+        if (!tableView.classList.contains('hidden')) renderFullTable();
     });
 
+    // ==================== INICIALIZAÇÃO ====================
     document.addEventListener('DOMContentLoaded', () => {
-        loadRamais();                    // ← chama aqui
+        loadRamais();
         
         document.getElementById('search').addEventListener('input', filterData);
         document.getElementById('localFilter').addEventListener('change', filterData);
