@@ -146,9 +146,8 @@
 
     items.forEach(item => {
         const card = document.createElement('div');
-        card.className = 'ramal-card rounded-3xl shadow overflow-hidden';
+        card.className = 'ramal-card rounded-3xl shadow overflow-hidden w-full'; // mais largo
 
-        // Separa os campos mantendo a ordem
         const subsetores = (item.subsetor || '').split(/[/,;|]\s*/).map(s => s.trim()).filter(Boolean);
         const colaboradores = (item.colaborador || '').split(/[/,;|]\s*/).map(s => s.trim()).filter(Boolean);
         const workstations = (item.Workstation || '').split(/[/,;|]\s*/).map(s => s.trim()).filter(Boolean);
@@ -158,10 +157,10 @@
         let rowsHTML = '';
         for (let i = 0; i < maxRows; i++) {
             rowsHTML += `
-                <tr class="hover:bg-slate-700 transition-colors">
-                    <td class="p-3">${subsetores[i] || '—'}</td>
-                    <td class="p-3">${colaboradores[i] || '—'}</td>
-                    ${isTiMode ? `<td class="p-3 font-mono text-emerald-300">${workstations[i] || '—'}</td>` : ''}
+                <tr class="hover:bg-slate-700 transition-colors border-b border-slate-700 last:border-none">
+                    <td class="p-4 text-slate-300">${subsetores[i] || '—'}</td>
+                    <td class="p-4">${colaboradores[i] || '—'}</td>
+                    ${isTiMode ? `<td class="p-4 font-mono text-emerald-300">${workstations[i] || '—'}</td>` : ''}
                 </tr>`;
         }
 
@@ -169,17 +168,17 @@
             <div class="bg-gradient-to-r from-blue-700 to-indigo-700 text-white px-6 py-5 flex justify-between items-start">
                 <div class="text-6xl font-black tracking-tighter">${item.ramal}</div>
                 <div class="text-right">
-                    <div class="font-semibold uppercase">${item.setor}</div>
+                    <div class="font-semibold uppercase text-base">${item.setor}</div>
                     <div class="text-xs opacity-75">${item.local}</div>
                 </div>
             </div>
             <div class="p-6">
-                <table class="w-full text-sm border border-slate-600 rounded-xl overflow-hidden">
-                    <thead class="bg-slate-800">
-                        <tr>
-                            <th class="p-3 text-left">Subsetor</th>
-                            <th class="p-3 text-left">Colaborador</th>
-                            ${isTiMode ? `<th class="p-3 text-left">Workstation</th>` : ''}
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="border-b border-slate-600">
+                            <th class="p-4 text-left font-medium text-slate-400">Subsetor</th>
+                            <th class="p-4 text-left font-medium text-slate-400">Colaborador</th>
+                            ${isTiMode ? `<th class="p-4 text-left font-medium text-slate-400">Workstation</th>` : ''}
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-700">
