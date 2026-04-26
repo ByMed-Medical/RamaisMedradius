@@ -144,23 +144,32 @@
 
   // ==================== CARREGAR JSON ====================
     async function loadRamais() {
-        try {
-            const response = await fetch('./ramais.json');
-            ramaisData = await response.json();
-            
-            console.log(`✅ ${ramaisData.length} ramais carregados`);
-            
-            // Renderiza tudo após carregar
-            renderCards(ramaisData);
-            renderTree();
-            document.getElementById('resultInfo').textContent = 
-                `${ramaisData.length} ramais carregados`;
-        } catch (error) {
-            console.error("Erro ao carregar ramais.json:", error);
-            document.getElementById('cardsContainer').innerHTML = 
-                '<p class="col-span-full text-center py-20 text-red-400">Erro ao carregar os ramais. Verifique se ramais.json existe.</p>';
+    try {
+        console.log("Tentando carregar: ./ramais.json");
+        
+        const response = await fetch('./ramais.json');
+        console.log("Status da resposta:", response.status);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
         }
+        
+        ramaisData = await response.json();
+        console.log(`✅ ${ramaisData.length} ramais carregados com sucesso!`);
+        
+        renderCards(ramaisData);
+        renderTree();
+        document.getElementById('resultInfo').textContent = `${ramaisData.length} ramais carregados`;
+        
+    } catch (error) {
+        console.error("Erro completo:", error);
+        document.getElementById('cardsContainer').innerHTML = `
+            <p class="col-span-full text-center py-20 text-red-400">
+                ❌ Erro ao carregar ramais.json<br>
+                <small>${error.message}</small>
+            </p>`;
     }
+}
 
     // Render Cards (mantido igual)
     function renderCards(items) {
