@@ -13,6 +13,7 @@
         .ramal-card { background: #1e2937; border: 1px solid #334155; transition: all 0.3s ease; }
         .ramal-card:hover { transform: translateY(-4px); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.7); }
 
+        /* Mapa Mental */
         #treeView details > summary {
             background: #1e2937;
             border: 1px solid #334155;
@@ -21,13 +22,26 @@
             margin-bottom: 6px;
         }
         #treeView details[open] > summary { border-color: #60a5fa; background: #1e40af; }
+
+        /* Tabela Admin - Mais compacta */
+        #adminTable td, #adminTable th {
+            white-space: normal !important;
+            word-break: break-word;
+            vertical-align: middle;
+        }
+        #adminTable tr {
+            height: 62px;
+        }
+        .admin-col-setor { max-width: 140px; }
+        .admin-col-colab { max-width: 160px; }
+        .admin-col-work { max-width: 110px; }
     </style>
 </head>
 <body class="min-h-screen">
 
 <div class="max-w-7xl mx-auto p-6 md:p-8">
 
-    <!-- Cabeçalho -->
+    <!-- Cabeçalho e Busca (mantido igual) -->
     <div class="flex justify-between items-center mb-8">
         <div class="text-center flex-1">
             <img src="https://i.ibb.co/1S3TgBH/logo-G-Dark.png" alt="MedRadius" class="mx-auto h-28 md:h-40 object-contain">
@@ -38,7 +52,6 @@
         </button>
     </div>
 
-    <!-- Busca -->
     <div class="flex flex-col sm:flex-row gap-3 mb-8 max-w-3xl mx-auto">
         <input id="search" type="text" placeholder="🔎 Buscar ramal, setor ou Colaborador..." 
                class="flex-1 bg-slate-800 border border-slate-600 rounded-2xl px-5 py-4 focus:outline-none focus:border-blue-500">
@@ -53,15 +66,13 @@
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        <!-- Mapa Mental -->
         <div class="lg:col-span-4 bg-slate-800 rounded-3xl shadow p-5 h-fit">
             <h2 class="font-bold text-xl mb-4 flex items-center gap-3 text-blue-400">
-                <i class=></i> Mapa Mental
+                <i class="fa-solid fa-sitemap"></i> Mapa Mental
             </h2>
             <div id="treeView" class="space-y-1 pr-1"></div>
         </div>
 
-        <!-- Cards -->
         <div class="lg:col-span-8">
             <div id="resultInfo" class="text-emerald-400 mb-4 pl-1"></div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="cardsContainer"></div>
@@ -80,7 +91,7 @@
     </div>
 </div>
 
-<!-- BOTÃO GERENCIAR RAMAIS -->
+<!-- Botão Gerenciar -->
 <button id="adminBtn" onclick="openAdminModal()" 
         class="hidden fixed bottom-8 right-8 bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3 text-lg font-medium z-50">
     <i class="fa-solid fa-gear"></i> Gerenciar Ramais
@@ -88,38 +99,34 @@
 
 <!-- MODAL ADMIN -->
 <div id="adminModal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-[100]">
-    <div class="bg-slate-900 rounded-3xl w-full max-w-5xl max-h-[95vh] overflow-hidden m-4 flex flex-col">
-        <div class="p-6 border-b border-slate-700 flex justify-between bg-slate-800">
+    <div class="bg-slate-900 rounded-3xl w-full max-w-5xl max-h-[95vh] m-4 flex flex-col overflow-hidden">
+        <div class="p-6 border-b border-slate-700 bg-slate-800 flex justify-between items-center">
             <h2 class="text-2xl font-bold">🛠️ Gerenciar Ramais</h2>
             <button onclick="closeAdminModal()" class="text-4xl text-slate-400 hover:text-white">×</button>
         </div>
         
         <div class="p-6 flex-1 overflow-auto">
-            <div class="flex gap-3 mb-6 flex-wrap">
-                <button onclick="addNewRamal()" class="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-2xl flex items-center gap-2">
+            <div class="flex flex-wrap gap-3 mb-6">
+                <button onclick="addNewRamal()" class="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-2xl flex items-center gap-2 font-medium">
                     <i class="fa-solid fa-plus"></i> Adicionar Novo
                 </button>
-                <button onclick="exportJSON()" class="bg-slate-700 hover:bg-slate-600 px-6 py-3 rounded-2xl flex items-center gap-2">
-                    📤 Exportar JSON
-                </button>
-                <button onclick="exportCSV()" class="bg-slate-700 hover:bg-slate-600 px-6 py-3 rounded-2xl flex items-center gap-2">
-                    📤 Exportar CSV
-                </button>
-                <label class="bg-slate-700 hover:bg-slate-600 px-6 py-3 rounded-2xl flex items-center gap-2 cursor-pointer">
+                <button onclick="exportJSON()" class="bg-slate-700 hover:bg-slate-600 px-6 py-3 rounded-2xl">📤 Exportar JSON</button>
+                <button onclick="exportCSV()" class="bg-slate-700 hover:bg-slate-600 px-6 py-3 rounded-2xl">📤 Exportar CSV</button>
+                <label class="bg-slate-700 hover:bg-slate-600 px-6 py-3 rounded-2xl cursor-pointer">
                     📥 Importar CSV <input type="file" id="csvImport" accept=".csv" class="hidden" onchange="importCSV(event)">
                 </label>
             </div>
 
-            <table class="w-full" id="adminTable">
+            <table class="w-full text-sm" id="adminTable">
                 <thead class="bg-slate-800 sticky top-0">
                     <tr>
                         <th class="p-3 text-left">Local</th>
-                        <th class="p-3 text-left">Setor</th>
+                        <th class="p-3 text-left admin-col-setor">Setor</th>
                         <th class="p-3 text-left">Subsetor</th>
                         <th class="p-3 text-left">Ramal</th>
-                        <th class="p-3 text-left">Colaborador</th>
-                        <th class="p-3 text-left">Workstation</th>
-                        <th class="p-3">Ações</th>
+                        <th class="p-3 text-left admin-col-colab">Colaborador</th>
+                        <th class="p-3 text-left admin-col-work">Workstation</th>
+                        <th class="p-3 text-center w-20">Ações</th>
                     </tr>
                 </thead>
                 <tbody id="adminTableBody" class="divide-y divide-slate-700"></tbody>
@@ -143,7 +150,7 @@
         } catch (e) { console.error(e); }
     }
 
-    function renderCards(items) { /* ... mesmo de antes ... */ 
+    function renderCards(items) {
         const container = document.getElementById('cardsContainer');
         container.innerHTML = items.map(item => `
             <div class="ramal-card rounded-3xl p-6">
@@ -175,19 +182,12 @@
 
         Object.keys(grouped).sort().forEach(local => {
             const details = document.createElement('details');
-            details.innerHTML = `
-                <summary class="flex justify-between items-center px-4 py-3 rounded-2xl bg-slate-700 hover:bg-slate-600 cursor-pointer">
-                    <span>${local}</span>
-                    <span class="text-xs bg-slate-800 px-3 py-1 rounded-full">${Object.keys(grouped[local]).length} setores</span>
-                </summary>`;
-            
+            details.innerHTML = `<summary class="flex justify-between items-center px-4 py-3 rounded-2xl bg-slate-700 hover:bg-slate-600 cursor-pointer"><span>${local}</span><span class="text-xs bg-slate-800 px-3 py-1 rounded-full">${Object.keys(grouped[local]).length} setores</span></summary>`;
             const inner = document.createElement('div');
             inner.className = 'pl-6 mt-3 space-y-2';
-
             Object.keys(grouped[local]).sort().forEach(setor => {
                 const sub = document.createElement('details');
                 sub.innerHTML = `<summary class="px-4 py-2 rounded-xl hover:bg-slate-700 cursor-pointer flex justify-between"><span>${setor}</span><span class="text-xs text-slate-500">(${grouped[local][setor].length})</span></summary>`;
-                
                 const list = document.createElement('div');
                 list.className = 'pl-6 space-y-1';
                 grouped[local][setor].forEach(r => {
@@ -207,17 +207,16 @@
 
     function filterData() {
         const term = document.getElementById('search').value.toLowerCase().trim();
-        const local = document.getElementById('localFilter').value;
+        const localValue = document.getElementById('localFilter').value;
         const filtered = ramaisData.filter(item => {
-            if (local && item.local !== local) return false;
+            if (localValue && item.local !== localValue) return false;
             if (!term) return true;
-            return Object.values(item).some(v => v?.toString().toLowerCase().includes(term));
+            return Object.values(item).some(v => v && v.toString().toLowerCase().includes(term));
         });
         renderCards(filtered);
-        document.getElementById('resultInfo').textContent = `${filtered.length} de ${ramaisData.length} ramais`;
+        document.getElementById('resultInfo').textContent = `${filtered.length} de ${ramaisData.length} ramais encontrados`;
     }
 
-    // === ADMIN FUNCTIONS ===
     function openAdminModal() {
         if (!isTiMode) return;
         renderAdminTable();
@@ -233,14 +232,14 @@
         tbody.innerHTML = ramaisData.map((item, i) => `
             <tr class="hover:bg-slate-800">
                 <td class="p-3">${item.local}</td>
-                <td class="p-3">${item.setor}</td>
+                <td class="p-3 admin-col-setor">${item.setor}</td>
                 <td class="p-3">${item.subsetor || ''}</td>
-                <td class="p-3 font-bold">${item.ramal}</td>
-                <td class="p-3">${item.colaborador || ''}</td>
-                <td class="p-3 font-mono">${item.Workstation || ''}</td>
+                <td class="p-3 font-bold text-blue-400">${item.ramal}</td>
+                <td class="p-3 admin-col-colab">${item.colaborador || ''}</td>
+                <td class="p-3 admin-col-work font-mono text-xs">${item.Workstation || ''}</td>
                 <td class="p-3 text-center">
-                    <button onclick="editRamal(${i})" class="text-blue-400 mx-2">✏️</button>
-                    <button onclick="deleteRamal(${i})" class="text-red-400">🗑️</button>
+                    <button onclick="editRamal(${i})" class="text-blue-400 hover:text-blue-300 text-2xl mx-2">✏️</button>
+                    <button onclick="deleteRamal(${i})" class="text-red-400 hover:text-red-300 text-2xl">🗑️</button>
                 </td>
             </tr>
         `).join('');
@@ -251,10 +250,10 @@
         const novo = {
             local: prompt("Local:", item.local) || item.local,
             setor: prompt("Setor:", item.setor) || item.setor,
-            subsetor: prompt("Subsetor:", item.subsetor || ""),
+            subsetor: prompt("Subsetor:", item.subsetor || "") || item.subsetor,
             ramal: prompt("Ramal:", item.ramal) || item.ramal,
-            colaborador: prompt("Colaborador:", item.colaborador || ""),
-            Workstation: prompt("Workstation:", item.Workstation || "")
+            colaborador: prompt("Colaborador:", item.colaborador || "") || item.colaborador,
+            Workstation: prompt("Workstation:", item.Workstation || "") || item.Workstation
         };
         ramaisData[i] = novo;
         refreshAll();
@@ -289,57 +288,48 @@
     }
 
     function exportJSON() {
-        const blob = new Blob([JSON.stringify(ramaisData, null, 2)], {type: 'application/json'});
-        const a = document.createElement('a');
+        const blob = new Blob([JSON.stringify(ramaisData, null, 2)], {type: "application/json"});
+        const a = document.createElement("a");
         a.href = URL.createObjectURL(blob);
-        a.download = 'ramais.json';
+        a.download = "ramais.json";
         a.click();
     }
 
-    function exportCSV() { /* ... */ 
+    function exportCSV() {
         let csv = "local,setor,subsetor,ramal,colaborador,Workstation\n";
-        ramaisData.forEach(r => csv += `"${r.local||''}","${r.setor||''}","${r.subsetor||''}","${r.ramal||''}","${r.colaborador||''}","${r.Workstation||''}"\n`);
-        const blob = new Blob([csv], {type: 'text/csv'});
-        const a = document.createElement('a');
+        ramaisData.forEach(r => {
+            csv += `"${r.local||''}","${r.setor||''}","${r.subsetor||''}","${r.ramal||''}","${r.colaborador||''}","${r.Workstation||''}"\n`;
+        });
+        const blob = new Blob([csv], {type: "text/csv"});
+        const a = document.createElement("a");
         a.href = URL.createObjectURL(blob);
-        a.download = 'ramais.csv';
+        a.download = "ramais.csv";
         a.click();
-    }
-
-    function importCSV(e) { /* ... */ 
-        const file = e.target.files[0];
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onload = ev => {
-            // lógica simples de importação
-            alert("Importação CSV implementada (pode ser melhorada depois)");
-            refreshAll();
-        };
-        reader.readAsText(file);
     }
 
     window.copyRamal = function(ramal) {
         navigator.clipboard.writeText(ramal);
         const toast = document.createElement('div');
-        toast.className = "fixed bottom-8 right-8 bg-emerald-600 px-6 py-3 rounded-2xl shadow-2xl";
+        toast.className = "fixed bottom-8 right-8 bg-emerald-600 text-white px-6 py-3 rounded-2xl shadow-2xl z-50";
         toast.textContent = `✅ Ramal ${ramal} copiado!`;
         document.body.appendChild(toast);
         setTimeout(() => toast.remove(), 2000);
     };
 
-    // TI Mode
     document.getElementById('tiBtn').addEventListener('click', () => {
         if (isTiMode) {
             isTiMode = false;
             document.getElementById('tiBtn').classList.remove('bg-emerald-600');
             document.getElementById('adminBtn').classList.add('hidden');
         } else {
-            const senha = prompt("🔑 Senha do Modo TI:");
+            const senha = prompt("🔑 Digite a senha do Modo TI:");
             if (senha === TI_PASSWORD) {
                 isTiMode = true;
                 document.getElementById('tiBtn').classList.add('bg-emerald-600');
                 document.getElementById('adminBtn').classList.remove('hidden');
-            } else alert("Senha incorreta!");
+            } else {
+                alert("❌ Senha incorreta!");
+            }
         }
     });
 
