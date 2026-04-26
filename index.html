@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ramais MedRadius - Diretório Inteligente</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        body { background: #090e1b; color: #e2e8f0; font-family: system-ui, sans-serif; }
+        .ramal-card { background: #1e2937; border: 1px solid #334155; transition: all 0.3s ease; }
+        .ramal-card:hover { transform: translateY(-4px); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.7); }
+
+        .modal { animation: fadeIn 0.2s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+    </style>
+</head>
+<body class="min-h-screen">
+
+<div class="max-w-7xl mx-auto p-6 md:p-8">
+
+    <!-- Cabeçalho -->
+    <div class="flex justify-between items-center mb-8">
+        <div class="text-center flex-1">
+            <img src="https://i.ibb.co/1S3TgBH/logo-G-Dark.png" alt="Logo" class="mx-auto h-28 md:h-40 object-contain">
+            <p class="text-slate-400 font-medium text-lg mt-2">Diretório dinâmico • Hospital • Clínica • Mangabeiras</p>
+        </div>
+        <button id="tiBtn" class="px-5 py-2.5 bg-slate-700 hover:bg-slate-600 rounded-2xl text-sm flex items-center gap-2 transition-all">
+            <i class="fa-solid fa-shield-halved"></i><span>Modo TI</span>
+        </button>
+    </div>
+
+    <!-- Busca -->
+    <div class="flex flex-col sm:flex-row gap-3 mb-8 max-w-3xl mx-auto">
+        <input id="search" type="text" placeholder="🔎 Buscar ramal, setor ou Colaborador..." 
+               class="flex-1 border border-gray-300 rounded-xl px-4 py-3 text-base focus:outline-none focus:border-blue-500">
+        <select id="localFilter" class="bg-gray-800 border border-gray-700 text-white rounded-xl px-4 py-3 sm:w-64">
+            <option value="">Todos os locais</option>
+            <option value="MEDRADIUS CLINICA">MEDRADIUS CLINICA</option>
+            <option value="MEDRADIUS CONSULTÓRIO 1">MEDRADIUS CONSULTÓRIO 1</option>
+            <option value="MEDRADIUS CONSULTÓRIO 2">MEDRADIUS CONSULTÓRIO 2</option>
+            <option value="MEDRADIUS HOSPITAL">MEDRADIUS HOSPITAL</option>
+            <option value="MEDRADIUS MANGABEIRAS">MEDRADIUS MANGABEIRAS</option>
+        </select>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div class="lg:col-span-4 bg-slate-800 rounded-3xl shadow p-5">
+            <h2 class="font-bold text-xl mb-4 flex items-center gap-3 text-blue-400">
+                <i class="fa-solid fa-sitemap"></i> Mapa Mental
+            </h2>
+            <div id="treeView" class="space-y-1 max-h-[78vh] overflow-auto"></div>
+        </div>
+
+        <div class="lg:col-span-8">
+            <div id="resultInfo" class="text-slate-400 mb-4 pl-1 text-sm"></div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="cardsContainer"></div>
+        </div>
+    </div>
+
+    <!-- Botão Admin (só aparece no Modo TI) -->
+    <button id="adminBtn" onclick="openAdminModal()" 
+            class="hidden fixed bottom-8 right-8 bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-4 rounded-2xl shadow-xl flex items-center gap-3 text-lg font-medium">
+        <i class="fa-solid fa-gear"></i>
+        <span>Gerenciar Ramais (TI)</span>
+    </button>
+
+</div>
+
+<!-- ==================== MODAL ADMIN ==================== -->
+<div id="adminModal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-50">
+    <div class="modal bg-slate-900 rounded-3xl w-full max-w-4xl max-h-[95vh] overflow-hidden flex flex-col">
+        <div class="p-6 border-b border-slate-700 flex justify-between items-center">
+            <h2 class="text-2xl font-bold">🛠️ Gerenciamento de Ramais (Modo TI)</h2>
+            <button onclick="closeAdminModal()" class="text-3xl text-slate-400 hover:text-white">×</button>
+        </div>
+
+        <div class="p-6 flex-1 overflow-auto">
+            <div class="flex gap-3 mb-6">
+                <button onclick="addNewRamal()" class="flex-1 bg-blue-600 hover:bg-blue-700 py-3 rounded-2xl font-medium">+ Adicionar Novo Ramal</button>
+                <button onclick="exportJSON()" class="flex-1 bg-slate-700 hover:bg-slate-600 py-3 rounded-2xl">📤 Exportar JSON</button>
+                <button onclick="exportCSV()" class="flex-1 bg-slate-700 hover:bg-slate-600 py-3 rounded-2xl">📤 Exportar CSV</button>
+                <label class="flex-1 bg-slate-700 hover:bg-slate-600 py-3 rounded-2xl text-center cursor-pointer">
+                    📥 Importar CSV <input type="file" id="csvImport" accept=".csv" class="hidden" onchange="importCSV(event)">
+                </label>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm" id="adminTable">
+                    <thead class="bg-slate-800 sticky top-0">
+                        <tr>
+                            <th class="p-3 text-left">Local</th>
+                            <th class="p-3 text-left">Setor</th>
+                            <th class="p-3 text-left">Subsetor</th>
+                            <th class="p-3 text-left">Ramal</th>
+                            <th class="p-3 text-left">Colaborador</th>
+                            <th class="p-3 text-left">Workstation</th>
+                            <th class="p-3 w-24">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminTableBody" class="divide-y divide-slate-700"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="p-4 border-t border-slate-700 text-center text-xs text-slate-500">
+            Alterações ficam em memória. Use "Exportar JSON" e substitua o arquivo ramais.json manualmente por enquanto.
+        </div>
+    </div>
+</div>
+
+<footer class="fixed bottom-3 left-4 text-xs text-slate-500">Byron S. Medeiros</footer>
+
+<script defer>
+    let ramaisData = [];
+    let isTiMode = false;
+    const TI_PASSWORD = "ti2026";
+
+    // ... (loadRamais, renderCards, renderTree, filterData, copyRamal, toggleTable, renderFullTable permanecem iguais)
+
+    async function loadRamais() {
+        try {
+            const res = await fetch('./ramais.json', { cache: 'no-store' });
+            if (!res.ok) throw new Error("Falha ao carregar JSON");
+            ramaisData = await res.json();
+            renderCards(ramaisData);
+            renderTree();
+            document.getElementById('resultInfo').textContent = `${ramaisData.length} ramais carregados`;
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    // ==================== ADMIN FUNCTIONS ====================
+    function openAdminModal() {
+        if (!isTiMode) return;
+        renderAdminTable();
+        document.getElementById('adminModal').classList.remove('hidden');
+    }
+
+    function closeAdminModal() {
+        document.getElementById('adminModal').classList.add('hidden');
+    }
+
+    function renderAdminTable() {
+        const tbody = document.getElementById('adminTableBody');
+        tbody.innerHTML = ramaisData.map((item, index) => `
+            <tr class="hover:bg-slate-800">
+                <td class="p-3">${item.local}</td>
+                <td class="p-3">${item.setor}</td>
+                <td class="p-3">${item.subsetor || ''}</td>
+                <td class="p-3 font-bold text-blue-400">${item.ramal}</td>
+                <td class="p-3">${item.colaborador || ''}</td>
+                <td class="p-3 font-mono text-xs">${item.Workstation || ''}</td>
+                <td class="p-3">
+                    <button onclick="editRamal(${index})" class="text-blue-400 hover:text-blue-300 mr-3">✏️</button>
+                    <button onclick="deleteRamal(${index})" class="text-red-400 hover:text-red-300">🗑️</button>
+                </td>
+            </tr>
+        `).join('');
+    }
+
+    window.editRamal = function(index) {
+        const item = ramaisData[index];
+        const novo = {
+            local: prompt("Local:", item.local),
+            setor: prompt("Setor:", item.setor),
+            subsetor: prompt("Subsetor:", item.subsetor || ""),
+            ramal: prompt("Ramal:", item.ramal),
+            colaborador: prompt("Colaborador:", item.colaborador || ""),
+            Workstation: prompt("Workstation:", item.Workstation || "")
+        };
+        if (novo.ramal) {
+            ramaisData[index] = novo;
+            refreshAll();
+        }
+    };
+
+    window.deleteRamal = function(index) {
+        if (confirm("Excluir este ramal permanentemente?")) {
+            ramaisData.splice(index, 1);
+            refreshAll();
+        }
+    };
+
+    window.addNewRamal = function() {
+        const novo = {
+            local: prompt("Local (ex: MEDRADIUS CLINICA):", "MEDRADIUS CLINICA"),
+            setor: prompt("Setor:"),
+            subsetor: prompt("Subsetor:"),
+            ramal: prompt("Ramal (número):"),
+            colaborador: prompt("Colaborador:"),
+            Workstation: prompt("Workstation (IP ou nome):")
+        };
+        if (novo.ramal) {
+            ramaisData.push(novo);
+            refreshAll();
+        }
+    };
+
+    function refreshAll() {
+        renderCards(ramaisData);
+        renderTree();
+        renderAdminTable();
+        document.getElementById('resultInfo').textContent = `${ramaisData.length} ramais (alterado)`;
+    }
+
+    function exportJSON() {
+        const dataStr = JSON.stringify(ramaisData, null, 2);
+        const blob = new Blob([dataStr], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'ramais.json';
+        a.click();
+    }
+
+    function exportCSV() {
+        let csv = "local,setor,subsetor,ramal,colaborador,Workstation\n";
+        ramaisData.forEach(r => {
+            csv += `"${r.local || ''}","${r.setor || ''}","${r.subsetor || ''}","${r.ramal || ''}","${r.colaborador || ''}","${r.Workstation || ''}"\n`;
+        });
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'ramais.csv';
+        a.click();
+    }
+
+    function importCSV(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const text = e.target.result;
+            const rows = text.split('\n').slice(1); // pula cabeçalho
+            rows.forEach(row => {
+                if (!row.trim()) return;
+                const cols = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+                if (cols.length >= 4) {
+                    ramaisData.push({
+                        local: cols[0].replace(/"/g,'').trim(),
+                        setor: cols[1].replace(/"/g,'').trim(),
+                        subsetor: cols[2].replace(/"/g,'').trim(),
+                        ramal: cols[3].replace(/"/g,'').trim(),
+                        colaborador: cols[4] ? cols[4].replace(/"/g,'').trim() : "",
+                        Workstation: cols[5] ? cols[5].replace(/"/g,'').trim() : ""
+                    });
+                }
+            });
+            refreshAll();
+            alert("✅ CSV importado com sucesso!");
+        };
+        reader.readAsText(file);
+    }
+
+    // ==================== TI BUTTON ====================
+    document.getElementById('tiBtn').addEventListener('click', () => {
+        if (isTiMode) {
+            isTiMode = false;
+            document.getElementById('tiBtn').classList.remove('bg-emerald-600');
+            document.getElementById('tiBtn').innerHTML = `<i class="fa-solid fa-shield-halved"></i><span>Modo TI</span>`;
+            document.getElementById('adminBtn').classList.add('hidden');
+        } else {
+            const senha = prompt("🔑 Senha do Modo TI:");
+            if (senha === TI_PASSWORD) {
+                isTiMode = true;
+                document.getElementById('tiBtn').classList.add('bg-emerald-600');
+                document.getElementById('tiBtn').innerHTML = `<i class="fa-solid fa-shield-halved"></i><span>Modo TI ✓</span>`;
+                document.getElementById('adminBtn').classList.remove('hidden');
+            } else {
+                alert("❌ Senha incorreta!");
+            }
+        }
+        filterData();
+    });
+
+    // Inicialização
+    document.addEventListener('DOMContentLoaded', () => {
+        loadRamais();
+        document.getElementById('search').addEventListener('input', filterData);
+        document.getElementById('localFilter').addEventListener('change', filterData);
+    });
+
+    // Funções que já existiam (filterData, renderCards, etc.) — mantidas do código anterior
+</script>
+</body>
+</html>
