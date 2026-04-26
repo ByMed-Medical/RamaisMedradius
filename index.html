@@ -3,107 +3,229 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ramais MedRadius</title>
+    <title>Ramais MedRadius - Diretório Inteligente</title>
+    
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-</head>
-<body class="bg-[#090e1b] text-slate-200 min-h-screen">
 
-<div class="max-w-7xl mx-auto p-6">
+    <style>
+        body { background: #090e1b; color: #e2e8f0; font-family: system-ui, sans-serif; }
+        .ramal-card { background: #1e2937; border: 1px solid #334155; transition: all 0.3s ease; }
+        .ramal-card:hover { transform: translateY(-4px); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.7); }
+    </style>
+</head>
+<body class="min-h-screen">
+
+<div class="max-w-7xl mx-auto p-6 md:p-8">
 
     <!-- Cabeçalho -->
     <div class="flex justify-between items-center mb-8">
         <div class="text-center flex-1">
-            <img src="https://i.ibb.co/1S3TgBH/logo-G-Dark.png" alt="MedRadius" class="mx-auto h-32">
+            <img src="https://i.ibb.co/1S3TgBH/logo-G-Dark.png" alt="MedRadius" class="mx-auto h-28 md:h-40 object-contain">
+            <p class="text-slate-400 font-medium text-lg mt-2">Diretório dinâmico • Hospital • Clínica • Consultórios • Mangabeiras</p>
         </div>
-        <button id="tiBtn" class="px-5 py-2.5 bg-slate-700 hover:bg-slate-600 rounded-2xl flex items-center gap-2">
-            <i class="fa-solid fa-shield-halved"></i> <span>Modo TI</span>
+        <button id="tiBtn" class="px-5 py-2.5 bg-slate-700 hover:bg-slate-600 rounded-2xl text-sm flex items-center gap-2 transition-all">
+            <i class="fa-solid fa-shield-halved"></i><span>Modo TI</span>
         </button>
     </div>
 
-    <!-- Busca -->
+    <!-- Busca e Filtro -->
     <div class="flex flex-col sm:flex-row gap-3 mb-8 max-w-3xl mx-auto">
-        <input id="search" placeholder="🔎 Buscar..." class="flex-1 bg-slate-800 border border-slate-600 rounded-2xl px-5 py-4 focus:outline-none">
-        <select id="localFilter" class="bg-slate-800 border border-slate-600 rounded-2xl px-5 py-4">
+        <input id="search" type="text" placeholder="🔎 Buscar ramal, setor ou Colaborador..." 
+               class="flex-1 bg-slate-800 border border-slate-600 rounded-2xl px-5 py-4 focus:outline-none focus:border-blue-500 text-base">
+        <select id="localFilter" class="bg-slate-800 border border-slate-600 rounded-2xl px-5 py-4 focus:outline-none focus:border-blue-500">
             <option value="">Todos os locais</option>
-            <!-- opções -->
+            <option value="MEDRADIUS CLINICA">MEDRADIUS CLINICA</option>
+            <option value="MEDRADIUS CONSULTÓRIO 1">MEDRADIUS CONSULTÓRIO 1</option>
+            <option value="MEDRADIUS CONSULTÓRIO 2">MEDRADIUS CONSULTÓRIO 2</option>
+            <option value="MEDRADIUS HOSPITAL">MEDRADIUS HOSPITAL</option>
+            <option value="MEDRADIUS MANGABEIRAS">MEDRADIUS MANGABEIRAS</option>
         </select>
     </div>
 
-    <div id="status" class="text-center text-yellow-400 mb-6"></div>
-
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        <div class="lg:col-span-4 bg-slate-800 rounded-3xl p-5">
-            <h2 class="text-blue-400 font-bold mb-4">🧠 Mapa Mental</h2>
-            <div id="treeView"></div>
+        <!-- Mapa Mental -->
+        <div class="lg:col-span-4 bg-slate-800 rounded-3xl shadow p-5">
+            <h2 class="font-bold text-xl mb-4 flex items-center gap-3 text-blue-400">
+                <i class="fa-solid fa-sitemap"></i> Mapa Mental
+            </h2>
+            <div id="treeView" class="space-y-2 max-h-[75vh] overflow-auto pr-2"></div>
         </div>
+
+        <!-- Cards -->
         <div class="lg:col-span-8">
-            <div id="cardsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+            <div id="resultInfo" class="text-emerald-400 mb-4 pl-1"></div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="cardsContainer"></div>
         </div>
+    </div>
+
+    <!-- Botão Tabela Completa -->
+    <button onclick="toggleTable()" 
+            class="mt-10 mx-auto flex items-center gap-3 px-8 py-4 bg-blue-600 hover:bg-blue-700 rounded-2xl font-medium text-lg transition-all">
+        <i class="fa-solid fa-table"></i> Ver Tabela Completa
+    </button>
+
+    <!-- Tabela -->
+    <div id="tableView" class="hidden mt-8 overflow-x-auto bg-slate-800 rounded-3xl shadow p-6">
+        <table class="w-full text-sm" id="fullTable">
+            <thead class="bg-slate-700"><tr id="tableHeader"></tr></thead>
+            <tbody id="tableBody" class="divide-y divide-slate-700"></tbody>
+        </table>
     </div>
 </div>
 
+<!-- Botão Admin TI -->
+<button id="adminBtn" onclick="openAdminModal()" class="hidden fixed bottom-8 right-8 bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3 text-lg z-50">
+    <i class="fa-solid fa-gear"></i> Gerenciar Ramais
+</button>
+
 <script defer>
     let ramaisData = [];
+    let isTiMode = false;
+    const TI_PASSWORD = "ti2026";
 
     async function loadRamais() {
-        const status = document.getElementById('status');
-        status.textContent = "🔄 Carregando ramais.json...";
-
         try {
-            const response = await fetch('./ramais.json', { 
-                cache: 'no-store',
-                headers: { 'Pragma': 'no-cache' }
-            });
-
-            console.log("Status da resposta:", response.status);
-
-            if (!response.ok) {
-                throw new Error(`HTTP ${response.status} - Arquivo não encontrado`);
-            }
-
-            ramaisData = await response.json();
-            console.log(`✅ Carregados ${ramaisData.length} ramais`);
-
-            status.innerHTML = `<span class="text-emerald-400">✅ ${ramaisData.length} ramais carregados com sucesso!</span>`;
+            const res = await fetch('./ramais.json', { cache: 'no-store' });
+            ramaisData = await res.json();
             
+            document.getElementById('resultInfo').innerHTML = `✅ ${ramaisData.length} ramais carregados com sucesso!`;
             renderCards(ramaisData);
             renderTree();
-
-        } catch (err) {
-            console.error(err);
-            status.innerHTML = `
-                <span class="text-red-400">❌ Erro ao carregar ramais.json</span><br>
-                <small class="text-slate-400">${err.message}</small><br><br>
-                <span class="text-xs">Verifique se o arquivo <b>ramais.json</b> está na raiz do projeto.</span>
-            `;
+        } catch (e) {
+            console.error(e);
         }
     }
 
     function renderCards(items) {
         const container = document.getElementById('cardsContainer');
-        container.innerHTML = items.map(item => `
-            <div class="bg-slate-800 rounded-3xl p-6 border border-slate-700">
+        container.innerHTML = '';
+
+        items.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'ramal-card rounded-3xl p-6';
+            card.innerHTML = `
                 <div class="flex justify-between items-start mb-4">
-                    <div class="text-5xl font-bold text-blue-400">${item.ramal}</div>
-                    <div class="text-right text-sm">
-                        <div>${item.setor}</div>
-                        <div class="text-slate-400">${item.local}</div>
+                    <div class="text-6xl font-black text-blue-400">${item.ramal}</div>
+                    <div class="text-right">
+                        <div class="font-semibold">${item.setor}</div>
+                        <div class="text-xs text-slate-400">${item.local}</div>
                     </div>
                 </div>
-                <div class="text-sm text-slate-300">${item.subsetor || ''}</div>
+                <div class="text-sm">${item.subsetor || ''}</div>
                 <div class="text-xs text-slate-400 mt-1">${item.colaborador || ''}</div>
-            </div>
-        `).join('');
+            `;
+            container.appendChild(card);
+        });
     }
 
     function renderTree() {
-        // Simplificado por enquanto
-        document.getElementById('treeView').innerHTML = `<p class="text-slate-400">(${ramaisData.length} ramais carregados)</p>`;
+        const container = document.getElementById('treeView');
+        container.innerHTML = '';
+        const grouped = {};
+
+        ramaisData.forEach(item => {
+            if (!grouped[item.local]) grouped[item.local] = {};
+            if (!grouped[item.local][item.setor]) grouped[item.local][item.setor] = [];
+            grouped[item.local][item.setor].push(item);
+        });
+
+        Object.keys(grouped).sort().forEach(local => {
+            const details = document.createElement('details');
+            details.open = true;
+            details.innerHTML = `<summary class="bg-slate-700 px-4 py-3 rounded-2xl cursor-pointer font-medium">${local} <span class="text-xs">(${Object.keys(grouped[local]).length} setores)</span></summary>`;
+            
+            const div = document.createElement('div');
+            div.className = 'pl-6 mt-2 space-y-3';
+
+            Object.keys(grouped[local]).sort().forEach(setor => {
+                const sub = document.createElement('details');
+                sub.innerHTML = `<summary class="text-slate-300 cursor-pointer">${setor} (${grouped[local][setor].length})</summary>`;
+                
+                const list = document.createElement('div');
+                list.className = 'pl-6 text-sm mt-2 space-y-1';
+                grouped[local][setor].forEach(r => {
+                    const row = document.createElement('div');
+                    row.className = 'flex justify-between hover:bg-slate-700 p-2 rounded-xl cursor-pointer';
+                    row.innerHTML = `<span class="text-blue-400">${r.ramal}</span><span>${r.subsetor || ''}</span>`;
+                    row.onclick = () => copyRamal(r.ramal);
+                    list.appendChild(row);
+                });
+                sub.appendChild(list);
+                div.appendChild(sub);
+            });
+            details.appendChild(div);
+            container.appendChild(details);
+        });
     }
 
+    function filterData() {
+        const term = document.getElementById('search').value.toLowerCase().trim();
+        const localValue = document.getElementById('localFilter').value;
+
+        const filtered = ramaisData.filter(item => {
+            if (localValue && item.local !== localValue) return false;
+            if (!term) return true;
+            return Object.values(item).some(v => 
+                v && v.toString().toLowerCase().includes(term)
+            );
+        });
+
+        renderCards(filtered);
+        document.getElementById('resultInfo').textContent = `${filtered.length} de ${ramaisData.length} ramais encontrados`;
+    }
+
+    function toggleTable() {
+        const tv = document.getElementById('tableView');
+        tv.classList.toggle('hidden');
+        if (!tv.classList.contains('hidden')) renderFullTable();
+    }
+
+    function renderFullTable() {
+        // Implementação simplificada da tabela
+        const tbody = document.getElementById('tableBody');
+        tbody.innerHTML = ramaisData.map(item => `
+            <tr class="hover:bg-slate-700 cursor-pointer" onclick="copyRamal('${item.ramal}')">
+                <td class="p-4">${item.local}</td>
+                <td class="p-4">${item.setor}</td>
+                <td class="p-4">${item.subsetor || ''}</td>
+                <td class="p-4 font-bold text-blue-400">${item.ramal}</td>
+                <td class="p-4">${item.colaborador || ''}</td>
+            </tr>
+        `).join('');
+    }
+
+    window.copyRamal = function(ramal) {
+        navigator.clipboard.writeText(ramal);
+        const t = document.createElement('div');
+        t.className = "fixed bottom-8 right-8 bg-emerald-600 px-6 py-3 rounded-2xl";
+        t.textContent = `✅ Ramal ${ramal} copiado!`;
+        document.body.appendChild(t);
+        setTimeout(() => t.remove(), 2000);
+    };
+
+    // Modo TI + Admin (mantido)
+    document.getElementById('tiBtn').addEventListener('click', () => {
+        if (isTiMode) {
+            isTiMode = false;
+            document.getElementById('tiBtn').classList.remove('bg-emerald-600');
+            document.getElementById('adminBtn').classList.add('hidden');
+        } else {
+            const pass = prompt("Senha TI:");
+            if (pass === TI_PASSWORD) {
+                isTiMode = true;
+                document.getElementById('tiBtn').classList.add('bg-emerald-600');
+                document.getElementById('adminBtn').classList.remove('hidden');
+            }
+        }
+    });
+
     // Inicialização
-    document.addEventListener('DOMContentLoaded', loadRamais);
+    document.addEventListener('DOMContentLoaded', () => {
+        loadRamais();
+        document.getElementById('search').addEventListener('input', filterData);
+        document.getElementById('localFilter').addEventListener('change', filterData);
+    });
 </script>
 </body>
 </html>
