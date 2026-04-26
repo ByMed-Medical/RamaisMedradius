@@ -3,345 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ramais MedRadius - Diretório Inteligente</title>
-    
+    <title>Ramais MedRadius</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-    <style>
-        body { background: #090e1b; color: #e2e8f0; font-family: system-ui, sans-serif; }
-        .ramal-card { background: #1e2937; border: 1px solid #334155; transition: all 0.3s ease; }
-        .ramal-card:hover { transform: translateY(-4px); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.7); }
-
-        .modal { animation: fadeIn 0.2s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
-    </style>
 </head>
-<body class="min-h-screen">
+<body class="bg-[#090e1b] text-slate-200 min-h-screen">
 
-<div class="max-w-7xl mx-auto p-6 md:p-8">
+<div class="max-w-7xl mx-auto p-6">
 
+    <!-- Cabeçalho -->
     <div class="flex justify-between items-center mb-8">
         <div class="text-center flex-1">
-            <img src="https://i.ibb.co/1S3TgBH/logo-G-Dark.png" alt="Logo MedRadius" class="mx-auto h-28 md:h-40 object-contain">
-            <p class="text-slate-400 font-medium text-lg mt-2">Diretório dinâmico • Hospital • Clínica • Consultórios • Mangabeiras</p>
+            <img src="https://i.ibb.co/1S3TgBH/logo-G-Dark.png" alt="MedRadius" class="mx-auto h-32">
         </div>
-        <button id="tiBtn" class="px-5 py-2.5 bg-slate-700 hover:bg-slate-600 rounded-2xl text-sm flex items-center gap-2 transition-all">
-            <i class="fa-solid fa-shield-halved"></i><span>Modo TI</span>
+        <button id="tiBtn" class="px-5 py-2.5 bg-slate-700 hover:bg-slate-600 rounded-2xl flex items-center gap-2">
+            <i class="fa-solid fa-shield-halved"></i> <span>Modo TI</span>
         </button>
     </div>
 
+    <!-- Busca -->
     <div class="flex flex-col sm:flex-row gap-3 mb-8 max-w-3xl mx-auto">
-        <input id="search" type="text" placeholder="🔎 Buscar ramal, setor ou Colaborador..." 
-               class="flex-1 border border-gray-300 rounded-xl px-4 py-3 text-base focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
-        <select id="localFilter" class="bg-gray-800 border border-gray-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 sm:w-64">
+        <input id="search" placeholder="🔎 Buscar..." class="flex-1 bg-slate-800 border border-slate-600 rounded-2xl px-5 py-4 focus:outline-none">
+        <select id="localFilter" class="bg-slate-800 border border-slate-600 rounded-2xl px-5 py-4">
             <option value="">Todos os locais</option>
-            <option value="MEDRADIUS CLINICA">MEDRADIUS CLINICA</option>
-            <option value="MEDRADIUS CONSULTÓRIO 1">MEDRADIUS CONSULTÓRIO 1</option>
-            <option value="MEDRADIUS CONSULTÓRIO 2">MEDRADIUS CONSULTÓRIO 2</option>
-            <option value="MEDRADIUS HOSPITAL">MEDRADIUS HOSPITAL</option>
-            <option value="MEDRADIUS MANGABEIRAS">MEDRADIUS MANGABEIRAS</option>
+            <!-- opções -->
         </select>
     </div>
 
+    <div id="status" class="text-center text-yellow-400 mb-6"></div>
+
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        <div class="lg:col-span-4 bg-slate-800 rounded-3xl shadow p-5 h-fit">
-            <h2 class="font-bold text-xl mb-4 flex items-center gap-3 text-blue-400">
-                <i class="fa-solid fa-sitemap"></i> Mapa Mental
-            </h2>
-            <div id="treeView" class="space-y-1 pr-1 max-h-[78vh] overflow-auto"></div>
+        <div class="lg:col-span-4 bg-slate-800 rounded-3xl p-5">
+            <h2 class="text-blue-400 font-bold mb-4">🧠 Mapa Mental</h2>
+            <div id="treeView"></div>
         </div>
-
         <div class="lg:col-span-8">
-            <div id="resultInfo" class="text-slate-400 mb-4 pl-1 text-sm"></div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="cardsContainer"></div>
-        </div>
-    </div>
-
-    <!-- Botão Admin TI -->
-    <button id="adminBtn" onclick="openAdminModal()" 
-            class="hidden fixed bottom-8 right-8 bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-4 rounded-2xl shadow-xl flex items-center gap-3 text-lg font-medium z-40">
-        <i class="fa-solid fa-gear"></i> Gerenciar Ramais (TI)
-    </button>
-</div>
-
-<!-- MODAL ADMIN -->
-<div id="adminModal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-50">
-    <div class="modal bg-slate-900 rounded-3xl w-full max-w-5xl max-h-[95vh] overflow-hidden flex flex-col m-4">
-        <div class="p-6 border-b border-slate-700 flex justify-between items-center bg-slate-800">
-            <h2 class="text-2xl font-bold flex items-center gap-3"><i class="fa-solid fa-gear"></i> Gerenciamento de Ramais</h2>
-            <button onclick="closeAdminModal()" class="text-4xl leading-none text-slate-400 hover:text-white">×</button>
-        </div>
-
-        <div class="p-6 flex-1 overflow-auto">
-            <div class="flex flex-wrap gap-3 mb-6">
-                <button onclick="addNewRamal()" class="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-2xl font-medium flex items-center gap-2">
-                    <i class="fa-solid fa-plus"></i> Adicionar Novo
-                </button>
-                <button onclick="exportJSON()" class="bg-slate-700 hover:bg-slate-600 px-6 py-3 rounded-2xl flex items-center gap-2">
-                    <i class="fa-solid fa-download"></i> Exportar JSON
-                </button>
-                <button onclick="exportCSV()" class="bg-slate-700 hover:bg-slate-600 px-6 py-3 rounded-2xl flex items-center gap-2">
-                    <i class="fa-solid fa-file-csv"></i> Exportar CSV
-                </button>
-                <label class="bg-slate-700 hover:bg-slate-600 px-6 py-3 rounded-2xl flex items-center gap-2 cursor-pointer">
-                    <i class="fa-solid fa-upload"></i> Importar CSV
-                    <input type="file" id="csvImport" accept=".csv" class="hidden" onchange="importCSV(event)">
-                </label>
-            </div>
-
-            <table class="w-full text-sm" id="adminTable">
-                <thead class="bg-slate-800 sticky top-0">
-                    <tr>
-                        <th class="p-3 text-left">Local</th>
-                        <th class="p-3 text-left">Setor</th>
-                        <th class="p-3 text-left">Subsetor</th>
-                        <th class="p-3 text-left">Ramal</th>
-                        <th class="p-3 text-left">Colaborador</th>
-                        <th class="p-3 text-left">Workstation</th>
-                        <th class="p-3 w-28">Ações</th>
-                    </tr>
-                </thead>
-                <tbody id="adminTableBody" class="divide-y divide-slate-700"></tbody>
-            </table>
+            <div id="cardsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
         </div>
     </div>
 </div>
-
-<footer class="fixed bottom-3 left-4 text-xs text-slate-500">Byron S. Medeiros</footer>
 
 <script defer>
     let ramaisData = [];
-    let isTiMode = false;
-    const TI_PASSWORD = "ti2026";
 
-    // ====================== CARREGAR DADOS ======================
     async function loadRamais() {
+        const status = document.getElementById('status');
+        status.textContent = "🔄 Carregando ramais.json...";
+
         try {
-            const response = await fetch('./ramais.json', { cache: 'no-store' });
-            if (!response.ok) throw new Error(`HTTP ${response.status}`);
-            ramaisData = await response.json();
+            const response = await fetch('./ramais.json', { 
+                cache: 'no-store',
+                headers: { 'Pragma': 'no-cache' }
+            });
 
-            renderCards(ramaisData);
-            renderTree();
-            document.getElementById('resultInfo').textContent = `${ramaisData.length} ramais carregados`;
-        } catch (error) {
-            console.error("Erro ao carregar ramais:", error);
-            document.getElementById('cardsContainer').innerHTML = `<p class="text-red-400 text-center py-12">Erro ao carregar ramais.json</p>`;
-        }
-    }
+            console.log("Status da resposta:", response.status);
 
-    // ====================== RENDERIZAÇÃO ======================
-    function renderCards(items) {
-        const container = document.getElementById('cardsContainer');
-        container.innerHTML = '';
-
-        if (items.length === 0) {
-            container.innerHTML = '<p class="col-span-full text-center py-20 text-slate-400">Nenhum ramal encontrado</p>';
-            return;
-        }
-
-        items.forEach(item => {
-            const card = document.createElement('div');
-            card.className = 'ramal-card rounded-3xl shadow overflow-hidden flex flex-col';
-
-            const subsetores = (item.subsetor || '').split(/[/,;|]\s*/).map(s => s.trim()).filter(Boolean);
-            const colaboradores = (item.colaborador || '').split(/[/,;|]\s*/).map(s => s.trim()).filter(Boolean);
-
-            let rowsHTML = '';
-            const max = Math.max(subsetores.length, colaboradores.length, 1);
-            for (let i = 0; i < max; i++) {
-                rowsHTML += `<tr class="hover:bg-slate-700"><td class="p-3">${subsetores[i] || '—'}</td><td class="p-3">${colaboradores[i] || '—'}</td>
-                    ${isTiMode ? `<td class="p-3 font-mono">${item.Workstation || '—'}</td>` : ''}</tr>`;
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status} - Arquivo não encontrado`);
             }
 
-            card.innerHTML = `
-                <div class="bg-gradient-to-r from-blue-700 to-indigo-700 text-white px-6 py-5 flex justify-between">
-                    <div class="text-6xl font-black">${item.ramal}</div>
-                    <div class="text-right">
-                        <div class="font-semibold">${item.setor}</div>
-                        <div class="text-xs opacity-75">${item.local}</div>
+            ramaisData = await response.json();
+            console.log(`✅ Carregados ${ramaisData.length} ramais`);
+
+            status.innerHTML = `<span class="text-emerald-400">✅ ${ramaisData.length} ramais carregados com sucesso!</span>`;
+            
+            renderCards(ramaisData);
+            renderTree();
+
+        } catch (err) {
+            console.error(err);
+            status.innerHTML = `
+                <span class="text-red-400">❌ Erro ao carregar ramais.json</span><br>
+                <small class="text-slate-400">${err.message}</small><br><br>
+                <span class="text-xs">Verifique se o arquivo <b>ramais.json</b> está na raiz do projeto.</span>
+            `;
+        }
+    }
+
+    function renderCards(items) {
+        const container = document.getElementById('cardsContainer');
+        container.innerHTML = items.map(item => `
+            <div class="bg-slate-800 rounded-3xl p-6 border border-slate-700">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="text-5xl font-bold text-blue-400">${item.ramal}</div>
+                    <div class="text-right text-sm">
+                        <div>${item.setor}</div>
+                        <div class="text-slate-400">${item.local}</div>
                     </div>
                 </div>
-                <div class="p-6">
-                    <table class="w-full text-sm"><tbody class="divide-y">${rowsHTML}</tbody></table>
-                </div>`;
-            container.appendChild(card);
-        });
-    }
-
-    function renderTree() {
-        const container = document.getElementById('treeView');
-        container.innerHTML = '';
-        const grouped = {};
-
-        ramaisData.forEach(item => {
-            if (!grouped[item.local]) grouped[item.local] = {};
-            if (!grouped[item.local][item.setor]) grouped[item.local][item.setor] = [];
-            grouped[item.local][item.setor].push(item);
-        });
-
-        Object.keys(grouped).sort().forEach(local => {
-            const details = document.createElement('details');
-            details.innerHTML = `<summary class="bg-slate-800 p-3 rounded-2xl flex justify-between cursor-pointer"><span>${local}</span><span class="text-xs bg-slate-700 px-2 py-0.5 rounded-full">${Object.keys(grouped[local]).length} setores</span></summary>`;
-            
-            const inner = document.createElement('div');
-            inner.className = 'pl-4 space-y-1 mt-2';
-
-            Object.keys(grouped[local]).sort().forEach(setor => {
-                const sub = document.createElement('details');
-                sub.innerHTML = `<summary class="text-slate-300 cursor-pointer">${setor} <span class="text-xs">(${grouped[local][setor].length})</span></summary>`;
-                const list = document.createElement('div');
-                list.className = 'pl-6 text-sm space-y-1';
-
-                grouped[local][setor].forEach(r => {
-                    const row = document.createElement('div');
-                    row.className = 'flex justify-between hover:bg-slate-700 p-2 rounded-xl cursor-pointer';
-                    row.innerHTML = `<span class="text-blue-400 font-medium">${r.ramal}</span><span class="text-slate-400">${r.subsetor || ''}</span>`;
-                    row.onclick = () => copyRamal(r.ramal);
-                    list.appendChild(row);
-                });
-                sub.appendChild(list);
-                inner.appendChild(sub);
-            });
-            details.appendChild(inner);
-            container.appendChild(details);
-        });
-    }
-
-    function filterData() {
-        const term = document.getElementById('search').value.toLowerCase().trim();
-        const localValue = document.getElementById('localFilter').value;
-
-        const filtered = ramaisData.filter(item => {
-            if (localValue && item.local !== localValue) return false;
-            if (!term) return true;
-            return Object.values(item).some(v => v && v.toString().toLowerCase().includes(term));
-        });
-
-        renderCards(filtered);
-        document.getElementById('resultInfo').textContent = `${filtered.length} de ${ramaisData.length} ramais`;
-    }
-
-    // ====================== ADMIN ======================
-    function openAdminModal() {
-        if (!isTiMode) return;
-        renderAdminTable();
-        document.getElementById('adminModal').classList.remove('hidden');
-    }
-
-    function closeAdminModal() {
-        document.getElementById('adminModal').classList.add('hidden');
-    }
-
-    function renderAdminTable() {
-        const tbody = document.getElementById('adminTableBody');
-        tbody.innerHTML = ramaisData.map((item, index) => `
-            <tr class="hover:bg-slate-800 border-b border-slate-700">
-                <td class="p-3">${item.local}</td>
-                <td class="p-3">${item.setor}</td>
-                <td class="p-3">${item.subsetor || ''}</td>
-                <td class="p-3 font-bold text-blue-400">${item.ramal}</td>
-                <td class="p-3">${item.colaborador || ''}</td>
-                <td class="p-3 font-mono text-xs">${item.Workstation || ''}</td>
-                <td class="p-3">
-                    <button onclick="editRamal(${index})" class="text-blue-400 hover:text-blue-300 mr-4">✏️</button>
-                    <button onclick="deleteRamal(${index})" class="text-red-400 hover:text-red-300">🗑️</button>
-                </td>
-            </tr>
+                <div class="text-sm text-slate-300">${item.subsetor || ''}</div>
+                <div class="text-xs text-slate-400 mt-1">${item.colaborador || ''}</div>
+            </div>
         `).join('');
     }
 
-    window.editRamal = function(index) {
-        const item = ramaisData[index];
-        const updated = {
-            local: prompt("Local:", item.local) || item.local,
-            setor: prompt("Setor:", item.setor) || item.setor,
-            subsetor: prompt("Subsetor:", item.subsetor || "") || item.subsetor,
-            ramal: prompt("Ramal:", item.ramal) || item.ramal,
-            colaborador: prompt("Colaborador:", item.colaborador || "") || item.colaborador,
-            Workstation: prompt("Workstation:", item.Workstation || "") || item.Workstation
-        };
-        ramaisData[index] = updated;
-        refreshAll();
-    };
-
-    window.deleteRamal = function(index) {
-        if (confirm("Tem certeza que deseja excluir este ramal?")) {
-            ramaisData.splice(index, 1);
-            refreshAll();
-        }
-    };
-
-    window.addNewRamal = function() {
-        const novo = {
-            local: prompt("Local:", "MEDRADIUS CLINICA"),
-            setor: prompt("Setor:"),
-            subsetor: prompt("Subsetor:"),
-            ramal: prompt("Ramal:"),
-            colaborador: prompt("Colaborador:"),
-            Workstation: prompt("Workstation:")
-        };
-        if (novo.ramal) {
-            ramaisData.push(novo);
-            refreshAll();
-        }
-    };
-
-    function refreshAll() {
-        renderCards(ramaisData);
-        renderTree();
-        renderAdminTable();
-        document.getElementById('resultInfo').textContent = `${ramaisData.length} ramais (modificado)`;
+    function renderTree() {
+        // Simplificado por enquanto
+        document.getElementById('treeView').innerHTML = `<p class="text-slate-400">(${ramaisData.length} ramais carregados)</p>`;
     }
 
-    function exportJSON() {
-        const dataStr = JSON.stringify(ramaisData, null, 2);
-        const blob = new Blob([dataStr], {type: 'application/json'});
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = 'ramais.json';
-        link.click();
-    }
-
-    function exportCSV() {
-        let csv = "local,setor,subsetor,ramal,colaborador,Workstation\n";
-        ramaisData.forEach(r => {
-            csv += `"${r.local||''}","${r.setor||''}","${r.subsetor||''}","${r.ramal||''}","${r.colaborador||''}","${r.Workstation||''}"\n`;
-        });
-        const blob = new Blob([csv], {type: 'text/csv'});
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = 'ramais.csv';
-        link.click();
-    }
-
-    function importCSV(event) {
-        const file = event.target.files[0];
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            const lines = e.target.result.split('\n');
-            lines.slice(1).forEach(line => {
-                if (!line.trim()) return;
-                const [local, setor, subsetor, ramal, colaborador, workstation] = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(s => s.replace(/"/g,'').trim());
-                if (ramal) {
-                    ramaisData.push({local, setor, subsetor, ramal, colaborador, Workstation: workstation});
-                }
-            });
-            refreshAll();
-            alert("✅ Importação concluída!");
-        };
-        reader.readAsText(file);
-    }
-
-    window.copyRamal = function(ramal) {
-        navigator.clipboard.writeText(ramal).then(() => {
-            const toast = document.createElement('div');
-            toast.className = "fixed bottom-8 right-8 bg-emerald-600 text-white px-6 py-3 rounded-2xl shadow-2xl z-50";
-            toast.textContent = `✅ Ramal ${ramal} copiado!`;
-            document.body.appendChild(toast);
-            setTimeout(() => toast.remove(), 2000);
-        });
-    };
-
+    // Inicialização
+    document.addEventListener('DOMContentLoaded', loadRamais);
+</script>
+</body>
+</html>
