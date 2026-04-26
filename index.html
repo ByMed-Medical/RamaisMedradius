@@ -145,29 +145,40 @@
   // ==================== CARREGAR JSON ====================
     async function loadRamais() {
     try {
-        console.log("Tentando carregar: ./ramais.json");
+        console.log("🔄 Tentando carregar ramais.json...");
         
-        const response = await fetch('./ramais.json');
-        console.log("Status da resposta:", response.status);
+        const response = await fetch('./ramais.json', { 
+            cache: 'no-store',
+            headers: { 'Cache-Control': 'no-cache' }
+        });
+        
+        console.log("📡 Status:", response.status, response.statusText);
         
         if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
+            throw new Error(`HTTP ${response.status} - ${response.statusText}`);
         }
-        
+
+        const contentType = response.headers.get("content-type");
+        if (!contentType || !contentType.includes("application/json")) {
+            throw new Error("O arquivo não é JSON. Recebido: " + contentType);
+        }
+
         ramaisData = await response.json();
-        console.log(`✅ ${ramaisData.length} ramais carregados com sucesso!`);
+        
+        console.log(`✅ Sucesso! ${ramaisData.length} ramais carregados.`);
         
         renderCards(ramaisData);
         renderTree();
-        document.getElementById('resultInfo').textContent = `${ramaisData.length} ramais carregados`;
-        
+        document.getElementById('resultInfo').textContent = 
+            `${ramaisData.length} ramais carregados`;
+
     } catch (error) {
-        console.error("Erro completo:", error);
+        console.error("❌ Erro completo:", error);
         document.getElementById('cardsContainer').innerHTML = `
-            <p class="col-span-full text-center py-20 text-red-400">
-                ❌ Erro ao carregar ramais.json<br>
-                <small>${error.message}</small>
-            </p>`;
+            <div class="col-span-full text-center py-20">
+                <p class="text-red-400 text-xl">❌ Erro ao carregar ramais.json</p>
+                <p class="text-slate-400 mt-2">${error.message}</p>
+            </div>`;
     }
 }
 
