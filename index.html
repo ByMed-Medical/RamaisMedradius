@@ -64,17 +64,19 @@
         </div>
     </div>
 
-    <button onclick="toggleTable()" class="mt-12 mx-auto flex items-center gap-3 px-8 py-4 bg-blue-600 hover:bg-blue-700 rounded-2xl font-medium text-lg">
+        <button onclick="toggleTable()" 
+            class="mt-12 mx-auto flex items-center gap-3 px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl font-medium text-lg transition-all">
         <i class="fa-solid fa-table"></i> Ver Tabela Completa
     </button>
 
     <div id="tableView" class="hidden mt-8 overflow-x-auto bg-slate-800 rounded-3xl shadow p-6">
         <table class="w-full text-sm" id="fullTable">
-            <thead class="bg-slate-700"><tr id="tableHeader"></tr></thead>
+            <thead class="bg-slate-700">
+                <tr id="tableHeader"></tr>
+            </thead>
             <tbody id="tableBody" class="divide-y divide-slate-700"></tbody>
         </table>
     </div>
-</div>
 
 <!-- Botão Gerenciar -->
 <button id="adminBtn" onclick="openAdminModal()" 
@@ -186,10 +188,10 @@
                     </tbody>
                 </table>
             </div>
-        `;
-        container.appendChild(card);
-    });
-}
+         `;
+         container.appendChild(card);
+       });
+    }
 
     // Restante do código (renderTree, filterData, admin, etc.) mantido igual
     function renderTree() {
@@ -226,6 +228,42 @@
             details.appendChild(inner);
             container.appendChild(details);
         });
+    }
+        // Função de tabela completa
+        function toggleTable() {
+        const tableView = document.getElementById('tableView');
+        tableView.classList.toggle('hidden');
+        
+        if (!tableView.classList.contains('hidden')) {
+            renderFullTable();
+        }
+    }
+
+    function renderFullTable() {
+        const header = document.getElementById('tableHeader');
+        const tbody = document.getElementById('tableBody');
+
+        // Cabeçalho dinâmico
+        header.innerHTML = `
+            <th class="p-4 text-left">Local</th>
+            <th class="p-4 text-left">Setor</th>
+            <th class="p-4 text-left">Subsetor</th>
+            <th class="p-4 text-left">Ramal</th>
+            <th class="p-4 text-left">Colaborador</th>
+            ${isTiMode ? `<th class="p-4 text-left">Workstation</th>` : ''}
+        `;
+
+        tbody.innerHTML = ramaisData.map(item => `
+            <tr onclick="copyRamal('${item.ramal}')" 
+                class="hover:bg-slate-700 cursor-pointer border-b border-slate-700">
+                <td class="p-4">${item.local}</td>
+                <td class="p-4">${item.setor}</td>
+                <td class="p-4">${item.subsetor || ''}</td>
+                <td class="p-4 font-bold text-blue-400">${item.ramal}</td>
+                <td class="p-4">${item.colaborador || ''}</td>
+                ${isTiMode ? `<td class="p-4 font-mono text-emerald-300">${item.Workstation || ''}</td>` : ''}
+            </tr>
+        `).join('');
     }
 
     function filterData() {
