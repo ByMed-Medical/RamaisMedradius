@@ -1,6 +1,10 @@
 {
   "routes": [
     {
+      "src": "/ramais.json",
+      "dest": "/ramais.json"
+    },
+    {
       "src": "/admin/(.*)",
       "dest": "/admin/index.html"
     },
@@ -13,7 +17,8 @@
     {
       "source": "/ramais.json",
       "headers": [
-        { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }
+        { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" },
+        { "key": "Content-Type", "value": "application/json" }
       ]
     }
   ]
