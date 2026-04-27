@@ -413,6 +413,7 @@
 
     document.addEventListener('DOMContentLoaded', () => {
         loadRamais();
+        document.getElementById('resultInfo').classList.add('hidden'); // começa escondido
         document.getElementById('search').addEventListener('input', filterData);
         document.getElementById('localFilter').addEventListener('change', filterData);
     });
