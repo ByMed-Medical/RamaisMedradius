@@ -402,41 +402,31 @@
     };
 
     document.getElementById('tiBtn').addEventListener('click', () => {
-        if (isTiMode) {
-            isTiMode = false; document.getElementById('tiBtn').classList.remove('bg-emerald-600'); document.getElementById('adminBtn').classList.add('hidden');
+    if (isTiMode) {
+        isTiMode = false;
+        document.getElementById('tiBtn').classList.remove('bg-emerald-600');
+        document.getElementById('adminBtn').classList.add('hidden');
+    } else {
+        const senha = prompt("🔑 Digite a senha do Modo TI:");
+        if (senha === TI_PASSWORD) {
+            isTiMode = true;
+            document.getElementById('tiBtn').classList.add('bg-emerald-600');
+            document.getElementById('adminBtn').classList.remove('hidden');
         } else {
-            const senha = prompt("🔑 Digite a senha do Modo TI:");
-            if (senha === TI_PASSWORD) {
-                isTiMode = true; document.getElementById('tiBtn').classList.add('bg-emerald-600'); document.getElementById('adminBtn').classList.remove('hidden');
-            } else alert("❌ Senha incorreta!");
+            alert("❌ Senha incorreta!");
+            return;
         }
-        renderCards(ramaisData); // atualiza cards ao mudar modo TI
-    });
+    }
+    // Atualiza tudo quando mudar o modo TI
+    renderCards(ramaisData);
+    renderTree();
+});
 
     document.addEventListener('DOMContentLoaded', () => {
         loadRamais();
         document.getElementById('resultInfo').classList.add('hidden'); // começa escondido
         document.getElementById('search').addEventListener('input', filterData);
         document.getElementById('localFilter').addEventListener('change', filterData);
-        document.getElementById('tiBtn').addEventListener('click', () => {
-        if (isTiMode) {
-            isTiMode = false;
-            document.getElementById('tiBtn').classList.remove('bg-emerald-600');
-            document.getElementById('adminBtn').classList.add('hidden');
-        } else {
-            const senha = prompt("🔑 Digite a senha do Modo TI:");
-            if (senha === TI_PASSWORD) {
-                isTiMode = true;
-                document.getElementById('tiBtn').classList.add('bg-emerald-600');
-                document.getElementById('adminBtn').classList.remove('hidden');
-            } else {
-                alert("❌ Senha incorreta!");
-                return;
-            }
-        }
-        // Atualiza tudo quando mudar o modo TI
-        renderCards(ramaisData);
-        renderTree();
     });
 </script>
 </body>
