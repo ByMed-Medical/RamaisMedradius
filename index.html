@@ -212,15 +212,14 @@
     Object.keys(grouped).sort().forEach(local => {
         const details = document.createElement('details');
         
-        // Contador só aparece no Modo TI
-        const countHTML = isTiMode 
-            ? `<span class="text-xs bg-slate-800 px-3 py-1 rounded-full">${Object.keys(grouped[local]).length} setores</span>` 
-            : '';
+        // Mostra a quantidade apenas no Modo TI
+        const setorCount = isTiMode ? 
+            `<span class="text-xs bg-slate-800 px-3 py-1 rounded-full">${Object.keys(grouped[local]).length} setores</span>` : '';
 
         details.innerHTML = `
             <summary class="flex justify-between items-center px-4 py-3 rounded-2xl bg-slate-700 hover:bg-slate-600 cursor-pointer">
                 <span>${local}</span>
-                ${countHTML}
+                ${setorCount}
             </summary>`;
         
         const inner = document.createElement('div');
@@ -229,14 +228,13 @@
         Object.keys(grouped[local]).sort().forEach(setor => {
             const subDetails = document.createElement('details');
             
-            const subCount = isTiMode 
-                ? `<span class="text-xs text-slate-500">(${grouped[local][setor].length})</span>` 
-                : '';
+            const ramalCount = isTiMode ? 
+                `<span class="text-xs text-slate-500">(${grouped[local][setor].length})</span>` : '';
 
             subDetails.innerHTML = `
                 <summary class="px-4 py-2 rounded-xl hover:bg-slate-700 cursor-pointer flex justify-between items-center">
                     <span>${setor}</span>
-                    ${subCount}
+                    ${ramalCount}
                 </summary>`;
             
             const list = document.createElement('div');
