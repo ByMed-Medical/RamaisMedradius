@@ -326,8 +326,15 @@
     });
 
     renderCards(filtered);
-    document.getElementById('resultInfo').textContent = 
-        `${filtered.length} de ${ramaisData.length} ramais encontrados`;
+
+    // Mostra o contador APENAS no Modo TI
+    const resultInfo = document.getElementById('resultInfo');
+    if (isTiMode) {
+        resultInfo.textContent = `${filtered.length} de ${ramaisData.length} ramais encontrados`;
+        resultInfo.classList.remove('hidden');
+    } else {
+        resultInfo.classList.add('hidden');
+    }
 }
     
 
