@@ -320,7 +320,7 @@
         }
 
         // Se digitou texto normal → busca em qualquer campo (comportamento antigo)
-        return Object.values(item).some(v => 
+       return Object.values(item).some(v => 
             v && v.toString().toLowerCase().includes(term)
         );
     });
