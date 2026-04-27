@@ -4,7 +4,7 @@
     "setor": "ALMOXARIFADO",
     "subsetor": "CENTRAL",
     "ramal": "129",
-    "Workstation": "172.18.3.123",
+    "Workstation": "172.18.3.123",f
     "colaborador": ""
   },
   {
@@ -473,8 +473,8 @@
   },
   {
     "local": "MEDRADIUS CLINICA",
-    "setor": "SUPERVISORA",
-    "subsetor": "GUICHÊ 01",
+    "setor": "RECEPÇÃO 3",
+    "subsetor": "SUPERVISORA",
     "ramal": "164",
     "Workstation": "R3COORD",
     "colaborador": "GISSELY EDUARDA PIMENTEL DE ALMEIDA SILVA"
