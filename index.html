@@ -199,40 +199,63 @@
 
     // Restante do código (renderTree, filterData, admin, etc.) mantido igual
     function renderTree() {
-        const container = document.getElementById('treeView');
-        container.innerHTML = '';
-        const grouped = {};
+    const container = document.getElementById('treeView');
+    container.innerHTML = '';
+    const grouped = {};
 
-        ramaisData.forEach(item => {
-            if (!grouped[item.local]) grouped[item.local] = {};
-            if (!grouped[item.local][item.setor]) grouped[item.local][item.setor] = [];
-            grouped[item.local][item.setor].push(item);
-        });
+    ramaisData.forEach(item => {
+        if (!grouped[item.local]) grouped[item.local] = {};
+        if (!grouped[item.local][item.setor]) grouped[item.local][item.setor] = [];
+        grouped[item.local][item.setor].push(item);
+    });
 
-        Object.keys(grouped).sort().forEach(local => {
-            const details = document.createElement('details');
-            details.innerHTML = `<summary class="flex justify-between items-center px-4 py-3 rounded-2xl bg-slate-700 hover:bg-slate-600 cursor-pointer"><span>${local}</span><span class="text-xs bg-slate-800 px-3 py-1 rounded-full">${Object.keys(grouped[local]).length} setores</span></summary>`;
-            const inner = document.createElement('div');
-            inner.className = 'pl-6 mt-3 space-y-2';
-            Object.keys(grouped[local]).sort().forEach(setor => {
-                const sub = document.createElement('details');
-                sub.innerHTML = `<summary class="px-4 py-2 rounded-xl hover:bg-slate-700 cursor-pointer flex justify-between"><span>${setor}</span><span class="text-xs text-slate-500">(${grouped[local][setor].length})</span></summary>`;
-                const list = document.createElement('div');
-                list.className = 'pl-6 space-y-1';
-                grouped[local][setor].forEach(r => {
-                    const row = document.createElement('div');
-                    row.className = 'flex justify-between p-2 hover:bg-slate-700 rounded-xl cursor-pointer';
-                    row.innerHTML = `<span class="text-blue-400">${r.ramal}</span><span class="text-slate-400">${r.subsetor || ''}</span>`;
-                    row.onclick = (e) => { e.stopPropagation(); copyRamal(r.ramal); };
-                    list.appendChild(row);
-                });
-                sub.appendChild(list);
-                inner.appendChild(sub);
+    Object.keys(grouped).sort().forEach(local => {
+        const details = document.createElement('details');
+        
+        // Mostra a quantidade apenas no Modo TI
+        const setorCount = isTiMode ? 
+            `<span class="text-xs bg-slate-800 px-3 py-1 rounded-full">${Object.keys(grouped[local]).length} setores</span>` : '';
+
+        details.innerHTML = `
+            <summary class="flex justify-between items-center px-4 py-3 rounded-2xl bg-slate-700 hover:bg-slate-600 cursor-pointer">
+                <span>${local}</span>
+                ${setorCount}
+            </summary>`;
+        
+        const inner = document.createElement('div');
+        inner.className = 'pl-6 mt-3 space-y-2';
+
+        Object.keys(grouped[local]).sort().forEach(setor => {
+            const subDetails = document.createElement('details');
+            
+            const ramalCount = isTiMode ? 
+                `<span class="text-xs text-slate-500">(${grouped[local][setor].length})</span>` : '';
+
+            subDetails.innerHTML = `
+                <summary class="px-4 py-2 rounded-xl hover:bg-slate-700 cursor-pointer flex justify-between items-center">
+                    <span>${setor}</span>
+                    ${ramalCount}
+                </summary>`;
+            
+            const list = document.createElement('div');
+            list.className = 'pl-6 space-y-1 text-sm';
+
+            grouped[local][setor].forEach(r => {
+                const row = document.createElement('div');
+                row.className = 'flex justify-between p-2.5 hover:bg-slate-700 rounded-xl cursor-pointer';
+                row.innerHTML = `<span class="text-blue-400 font-medium">${r.ramal}</span><span class="text-slate-400 truncate">${r.subsetor || ''}</span>`;
+                row.onclick = (e) => { e.stopPropagation(); copyRamal(r.ramal); };
+                list.appendChild(row);
             });
-            details.appendChild(inner);
-            container.appendChild(details);
+            
+            subDetails.appendChild(list);
+            inner.appendChild(subDetails);
         });
-    }
+        
+        details.appendChild(inner);
+        container.appendChild(details);
+    });
+}
         // Função de tabela completa
         function toggleTable() {
         const tableView = document.getElementById('tableView');
