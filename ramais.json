@@ -476,24 +476,24 @@
     "setor": "RECEPÇÃO 3",
     "subsetor": "GUICHÊ 01",
     "ramal": "164",
-    "Workstation": "172.18.2.84",
-    "colaborador": ""
+    "Workstation": "R3COORD",
+    "colaborador": "GISSELY EDUARDA PIMENTEL DE ALMEIDA SILVA"
   },
   {
     "local": "MEDRADIUS CLINICA",
     "setor": "RECEPÇÃO 3",
     "subsetor": "GUICHÊ 02",
     "ramal": "165",
-    "Workstation": "172.18.3.245",
-    "colaborador": ""
+    "Workstation": "172.18.0.228",
+    "colaborador": "LAINE STEFANIE DE OLIVEIRA MAZZIOTTI"
   },
   {
     "local": "MEDRADIUS CLINICA",
     "setor": "RECEPÇÃO 3",
     "subsetor": "GUICHÊ 03",
     "ramal": "166",
-    "Workstation": "172.18.3.246",
-    "colaborador": ""
+    "Workstation": "172.18.2.102",
+    "colaborador": "YZABELLY VICKTÓRIA DE LEMOS COELHO"
   },
   {
     "local": "MEDRADIUS CLINICA",
@@ -1282,10 +1282,18 @@
   {
     "local": "MEDRADIUS HOSPITAL",
     "setor": "NUTRIÇÃO",
-    "subsetor": "1",
+    "subsetor": "ADMINISTRATIVO",
     "ramal": "250",
     "Workstation": "172.18.2.115",
     "colaborador": ""
+  },
+  {
+    "local": "MEDRADIUS HOSPITAL",
+    "setor": "NUTRIÇÃO",
+    "subsetor": "COZINHA",
+    "ramal": "251",
+    "Workstation": "172.18.2.235",
+    "colaborador": "SIMONE DA SILVA GUEDES"
   },
   {
     "local": "MEDRADIUS HOSPITAL",
