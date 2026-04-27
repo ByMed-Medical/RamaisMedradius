@@ -266,17 +266,43 @@
         `).join('');
     }
 
+    //function filterData() {
+    //    const term = document.getElementById('search').value.toLowerCase().trim();
+    //    const localValue = document.getElementById('localFilter').value;
+    //    const filtered = ramaisData.filter(item => {
+    //        if (localValue && item.local !== localValue) return false;
+    //        if (!term) return true;
+    //        return Object.values(item).some(v => v && v.toString().toLowerCase().includes(term));
+    //    });
+    //    renderCards(filtered);
+    //    document.getElementById('resultInfo').textContent = `${filtered.length} de ${ramaisData.length} ramais encontrados`;
+    //} 
     function filterData() {
-        const term = document.getElementById('search').value.toLowerCase().trim();
-        const localValue = document.getElementById('localFilter').value;
-        const filtered = ramaisData.filter(item => {
-            if (localValue && item.local !== localValue) return false;
-            if (!term) return true;
-            return Object.values(item).some(v => v && v.toString().toLowerCase().includes(term));
-        });
-        renderCards(filtered);
-        document.getElementById('resultInfo').textContent = `${filtered.length} de ${ramaisData.length} ramais encontrados`;
-    }
+    const term = document.getElementById('search').value.toLowerCase().trim();
+    const localValue = document.getElementById('localFilter').value;
+
+    const filtered = ramaisData.filter(item => {
+        // Filtro por local (mantido)
+        if (localValue && item.local !== localValue) return false;
+        if (!term) return true;
+
+        // === NOVA LÓGICA ===
+        // Se o usuário digitou só números → busca por ramal que COMEÇA com o número
+        if (/^\d+$/.test(term)) {
+            return item.ramal && item.ramal.toString().startsWith(term);
+        }
+
+        // Se digitou texto normal → busca em qualquer campo (comportamento antigo)
+        return Object.values(item).some(v => 
+            v && v.toString().toLowerCase().includes(term)
+        );
+    });
+
+    renderCards(filtered);
+    document.getElementById('resultInfo').textContent = 
+        `${filtered.length} de ${ramaisData.length} ramais encontrados`;
+}
+    
 
     // === ADMIN (mantido) ===
     function openAdminModal() { if (!isTiMode) return; renderAdminTable(); document.getElementById('adminModal').classList.remove('hidden'); }
