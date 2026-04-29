@@ -346,18 +346,18 @@
   {
     "local": "MEDRADIUS CLINICA",
     "setor": "QUALIDADE",
-    "subsetor": "SUPERVISORA / QUALIDADE / CBP / CBS / CONTROLE DE DOCUMENTAÇÃO",
+    "subsetor": "COORDENADORA OPERACIONAL / VITORIA BARROS / ANALISTA DE QUALIDADE / ANALISTA DE QUALIDADE / NEP / ASSIST. ADIMINISTRATIVO",
     "ramal": "243",
     "Workstation": "QUALIDADE1 / QUALIDADE2 / QUALIDADE3 / QUALIDADE4 / QUALIDADE5",
-    "colaborador": "ROBERTA / FERNANDA / JAMILE / THAINÁ / YASMIM"
+    "colaborador": "ROBERTA ABREU / SUPERVISORA / FERNANDA BARROS / JAMILLY VICTORIA / ROBERTA SOLANO / YASMIM BRANDÃO"
   },
   {
     "local": "MEDRADIUS CLINICA",
     "setor": "RECEPÇÃO",
-    "subsetor": "COLPOSCOPIA",
+    "subsetor": "COLPOSCOPIA / HOLTER",
     "ramal": "123",
-    "Workstation": "172.18.3.33",
-    "colaborador": ""
+    "Workstation": "RECPCOLPOSCOPIA / R4MAPA",
+    "colaborador": "SHIRLEI / ALINE"
   },
   {
     "local": "MEDRADIUS CLINICA",
