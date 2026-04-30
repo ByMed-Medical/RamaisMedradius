@@ -341,7 +341,7 @@
     "subsetor": "PRÉ-ATENDIMENTO",
     "ramal": "161",
     "Workstation": "172.18.3.162",
-    "colaborador": ""
+    "colaborador": "JUNIOR"
   },
   {
     "local": "MEDRADIUS CLINICA",
@@ -397,7 +397,7 @@
     "subsetor": "COORDENAÇÃO",
     "ramal": "158",
     "Workstation": "172.18.0.58",
-    "colaborador": ""
+    "colaborador": "GLAUCIA"
   },
   {
     "local": "MEDRADIUS CLINICA",
@@ -405,7 +405,7 @@
     "subsetor": "GUICHÊ 01",
     "ramal": "151",
     "Workstation": "172.18.2.144",
-    "colaborador": ""
+    "colaborador": "NAYANE"
   },
   {
     "local": "MEDRADIUS CLINICA",
@@ -413,7 +413,7 @@
     "subsetor": "GUICHÊ 02",
     "ramal": "152",
     "Workstation": "172.18.0.224",
-    "colaborador": ""
+    "colaborador": "JULIANA / SINTIA"
   },
   {
     "local": "MEDRADIUS CLINICA",
@@ -421,7 +421,7 @@
     "subsetor": "GUICHÊ 03",
     "ramal": "153",
     "Workstation": "172.18.0.207",
-    "colaborador": ""
+    "colaborador": "ARIANA"
   },
   {
     "local": "MEDRADIUS CLINICA",
@@ -429,7 +429,7 @@
     "subsetor": "GUICHÊ 04",
     "ramal": "154",
     "Workstation": "172.18.3.22",
-    "colaborador": ""
+    "colaborador": "JOICE"
   },
   {
     "local": "MEDRADIUS CLINICA",
@@ -437,7 +437,7 @@
     "subsetor": "GUICHÊ 05",
     "ramal": "155",
     "Workstation": "172.18.3.2",
-    "colaborador": ""
+    "colaborador": "ALINE"
   },
   {
     "local": "MEDRADIUS CLINICA",
@@ -445,7 +445,7 @@
     "subsetor": "GUICHÊ 06",
     "ramal": "156",
     "Workstation": "172.18.2.136",
-    "colaborador": ""
+    "colaborador": "LAYANE"
   },
   {
     "local": "MEDRADIUS CLINICA",
@@ -461,7 +461,7 @@
     "subsetor": "GUICHÊ 09",
     "ramal": "159",
     "Workstation": "172.18.2.134",
-    "colaborador": ""
+    "colaborador": "ISABELE"
   },
   {
     "local": "MEDRADIUS CLINICA",
@@ -469,7 +469,7 @@
     "subsetor": "GUICHÊ 10",
     "ramal": "160",
     "Workstation": "172.18.2.98",
-    "colaborador": ""
+    "colaborador": "ALDIJANIA"
   },
   {
     "local": "MEDRADIUS CLINICA",
@@ -565,7 +565,7 @@
     "subsetor": "ECOCARDIOGRAMA",
     "ramal": "134",
     "Workstation": "172.18.3.106",
-    "colaborador": ""
+    "colaborador": "KELINE"
   },
   {
     "local": "MEDRADIUS CLINICA",
@@ -573,7 +573,7 @@
     "subsetor": "ELETROCARDIOGRAMA",
     "ramal": "136",
     "Workstation": "172.18.2.128",
-    "colaborador": ""
+    "colaborador": "ELIZIANE"
   },
   {
     "local": "MEDRADIUS CLINICA",
@@ -581,7 +581,7 @@
     "subsetor": "ESPIROMETRIA",
     "ramal": "135",
     "Workstation": "172.18.1.211",
-    "colaborador": ""
+    "colaborador": "BRENDA"
   },
   {
     "local": "MEDRADIUS CLINICA",
