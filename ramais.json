@@ -1113,8 +1113,8 @@
   },
   {
     "local": "MEDRADIUS HOSPITAL",
-    "setor": "DAY CLINIC",
-    "subsetor": "DAY CLINIC",
+    "setor": "PRONTO ATENDIMENTO",
+    "subsetor": "SALA DE MEDICAÇÃO",
     "ramal": "234",
     "Workstation": "172.18.3.27",
     "colaborador": ""
