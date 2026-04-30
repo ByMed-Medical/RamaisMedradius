@@ -509,7 +509,7 @@
     "subsetor": "GUICHÊ 01",
     "ramal": "131",
     "Workstation": "172.18.0.41",
-    "colaborador": ""
+    "colaborador": "TATIANA"
   },
   {
     "local": "MEDRADIUS CLINICA",
@@ -517,7 +517,7 @@
     "subsetor": "GUICHÊ 02",
     "ramal": "132",
     "Workstation": "172.18.2.124",
-    "colaborador": ""
+    "colaborador": "JULINA"
   },
   {
     "local": "MEDRADIUS CLINICA",
@@ -525,28 +525,28 @@
     "subsetor": "GUICHÊ 03",
     "ramal": "133",
     "Workstation": "172.18.2.125",
-    "colaborador": ""
+    "colaborador": "MILENA"
   },
   {
     "local": "MEDRADIUS CLINICA",
-    "setor": "RECEPÇÃO LABORATÓRIO",
-    "subsetor": "GUICHÊ 12",
+    "setor": "RECEPÇÃO 2",
+    "subsetor": "LABORATÓRIO",
     "ramal": "162",
     "Workstation": "172.18.2.152",
     "colaborador": ""
   },
   {
     "local": "MEDRADIUS CLINICA",
-    "setor": "RECEPÇÃO LABORATÓRIO",
-    "subsetor": "GUICHÊ 13",
+    "setor": "RECEPÇÃO 2",
+    "subsetor": "LABORATÓRIO",
     "ramal": "121",
     "Workstation": "172.18.3.66",
     "colaborador": ""
   },
   {
     "local": "MEDRADIUS CLINICA",
-    "setor": "RECEPÇÃO LABORATÓRIO",
-    "subsetor": "GUICHÊ 15",
+    "setor": "RECEPÇÃO 2",
+    "subsetor": "LABORATÓRIO",
     "ramal": "163",
     "Workstation": "172.18.2.133",
     "colaborador": ""
