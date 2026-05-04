@@ -1090,7 +1090,7 @@
   {
     "local": "MEDRADIUS HOSPITAL",
     "setor": "COORDENAÇÃO",
-    "subsetor": "FARMACIA ONCOLOGIA",
+    "subsetor": "FARMÁCIA ONCOLOGIA",
     "ramal": "246",
     "Workstation": "172.18.3.53",
     "colaborador": ""
@@ -1228,16 +1228,16 @@
     "setor": "FARMÁCIA",
     "subsetor": "CENTRAL",
     "ramal": "239",
-    "Workstation": "172.18.3.32",
-    "colaborador": ""
+    "Workstation": "FARMACIA02 / FARMACIA03 / FARMACIA04 / FARMACIA10",
+    "colaborador": "VIVIAN / LETICIA / SARA PACHECO / DEYSIELE"
   },
   {
     "local": "MEDRADIUS HOSPITAL",
     "setor": "FARMÁCIA",
     "subsetor": "CENTRAL - COORDENAÇÃO",
     "ramal": "240",
-    "Workstation": "172.18.2.108",
-    "colaborador": ""
+    "Workstation": "COORDFARMACIA",
+    "colaborador": "NAJARA"
   },
   {
     "local": "MEDRADIUS HOSPITAL",
@@ -1577,7 +1577,7 @@
   },
   {
     "local": "MEDRADIUS MANGABEIRAS",
-    "setor": "FARMACIA SATÉLITE",
+    "setor": "FARMÁCIA SATÉLITE",
     "subsetor": "",
     "ramal": "620",
     "Workstation": "",
