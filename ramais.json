@@ -658,18 +658,18 @@
   {
     "local": "MEDRADIUS CLINICA",
     "setor": "TI",
-    "subsetor": "SUPORTE TECNICO",
+    "subsetor": "ANALISTA DE REDE/ANALISTA DE SEGURANÇA/SUPERVISOR/GERENTE",
     "ramal": "150",
-    "Workstation": "TISUPORTE02/.../.../...",
+    "Workstation": "TISUPORTE02/.../.../",
     "colaborador": "JORGE LUIS/JOAO LIMA/DIEGO FIDELIS/CARLOS HENRIQUE"
   },
   {
     "local": "MEDRADIUS CLINICA",
     "setor": "TI",
-    "subsetor": "SUPORTE TECNICO",
+    "subsetor": "ASSITENTE TECNICO/ASSITENTE TECNICO/APRENDIZ/ASSITENTE TECNICO",
     "ramal": "149",
     "Workstation": "TISUPORTE07/172.18.2.20/172.18.0.236/TISUPORTE06/...",
-    "colaborador": "BYRONs/ALOISIO LAURO/JOÃO VITOR/JOÃO FARIAS/RUDSON LIMA"
+    "colaborador": "BYRON/ALOISIO LAURO/JOÃO FARIAS/RUDSON LIMA"
   },
   {
     "local": "MEDRADIUS CLINICA",
