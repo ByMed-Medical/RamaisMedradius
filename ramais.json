@@ -652,8 +652,8 @@
     "setor": "SETOR ARQUIVO",
     "subsetor": "SETOR ARQUIVO",
     "ramal": "177",
-    "Workstation": "172.18.3.143",
-    "colaborador": ""
+    "Workstation": "ARQUIVO01/ARQUIVO03/ARQUIVO06",
+    "colaborador": "VINICIUS/ANASTACIA/DANIEL"
   },
   {
     "local": "MEDRADIUS CLINICA",
