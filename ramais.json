@@ -1009,11 +1009,19 @@
   },
   {
     "local": "MEDRADIUS HOSPITAL",
-    "setor": "AUTORIZAÇÃO",
-    "subsetor": "QUIMIO",
+    "setor": "AUT. QUIMIO",
+    "subsetor": "-",
+    "ramal": "147",
+    "Workstation": "-",
+    "colaborador": "-"
+  },
+  {
+    "local": "MEDRADIUS HOSPITAL",
+    "setor": "RECEP. INFUSÃO, AUT. QUIMIO",
+    "subsetor": "SUPERVISORA",
     "ramal": "227",
     "Workstation": "172.18.2.114",
-    "colaborador": ""
+    "colaborador": "LARISSE"
   },
   {
     "local": "MEDRADIUS HOSPITAL",
@@ -1049,7 +1057,7 @@
   },
   {
     "local": "MEDRADIUS HOSPITAL",
-    "setor": "CENTRO DE INFUSÃO",
+    "setor": "RECEP. CENTRO DE INFUSÃO",
     "subsetor": "RECEPÇÃO",
     "ramal": "255",
     "Workstation": "172.18.2.209",
