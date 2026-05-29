@@ -1585,6 +1585,14 @@
   },
   {
     "local": "MEDRADIUS MANGABEIRAS",
+    "setor": "TI MANGABEIRAS",
+    "subsetor": "AUXILIAR DE TI",
+    "ramal": "600",
+    "Workstation": "TI1FIL",
+    "colaborador": "DIEGO MENDONÇA"
+  },
+  {
+    "local": "MEDRADIUS MANGABEIRAS",
     "setor": "LAUDOS",
     "subsetor": "",
     "ramal": "605",
