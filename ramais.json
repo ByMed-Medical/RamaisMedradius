@@ -1434,6 +1434,22 @@
   {
     "local": "MEDRADIUS MANGABEIRAS",
     "setor": "CONSULTORIO - 2º ANDAR",
+    "subsetor": "SALA 1",
+    "ramal": "601",
+    "Workstation": "",
+    "colaborador": "MÉDICO"
+  },
+  {
+    "local": "MEDRADIUS MANGABEIRAS",
+    "setor": "CONSULTORIO - 2º ANDAR",
+    "subsetor": "SALA 2",
+    "ramal": "602",
+    "Workstation": "",
+    "colaborador": "MÉDICO"
+  },
+  {
+    "local": "MEDRADIUS MANGABEIRAS",
+    "setor": "CONSULTORIO - 2º ANDAR",
     "subsetor": "SALA 3",
     "ramal": "603",
     "Workstation": "",
