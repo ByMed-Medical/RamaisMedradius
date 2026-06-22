@@ -1769,6 +1769,14 @@
   },
   {
     "local": "MEDRADIUS MANGABEIRAS",
+    "setor": "ENTREGA DE EXAMES",
+    "subsetor": "ENTREGA DE EXAMES",
+    "ramal": "630",
+    "Workstation": "",
+    "colaborador": "Dani"
+  },
+  {
+    "local": "MEDRADIUS MANGABEIRAS",
     "setor": "RECEPÇÃO 1 - 3º ANDAR",
     "subsetor": "GUICHE 4",
     "ramal": "631",
