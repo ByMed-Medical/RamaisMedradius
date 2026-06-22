@@ -1508,15 +1508,15 @@
     "setor": "CONSULTORIO - 3º ANDAR",
     "subsetor": "SALA 07",
     "ramal": "637",
-    "Workstation": "",
+    "Workstation": "13.119",
     "colaborador": "MÉDICO"
   },
   {
     "local": "MEDRADIUS MANGABEIRAS",
-    "setor": "CONSULTORIO - 3º ANDAR",
+    "setor": "MARCACÃO - 3º ANDAR",
     "subsetor": "SALA 08",
     "ramal": "638",
-    "Workstation": "",
+    "Workstation": "flmarcacao4",
     "colaborador": "MÉDICO"
   },
   {
@@ -1772,8 +1772,8 @@
     "setor": "ENTREGA DE EXAMES",
     "subsetor": "ENTREGA DE EXAMES",
     "ramal": "630",
-    "Workstation": "",
-    "colaborador": "Dani"
+    "Workstation": "entregafll022 | ",
+    "colaborador": "Ana Carla"
   },
   {
     "local": "MEDRADIUS MANGABEIRAS",
