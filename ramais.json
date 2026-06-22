@@ -1684,8 +1684,8 @@
     "setor": "RECEPÇÃO - 2º ANDAR",
     "subsetor": "GUICHE 1",
     "ramal": "611",
-    "Workstation": "",
-    "colaborador": ""
+    "Workstation": "flreuniao01",
+    "colaborador": "Maria Luiza"
   },
   {
     "local": "MEDRADIUS MANGABEIRAS",
@@ -1785,8 +1785,8 @@
   },
   {
     "local": "MEDRADIUS MANGABEIRAS",
-    "setor": "RECEPÇÃO TOMO E RESSO",
-    "subsetor": "GUICHE 1",
+    "setor": "MANUTENÇÃO",
+    "subsetor": "MANUTENÇÃO GERAL",
     "ramal": "621",
     "Workstation": "",
     "colaborador": ""
@@ -1833,11 +1833,11 @@
   },
   {
     "local": "MEDRADIUS MANGABEIRAS",
-    "setor": "TESTE ERGOMÉTRICO",
+    "setor": "TESTE ERGOMÉTRICO | ESPIROMETRIA",
     "subsetor": "",
     "ramal": "649",
-    "Workstation": "",
-    "colaborador": ""
+    "Workstation": " | espirometriafilial-service",
+    "colaborador": " | Kezia Lima"
   },
   {
     "local": "MEDRADIUS MANGABEIRAS",
