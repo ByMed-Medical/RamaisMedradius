@@ -1465,11 +1465,11 @@
   },
   {
     "local": "MEDRADIUS MANGABEIRAS",
-    "setor": "CONSULTORIO - 3º ANDAR",
-    "subsetor": "SALA 02",
+    "setor": "",
+    "subsetor": "",
     "ramal": "632",
     "Workstation": "",
-    "colaborador": "MÉDICO"
+    "colaborador": ""
   },
   {
     "local": "MEDRADIUS MANGABEIRAS",
@@ -1514,10 +1514,10 @@
   {
     "local": "MEDRADIUS MANGABEIRAS",
     "setor": "MARCACÃO - 3º ANDAR",
-    "subsetor": "SALA 08",
+    "subsetor": "GUICHE 2",
     "ramal": "638",
     "Workstation": "flmarcacao4",
-    "colaborador": "MÉDICO"
+    "colaborador": "MANÚ"
   },
   {
     "local": "MEDRADIUS MANGABEIRAS",
@@ -1529,11 +1529,11 @@
   },
   {
     "local": "MEDRADIUS MANGABEIRAS",
-    "setor": "CONSULTORIO - 3º ANDAR",
-    "subsetor": "SALA 10",
+    "setor": "MARCACÃO - 3º ANDAR",
+    "subsetor": "GUICHE 3 | GUICHE 4",
     "ramal": "640",
     "Workstation": "",
-    "colaborador": "MÉDICO"
+    "colaborador": ""
   },
   {
     "local": "MEDRADIUS MANGABEIRAS",
@@ -1547,7 +1547,7 @@
     "local": "MEDRADIUS MANGABEIRAS",
     "setor": "CONSULTORIO - 3º ANDAR",
     "subsetor": "SALA 12",
-    "ramal": "642",
+    "ramal": "643",
     "Workstation": "",
     "colaborador": "MÉDICO"
   },
@@ -1563,7 +1563,7 @@
     "local": "MEDRADIUS MANGABEIRAS",
     "setor": "CONSULTORIO - 3º ANDAR",
     "subsetor": "SALA 14",
-    "ramal": "643",
+    "ramal": "653",
     "Workstation": "",
     "colaborador": "MÉDICO"
   },
@@ -1593,11 +1593,11 @@
   },
   {
     "local": "MEDRADIUS MANGABEIRAS",
-    "setor": "DANIELLA MOURA",
+    "setor": "RECEPÇÃO TOMO E RESSO",
     "subsetor": "",
     "ramal": "619",
     "Workstation": "",
-    "colaborador": ""
+    "colaborador": "BEATRIZ"
   },
   {
     "local": "MEDRADIUS MANGABEIRAS",
@@ -1605,15 +1605,15 @@
     "subsetor": "",
     "ramal": "620",
     "Workstation": "",
-    "colaborador": ""
+    "colaborador": "PEDRO"
   },
   {
     "local": "MEDRADIUS MANGABEIRAS",
     "setor": "TI MANGABEIRAS",
-    "subsetor": "AUXILIAR DE TI",
+    "subsetor": "ASSIST. DE INFORMATICA",
     "ramal": "600",
     "Workstation": "TI1FIL",
-    "colaborador": "DIEGO MENDONÇA"
+    "colaborador": "BYRON MEDEIROS"
   },
   {
     "local": "MEDRADIUS MANGABEIRAS",
@@ -1641,19 +1641,19 @@
   },
   {
     "local": "MEDRADIUS MANGABEIRAS",
-    "setor": "MARCAÇÃO DE EXAMES",
-    "subsetor": "GUICHE 1",
+    "setor": "RECEPÇÃO 2 - 3º ANDAR",
+    "subsetor": "GUICHE 2",
     "ramal": "651",
     "Workstation": "",
     "colaborador": ""
   },
   {
     "local": "MEDRADIUS MANGABEIRAS",
-    "setor": "MARCAÇÃO DE EXAMES",
-    "subsetor": "GUICHE 2",
+    "setor": "RECEPÇÃO 2 - 3º ANDAR",
+    "subsetor": "GUICHE 3",
     "ramal": "652",
     "Workstation": "",
-    "colaborador": ""
+    "colaborador": "LILIAN"
   },
   {
     "local": "MEDRADIUS MANGABEIRAS",
@@ -1661,7 +1661,7 @@
     "subsetor": "",
     "ramal": "607",
     "Workstation": "",
-    "colaborador": ""
+    "colaborador": "KATHI"
   },
   {
     "local": "MEDRADIUS MANGABEIRAS",
@@ -1681,8 +1681,8 @@
   },
   {
     "local": "MEDRADIUS MANGABEIRAS",
-    "setor": "RECEPÇÃO - 2º ANDAR",
-    "subsetor": "GUICHE 1",
+    "setor": "MARCAÇÃO DE EXAME - 2º ANDAR",
+    "subsetor": "GUICHE 1 | GUICHE 2",
     "ramal": "611",
     "Workstation": "flreuniao01",
     "colaborador": "Maria Luiza"
