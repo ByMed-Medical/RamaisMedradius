@@ -98,10 +98,10 @@
   {
     "local": "MEDRADIUS CLINICA",
     "setor": "CONTROLADORIA",
-    "subsetor": "REPASSE MÉDICO",
+    "subsetor": "CUSTOS",
     "ramal": "186",
-    "Workstation": "MONIQUE",
-    "colaborador": "RAMON / TALITA"
+    "Workstation": "172.18.",
+    "colaborador": "PATRICIA"
   },
   {
     "local": "MEDRADIUS CLINICA",
@@ -589,14 +589,6 @@
     "subsetor": "MEDICINA NUCLEAR",
     "ramal": "185",
     "Workstation": "172.18.3.13",
-    "colaborador": ""
-  },
-  {
-    "local": "MEDRADIUS CLINICA",
-    "setor": "SALA EXAME",
-    "subsetor": "PET-SCAN",
-    "ramal": "186",
-    "Workstation": "172.18.3.14",
     "colaborador": ""
   },
   {
@@ -1433,11 +1425,11 @@
   },
   {
     "local": "MEDRADIUS MANGABEIRAS",
-    "setor": "CONSULTORIO - 2º ANDAR",
+    "setor": "RECEPÇÃO 2 - 3º ANDAR",
     "subsetor": "SALA 1",
     "ramal": "601",
     "Workstation": "",
-    "colaborador": "MÉDICO"
+    "colaborador": "BIANCA"
   },
   {
     "local": "MEDRADIUS MANGABEIRAS",
@@ -1597,7 +1589,7 @@
     "subsetor": "",
     "ramal": "619",
     "Workstation": "",
-    "colaborador": "BEATRIZ"
+    "colaborador": ""
   },
   {
     "local": "MEDRADIUS MANGABEIRAS",
@@ -1605,7 +1597,7 @@
     "subsetor": "",
     "ramal": "620",
     "Workstation": "",
-    "colaborador": "PEDRO"
+    "colaborador": ""
   },
   {
     "local": "MEDRADIUS MANGABEIRAS",
@@ -1629,7 +1621,7 @@
     "subsetor": "",
     "ramal": "624",
     "Workstation": "",
-    "colaborador": ""
+    "colaborador": "MAYARA"
   },
   {
     "local": "MEDRADIUS MANGABEIRAS",
@@ -1645,7 +1637,7 @@
     "subsetor": "GUICHE 2",
     "ramal": "651",
     "Workstation": "",
-    "colaborador": ""
+    "colaborador": "CRIS"
   },
   {
     "local": "MEDRADIUS MANGABEIRAS",
@@ -1709,7 +1701,7 @@
     "subsetor": "GUICHE 4",
     "ramal": "614",
     "Workstation": "",
-    "colaborador": ""
+    "colaborador": "ANA"
   },
   {
     "local": "MEDRADIUS MANGABEIRAS",
@@ -1741,47 +1733,47 @@
     "subsetor": "GUICHE 8",
     "ramal": "618",
     "Workstation": "rflg08",
-    "colaborador": "Micaelle Santos"
+    "colaborador": "ARIANA SILVA"
   },
   {
     "local": "MEDRADIUS MANGABEIRAS",
-    "setor": "RECEPÇÃO 1 - 3º ANDAR",
+    "setor": "MARCAÇÃO 1 - 3º ANDAR",
     "subsetor": "GUICHE 1",
     "ramal": "627",
     "Workstation": "flmacacao01",
-    "colaborador": "Yasmin Vitoria"
+    "colaborador": "YASMIN VITORIA"
   },
   {
     "local": "MEDRADIUS MANGABEIRAS",
     "setor": "RECEPÇÃO 1 - 3º ANDAR",
     "subsetor": "GUICHE 2",
     "ramal": "628",
-    "Workstation": "",
-    "colaborador": ""
+    "Workstation": "172.18.12.223",
+    "colaborador": "RAFAELA MORAIS"
   },
   {
     "local": "MEDRADIUS MANGABEIRAS",
     "setor": "RECEPÇÃO 1 - 3º ANDAR",
     "subsetor": "GUICHE 3",
     "ramal": "629",
-    "Workstation": "",
-    "colaborador": ""
+    "Workstation": "172.18.13.11",
+    "colaborador": "MAXWELLY"
   },
   {
     "local": "MEDRADIUS MANGABEIRAS",
     "setor": "ENTREGA DE EXAMES",
     "subsetor": "ENTREGA DE EXAMES",
     "ramal": "630",
-    "Workstation": "entregafll022 | ",
-    "colaborador": "Ana Carla"
+    "Workstation": "entregafll022",
+    "colaborador": "DANIELA PEREIRA"
   },
   {
     "local": "MEDRADIUS MANGABEIRAS",
     "setor": "RECEPÇÃO 1 - 3º ANDAR",
-    "subsetor": "GUICHE 4",
+    "subsetor": "GUICHE 1",
     "ramal": "631",
     "Workstation": "",
-    "colaborador": ""
+    "colaborador": "ALISSON"
   },
   {
     "local": "MEDRADIUS MANGABEIRAS",
