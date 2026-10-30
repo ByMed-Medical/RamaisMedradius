@@ -1653,7 +1653,7 @@
     "subsetor": "",
     "ramal": "607",
     "Workstation": "",
-    "colaborador": "KATHI"
+    "colaborador": "KATHI / WALQUIRIA"
   },
   {
     "local": "MEDRADIUS MANGABEIRAS",
@@ -1830,6 +1830,14 @@
     "ramal": "654",
     "Workstation": "",
     "colaborador": ""
+  },
+  {
+    "local": "MEDRADIUS MANGABEIRAS",
+    "setor": "FATURAMENTO MANGABEIRAS",
+    "subsetor": "FATURAMENTO",
+    "ramal": "655",
+    "Workstation": "FATURAMNETO05 / FATURAMENTO10",
+    "colaborador": "JACILENE / KARINE"
   },
   {
     "local": "MEDRADIUS MANGABEIRAS",
